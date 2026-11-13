@@ -33,10 +33,10 @@ projects:
       - Webhook handler storing processed event ids so retries never double-apply
       - Billing page with invoices, card updates and cancellation
     results:
-      - {metric: manual invoicing, value: eliminated for 1,200 customers}
-      - {metric: duplicate webhook side effects after launch, value: "0"}
+      - {metric: "manual invoicing", value: "eliminated for 1,200 customers"}
+      - {metric: "duplicate webhook side effects after launch", value: "0"}
     repo: {name: saas-billing, kind: stripe_webhooks, readme_style: clear}
-    review: {rating: 5, text: Daniel handled every Stripe edge case we threw at him.}
+    review: {rating: 5, text: "Daniel handled every Stripe edge case we threw at him."}
   - id: fs-p02
     name: Multi-tenant analytics dashboard
     aliases: [B2B reporting portal, tenant dashboards]
@@ -52,10 +52,10 @@ projects:
       - Self-serve dashboards with saved filters and CSV export
       - Tenant isolation enforced in the database with row-level security
     results:
-      - {metric: custom report requests, value: down 70%}
-      - {metric: dashboard load time, value: under 1.2 s at p95}
+      - {metric: "custom report requests", value: "down 70%"}
+      - {metric: "dashboard load time", value: "under 1.2 s at p95"}
     repo: {name: tenant-dashboards, kind: nest_rls, readme_style: vague}
-    review: {rating: 5, text: Excellent engineer, thinks about security without being asked.}
+    review: {rating: 5, text: "Excellent engineer, thinks about security without being asked."}
   - id: fs-p03
     name: Shopify inventory sync app
     aliases: [Shopify custom app, stock sync]
@@ -64,16 +64,16 @@ projects:
     type: client
     start: 2024-04
     end: 2024-06
-    skills_explicit: [Shopify, GraphQL Admin API, Node.js]
-    skills_implied: [webhooks, TypeScript, queues]
+    skills_explicit: [Shopify, GraphQL Admin API, Node.js, webhooks]
+    skills_implied: [TypeScript, queues]
     problem: Stock levels drifted between the warehouse system and the Shopify store.
     approach:
       - Custom app syncing inventory every five minutes and on webhooks
       - Retry queue for failed updates with an audit log
     results:
-      - {metric: overselling incidents, value: from about 20 a month to 1}
+      - {metric: "overselling incidents", value: "from about 20 a month to 1"}
     repo: null
-    review: {rating: 4.5, text: Reliable and communicative.}
+    review: {rating: 4.5, text: "Reliable and communicative."}
   - id: fs-p04
     name: Real-time marketplace chat
     aliases: [buyer-seller messaging, live chat feature]
@@ -82,16 +82,16 @@ projects:
     type: client
     start: 2023-11
     end: 2024-02
-    skills_explicit: [WebSockets, real-time messaging, React]
-    skills_implied: [Socket.IO, Redis, Node.js]
+    skills_explicit: [WebSockets, real-time messaging, React, Redis]
+    skills_implied: [Socket.IO, Node.js]
     problem: Buyers and sellers left the platform to talk on other apps.
     approach:
       - Real-time messaging with read receipts and typing indicators
       - Horizontal scaling through Redis pub/sub
     results:
-      - {metric: deals closed on-platform, value: up 25%}
+      - {metric: "deals closed on-platform", value: "up 25%"}
     repo: {name: live-chat, kind: socket_chat, readme_style: clear}
-    review: {rating: 5, text: Shipped a polished chat in record time.}
+    review: {rating: 5, text: "Shipped a polished chat in record time."}
   - id: fs-p05
     name: Clinic booking system
     aliases: [appointment scheduler, patient booking portal]
@@ -107,10 +107,10 @@ projects:
       - Patient-facing booking with doctor availability and reminders
       - Admin calendar for staff with drag-and-drop rescheduling
     results:
-      - {metric: phone bookings, value: down 55%}
-      - {metric: no-shows, value: down 18% after SMS reminders}
+      - {metric: "phone bookings", value: "down 55%"}
+      - {metric: "no-shows", value: "down 18% after SMS reminders"}
     repo: null
-    review: {rating: 4.5, text: Great product sense.}
+    review: {rating: 4.5, text: "Great product sense."}
   - id: fs-p06
     name: Marketing site performance overhaul
     aliases: [Next.js speed project, Core Web Vitals fix]
@@ -119,16 +119,16 @@ projects:
     type: client
     start: 2024-07
     end: 2024-08
-    skills_explicit: [Next.js, performance, SEO]
-    skills_implied: [image optimisation, caching, Lighthouse]
+    skills_explicit: [Next.js, performance, SEO, Lighthouse]
+    skills_implied: [image optimisation, caching]
     problem: The marketing site was slow on mobile and losing search traffic.
     approach:
       - Moved to static generation with incremental revalidation and optimised images
     results:
-      - {metric: Lighthouse mobile performance, value: from 52 to 96}
-      - {metric: organic sign-ups, value: up 14% the following quarter}
+      - {metric: "Lighthouse mobile performance", value: "from 52 to 96"}
+      - {metric: "organic sign-ups", value: "up 14% the following quarter"}
     repo: null
-    review: {rating: 5, text: Night and day difference in speed.}
+    review: {rating: 5, text: "Night and day difference in speed."}
   - id: fs-p07
     name: Fitness studio mobile app
     aliases: [class booking app, studio app]
@@ -143,10 +143,10 @@ projects:
     approach:
       - Cross-platform app for booking, waitlists and passes
     results:
-      - {metric: app store rating, value: "4.7"}
-      - {metric: members using the app, value: 2,300 in three months}
+      - {metric: "app store rating", value: "4.7"}
+      - {metric: "members using the app", value: "2,300 in three months"}
     repo: null
-    review: {rating: 4.5, text: Our members love the app.}
+    review: {rating: 4.5, text: "Our members love the app."}
   - id: fs-p08
     name: CMS migration to headless
     aliases: [WordPress to Sanity migration]
@@ -155,15 +155,15 @@ projects:
     type: client
     start: 2023-01
     end: 2023-03
-    skills_explicit: [headless CMS, Next.js, content migration]
-    skills_implied: [Sanity, scripting, TypeScript]
+    skills_explicit: [headless CMS, Next.js, content migration, Sanity]
+    skills_implied: [scripting, TypeScript]
     problem: Editors were stuck with a slow, plugin-heavy WordPress install.
     approach:
       - Scripted migration of 900 posts and pages into a headless CMS
     results:
-      - {metric: publishing time per article, value: down 50%}
+      - {metric: "publishing time per article", value: "down 50%"}
     repo: null
-    review: {rating: 4, text: Migration went smoothly.}
+    review: {rating: 4, text: "Migration went smoothly."}
   - id: fs-p09
     name: Authentication and roles rewrite
     aliases: [RBAC overhaul, SSO login]
@@ -178,9 +178,9 @@ projects:
     approach:
       - Central role and permission model with Google and Microsoft sign-in
     results:
-      - {metric: permission bugs reported, value: from 9 to 0 in the next audit}
+      - {metric: "permission bugs reported", value: "from 9 to 0 in the next audit"}
     repo: null
-    review: {rating: 5, text: Made our SOC 2 audit much easier.}
+    review: {rating: 5, text: "Made our SOC 2 audit much easier."}
   - id: fs-p10
     name: Internal operations admin tool
     aliases: [ops console, back-office app]
@@ -195,9 +195,9 @@ projects:
     approach:
       - Type-safe admin console with audit logging and approvals for risky edits
     results:
-      - {metric: direct database edits, value: stopped entirely}
+      - {metric: "direct database edits", value: "stopped entirely"}
     repo: {name: ops-console, kind: trpc_admin, readme_style: vague}
-    review: {rating: 4.5, text: Exactly the tool our ops team needed.}
+    review: {rating: 4.5, text: "Exactly the tool our ops team needed."}
   - id: fs-p11
     name: End-to-end test suite
     aliases: [Playwright test setup, regression tests]
@@ -212,9 +212,9 @@ projects:
     approach:
       - 40 Playwright tests for critical flows running on every pull request
     results:
-      - {metric: production regressions per month, value: from 6 to 1}
+      - {metric: "production regressions per month", value: "from 6 to 1"}
     repo: {name: e2e-suite, kind: playwright_tests, readme_style: clear}
-    review: {rating: 5, text: Releases are calm now.}
+    review: {rating: 5, text: "Releases are calm now."}
   - id: fs-p12
     name: Container deployment on AWS
     aliases: [ECS migration, infrastructure as code]
@@ -223,16 +223,16 @@ projects:
     type: client
     start: 2025-06
     end: 2025-07
-    skills_explicit: [AWS, Docker, Terraform]
-    skills_implied: [ECS, CI/CD, monitoring]
+    skills_explicit: [AWS, Docker, Terraform, ECS]
+    skills_implied: [CI/CD, monitoring]
     problem: The app ran on one hand-configured server with no rollback.
     approach:
       - Containerised services on ECS with Terraform and blue-green deploys
     results:
-      - {metric: deployment rollbacks, value: one command, under 5 minutes}
-      - {metric: hosting cost, value: down 22%}
+      - {metric: "deployment rollbacks", value: "one command, under 5 minutes"}
+      - {metric: "hosting cost", value: "down 22%"}
     repo: null
-    review: {rating: 4.5, text: Solid infrastructure work.}
+    review: {rating: 4.5, text: "Solid infrastructure work."}
   - id: fs-p13
     name: PDF invoice generator service
     aliases: [invoice PDF microservice]
@@ -247,9 +247,9 @@ projects:
     approach:
       - Queue-backed service rendering branded PDFs from HTML templates
     results:
-      - {metric: invoice generation failures, value: from 3% to 0.1%}
+      - {metric: "invoice generation failures", value: "from 3% to 0.1%"}
     repo: null
-    review: {rating: 4, text: Does the job well.}
+    review: {rating: 4, text: "Does the job well."}
   - id: fs-p14
     name: Sales team Chrome extension
     aliases: [CRM side panel extension]
@@ -264,9 +264,9 @@ projects:
     approach:
       - Side-panel extension that pre-fills CRM records the user confirms
     results:
-      - {metric: time to log a lead, value: from 3 minutes to 20 seconds}
+      - {metric: "time to log a lead", value: "from 3 minutes to 20 seconds"}
     repo: null
-    review: {rating: 5, text: Our team uses it every day.}
+    review: {rating: 5, text: "Our team uses it every day."}
   - id: fs-p15
     name: Shipment tracking API
     aliases: [logistics GraphQL API, parcel tracking backend]
@@ -281,9 +281,9 @@ projects:
     approach:
       - Public GraphQL API with rate limits, API keys and geospatial queries
     results:
-      - {metric: partner integrations, value: 12 in six months}
+      - {metric: "partner integrations", value: "12 in six months"}
     repo: null
-    review: {rating: 4.5, text: Clean API design.}
+    review: {rating: 4.5, text: "Clean API design."}
   - id: fs-p16
     name: Bootcamp to-do app
     aliases: [first React app]
@@ -298,7 +298,7 @@ projects:
     approach:
       - A to-do list with local storage
     results:
-      - {metric: completed, value: bootcamp certificate}
+      - {metric: "completed", value: "bootcamp certificate"}
     repo: null
     review: null
     decoy_of: fs-p10

@@ -37,10 +37,10 @@ projects:
       - Answers cite the page and refuse when no passage supports them
       - Built a 200-question evaluation set with the support lead and ran it on every change
     results:
-      - {metric: citation accuracy, value: 91% on 200 labelled questions}
-      - {metric: correct refusals on out-of-scope questions, value: 96%}
+      - {metric: "citation accuracy", value: "91% on 200 labelled questions"}
+      - {metric: "correct refusals on out-of-scope questions", value: "96%"}
     repo: {name: policy-qa, kind: rag_service, readme_style: clear}
-    review: {rating: 5, text: Ayesha built exactly what we needed and showed us the evaluation numbers before we asked.}
+    review: {rating: 5, text: "Ayesha built exactly what we needed and showed us the evaluation numbers before we asked."}
   - id: ai-p02
     name: Clinical notes entity extraction
     aliases: [medical NER model, discharge summary tagger]
@@ -57,10 +57,10 @@ projects:
       - Added rule-based post-processing for dosage units
       - Delivered a batch inference job with a confidence threshold for human review
     results:
-      - {metric: entity F1, value: "0.87"}
-      - {metric: manual tagging time, value: cut by 60%}
+      - {metric: "entity F1", value: "0.87"}
+      - {metric: "manual tagging time", value: "cut by 60%"}
     repo: null
-    review: {rating: 5, text: Rigorous evaluation and clear documentation. Would hire again.}
+    review: {rating: 5, text: "Rigorous evaluation and clear documentation. Would hire again."}
   - id: ai-p03
     name: Telecom churn prediction
     aliases: [subscriber churn model, retention risk scoring]
@@ -77,10 +77,10 @@ projects:
       - Trained gradient-boosted trees with time-based validation
       - Explained each score with SHAP so agents knew why a customer was flagged
     results:
-      - {metric: recall at the retention team's call capacity, value: up 18 points over the old rules}
-      - {metric: churn among contacted high-risk customers, value: down 7% in the first quarter}
+      - {metric: "recall at the retention team's call capacity", value: "up 18 points over the old rules"}
+      - {metric: "churn among contacted high-risk customers", value: "down 7% in the first quarter"}
     repo: {name: churn-scoring, kind: sklearn_pipeline, readme_style: clear}
-    review: {rating: 4.5, text: Great model and explanations; one delay on the data handover was on our side.}
+    review: {rating: 4.5, text: "Great model and explanations; one delay on the data handover was on our side."}
   - id: ai-p04
     name: Retail demand forecasting
     aliases: [SKU forecasting engine, weekly demand model]
@@ -97,10 +97,10 @@ projects:
       - Rolling-origin backtests over 52 weeks
       - Weekly forecasts exported to the buyers' spreadsheet
     results:
-      - {metric: MAPE, value: 14% versus 22% for the old method}
-      - {metric: stock-outs on top 50 SKUs, value: down 30%}
+      - {metric: "MAPE", value: "14% versus 22% for the old method"}
+      - {metric: "stock-outs on top 50 SKUs", value: "down 30%"}
     repo: {name: sku-forecast, kind: forecasting, readme_style: vague}
-    review: {rating: 5, text: Forecasts are now something the buyers actually trust.}
+    review: {rating: 5, text: "Forecasts are now something the buyers actually trust."}
   - id: ai-p05
     name: Invoice field extraction service
     aliases: [OCR invoice parser, accounts payable automation]
@@ -116,10 +116,10 @@ projects:
       - Combined OCR with a layout-aware model to extract vendor, totals and line items
       - Wrapped it in an API with a review queue for low-confidence fields
     results:
-      - {metric: field-level accuracy, value: 94%}
-      - {metric: invoices processed automatically, value: 40,000 per month}
+      - {metric: "field-level accuracy", value: "94%"}
+      - {metric: "invoices processed automatically", value: "40,000 per month"}
     repo: null
-    review: {rating: 4, text: Good result. Communication could have been more frequent mid-project.}
+    review: {rating: 4, text: "Good result. Communication could have been more frequent mid-project."}
   - id: ai-p06
     name: Support ticket routing
     aliases: [ticket classifier, helpdesk triage model]
@@ -135,10 +135,10 @@ projects:
       - Fine-tuned DistilBERT on 25,000 historical tickets across 14 queues
       - Background workers classify new tickets within seconds and send unsure ones to a human
     results:
-      - {metric: tickets routed automatically, value: 72%}
-      - {metric: median time to first response, value: from 5 hours to 40 minutes}
+      - {metric: "tickets routed automatically", value: "72%"}
+      - {metric: "median time to first response", value: "from 5 hours to 40 minutes"}
     repo: null
-    review: {rating: 5, text: Saved our support team hours every day.}
+    review: {rating: 5, text: "Saved our support team hours every day."}
   - id: ai-p07
     name: LLM evaluation harness
     aliases: [evalkit, LLM-as-judge toolkit]
@@ -154,8 +154,8 @@ projects:
       - A small library that runs rubric-based LLM judges over datasets
       - Calibrates each judge against human labels and reports Cohen's kappa
     results:
-      - {metric: GitHub stars, value: "140"}
-      - {metric: judges calibrated in the example notebook, value: "3, kappa 0.41 to 0.78"}
+      - {metric: "GitHub stars", value: "140"}
+      - {metric: "judges calibrated in the example notebook", value: "3, kappa 0.41 to 0.78"}
     repo: {name: evalkit, kind: eval_harness, readme_style: clear}
     review: null
   - id: ai-p08
@@ -173,10 +173,10 @@ projects:
       - Collected and labelled 6,000 images with the QA team
       - Trained an object detector and tuned the threshold for few missed defects
     results:
-      - {metric: precision, value: "0.93"}
-      - {metric: recall, value: "0.89"}
+      - {metric: "precision", value: "0.93"}
+      - {metric: "recall", value: "0.89"}
     repo: {name: defect-detector, kind: vision_training, readme_style: vague}
-    review: {rating: 4.5, text: Strong technical work; the model is running on two lines now.}
+    review: {rating: 4.5, text: "Strong technical work; the model is running on two lines now."}
   - id: ai-p09
     name: Course recommendation engine
     aliases: [e-learning recommender, next-course suggestions]
@@ -192,9 +192,9 @@ projects:
       - Implicit-feedback matrix factorisation on enrolment and completion data
       - A/B tested recommendations on the dashboard against "most popular"
     results:
-      - {metric: click-through on recommendations, value: up 11%}
+      - {metric: "click-through on recommendations", value: "up 11%"}
     repo: null
-    review: {rating: 4, text: Solid recommender and a clean A/B test.}
+    review: {rating: 4, text: "Solid recommender and a clean A/B test."}
   - id: ai-p10
     name: Model deployment pipeline
     aliases: [MLOps platform, model CI/CD]
@@ -210,9 +210,9 @@ projects:
       - Model registry with MLflow and automated checks before promotion
       - Containerised serving deployed by a CI pipeline
     results:
-      - {metric: deployment time, value: from 2 days to 2 hours}
+      - {metric: "deployment time", value: "from 2 days to 2 hours"}
     repo: null
-    review: {rating: 5, text: Our data scientists can deploy on their own now.}
+    review: {rating: 5, text: "Our data scientists can deploy on their own now."}
   - id: ai-p11
     name: App review sentiment monitor
     aliases: [review insights dashboard, sentiment tracker]
@@ -228,10 +228,10 @@ projects:
       - Aspect-based sentiment model plus topic clustering
       - A dashboard that flags sudden negative spikes after releases
     results:
-      - {metric: reviews analysed, value: 50,000 per month}
-      - {metric: release regressions caught early, value: 2 in the first month}
+      - {metric: "reviews analysed", value: "50,000 per month"}
+      - {metric: "release regressions caught early", value: "2 in the first month"}
     repo: null
-    review: {rating: 4.5, text: Useful insights quickly.}
+    review: {rating: 4.5, text: "Useful insights quickly."}
   - id: ai-p12
     name: Agentic email triage
     aliases: [inbox agent, LangGraph email assistant]
@@ -247,10 +247,10 @@ projects:
       - LangGraph agent that classifies emails, drafts replies from listing data and books viewings
       - Every draft waits for an agent's approval before it is sent
     results:
-      - {metric: drafts accepted without edits, value: 60%}
-      - {metric: average reply time, value: from 6 hours to 45 minutes}
+      - {metric: "drafts accepted without edits", value: "60%"}
+      - {metric: "average reply time", value: "from 6 hours to 45 minutes"}
     repo: {name: inbox-agent, kind: langgraph_agent, readme_style: clear}
-    review: {rating: 5, text: The approval step made our brokers comfortable using it from day one.}
+    review: {rating: 5, text: "The approval step made our brokers comfortable using it from day one."}
   - id: ai-p13
     name: Meeting transcription and summaries
     aliases: [call summariser, Whisper notes]
@@ -259,15 +259,15 @@ projects:
     type: client
     start: 2025-01
     end: 2025-02
-    skills_explicit: [speech-to-text, summarisation, LLM]
-    skills_implied: [Whisper, Python, prompt engineering]
+    skills_explicit: [speech-to-text, summarisation, LLM, Whisper]
+    skills_implied: [Python, prompt engineering]
     problem: Consultants wrote call notes by hand after every client meeting.
     approach:
       - Transcribed recordings and produced structured summaries with action items
     results:
-      - {metric: meeting hours processed, value: 300 per month}
+      - {metric: "meeting hours processed", value: "300 per month"}
     repo: null
-    review: {rating: 4.5, text: Works well; summaries are concise and accurate.}
+    review: {rating: 4.5, text: "Works well; summaries are concise and accurate."}
   - id: ai-p14
     name: Transaction anomaly detection
     aliases: [fraud alerts model]
@@ -282,10 +282,10 @@ projects:
     approach:
       - Isolation Forest on behavioural features, ranked into a daily review queue
     results:
-      - {metric: confirmed fraud cases caught that rules missed, value: 23 in three months}
-      - {metric: false-positive alerts, value: down 35%}
+      - {metric: "confirmed fraud cases caught that rules missed", value: "23 in three months"}
+      - {metric: "false-positive alerts", value: "down 35%"}
     repo: null
-    review: {rating: 4, text: Clear improvement on our old rules.}
+    review: {rating: 4, text: "Clear improvement on our old rules."}
   - id: ai-p15
     name: Tabular competition entry
     aliases: [Kaggle playground solution]
@@ -300,7 +300,7 @@ projects:
     approach:
       - Stacked gradient-boosted models with target encoding
     results:
-      - {metric: leaderboard position, value: top 8%}
+      - {metric: "leaderboard position", value: "top 8%"}
     repo: null
     review: null
   - id: ai-p16
@@ -317,7 +317,7 @@ projects:
     approach:
       - Compared logistic regression with a random forest
     results:
-      - {metric: grade, value: A}
+      - {metric: "grade", value: "A"}
     repo: null
     review: null
     decoy_of: ai-p03
@@ -335,6 +335,6 @@ projects:
     approach:
       - Set up an annotation workflow where the model picks the most informative clauses
     results:
-      - {metric: labelling effort to reach target accuracy, value: down 40%}
+      - {metric: "labelling effort to reach target accuracy", value: "down 40%"}
     repo: null
-    review: {rating: 5, text: Thoughtful about our lawyers' time.}
+    review: {rating: 5, text: "Thoughtful about our lawyers' time."}

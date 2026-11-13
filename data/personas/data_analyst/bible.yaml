@@ -32,10 +32,10 @@ projects:
       - Star-schema model over the sales database with incremental refresh
       - Pages for weekly revenue, top products and regional breakdowns with drill-through
     results:
-      - {metric: weekly reporting time, value: from 6 hours to 20 minutes}
-      - {metric: dashboard users, value: 45 managers}
+      - {metric: "weekly reporting time", value: "from 6 hours to 20 minutes"}
+      - {metric: "dashboard users", value: "45 managers"}
     repo: null
-    review: {rating: 5, text: Mei Lin's dashboard replaced three spreadsheets and a lot of arguments.}
+    review: {rating: 5, text: "Mei Lin's dashboard replaced three spreadsheets and a lot of arguments."}
   - id: da-p02
     name: Marketing attribution analysis
     aliases: [channel ROI study, GA4 attribution]
@@ -50,10 +50,10 @@ projects:
     approach:
       - Joined GA4 events with order data and compared last-click with position-based attribution
     results:
-      - {metric: budget reallocated from low-return channels, value: 15%}
-      - {metric: cost per acquisition the next quarter, value: down 12%}
+      - {metric: "budget reallocated from low-return channels", value: "15%"}
+      - {metric: "cost per acquisition the next quarter", value: "down 12%"}
     repo: null
-    review: {rating: 5, text: Clear recommendations backed by data.}
+    review: {rating: 5, text: "Clear recommendations backed by data."}
   - id: da-p03
     name: E-commerce warehouse models
     aliases: [dbt project, analytics engineering setup]
@@ -69,10 +69,10 @@ projects:
       - Staging, intermediate and mart models with documented definitions
       - Tests for uniqueness, nulls and accepted values on key tables
     results:
-      - {metric: conflicting revenue numbers in leadership meetings, value: none since launch}
-      - {metric: models with tests, value: 38 of 38}
+      - {metric: "conflicting revenue numbers in leadership meetings", value: "none since launch"}
+      - {metric: "models with tests", value: "38 of 38"}
     repo: {name: shop-dbt, kind: dbt_model, readme_style: clear}
-    review: {rating: 5, text: Finally one source of truth.}
+    review: {rating: 5, text: "Finally one source of truth."}
   - id: da-p04
     name: Nightly data pipeline
     aliases: [orders ETL, scheduled data loads]
@@ -88,9 +88,9 @@ projects:
       - Scheduled jobs pulling orders and shipments into a reporting database every night
       - Row-count and freshness checks with alerts on failure
     results:
-      - {metric: reports on stale data, value: from weekly to never in six months}
+      - {metric: "reports on stale data", value: "from weekly to never in six months"}
     repo: {name: nightly-loads, kind: airflow_dag, readme_style: vague}
-    review: {rating: 4.5, text: Reliable pipeline, good alerts.}
+    review: {rating: 4.5, text: "Reliable pipeline, good alerts."}
   - id: da-p05
     name: Pricing page A/B test
     aliases: [conversion experiment analysis]
@@ -105,9 +105,9 @@ projects:
     approach:
       - Power analysis before launch, then a two-proportion test with a pre-registered metric
     results:
-      - {metric: trial sign-up conversion, value: up 4.2% (p = 0.01)}
+      - {metric: "trial sign-up conversion", value: "up 4.2% (p = 0.01)"}
     repo: {name: ab-test-report, kind: ab_test, readme_style: clear}
-    review: {rating: 5, text: Stopped us from calling the test too early.}
+    review: {rating: 5, text: "Stopped us from calling the test too early."}
   - id: da-p06
     name: Month-end close automation
     aliases: [Excel model clean-up, finance workbook rebuild]
@@ -122,9 +122,9 @@ projects:
     approach:
       - Rebuilt the workbook with Power Query imports and a small macro for the final export
     results:
-      - {metric: month-end close, value: from 3 days to 1}
+      - {metric: "month-end close", value: "from 3 days to 1"}
     repo: null
-    review: {rating: 4.5, text: Huge time saver for our finance team.}
+    review: {rating: 4.5, text: "Huge time saver for our finance team."}
   - id: da-p07
     name: HR attrition dashboard
     aliases: [people analytics Tableau]
@@ -139,9 +139,9 @@ projects:
     approach:
       - Tableau dashboard of attrition by team, tenure and exit reason
     results:
-      - {metric: teams flagged for retention plans, value: "4"}
+      - {metric: "teams flagged for retention plans", value: "4"}
     repo: null
-    review: {rating: 4, text: Good dashboard.}
+    review: {rating: 4, text: "Good dashboard."}
   - id: da-p08
     name: Customer segmentation
     aliases: [RFM segments, DTC clustering]
@@ -156,9 +156,9 @@ projects:
     approach:
       - RFM features and clustering into five segments with plain-language profiles
     results:
-      - {metric: email click-through, value: up 9%}
+      - {metric: "email click-through", value: "up 9%"}
     repo: {name: member-segments, kind: pandas_analysis, readme_style: vague}
-    review: {rating: 5, text: The segment profiles were easy for marketing to use.}
+    review: {rating: 5, text: "The segment profiles were easy for marketing to use."}
   - id: da-p09
     name: NGO inventory tracker
     aliases: [Google Sheets tracker, donations inventory]
@@ -173,9 +173,9 @@ projects:
     approach:
       - Shared Sheets tracker with form entry and low-stock email alerts
     results:
-      - {metric: stock-count errors, value: down 80%}
+      - {metric: "stock-count errors", value: "down 80%"}
     repo: {name: sheets-inventory, kind: apps_script, readme_style: clear}
-    review: {rating: 5, text: Simple and our volunteers actually use it.}
+    review: {rating: 5, text: "Simple and our volunteers actually use it."}
   - id: da-p10
     name: Public health survey analysis
     aliases: [survey report, weighted survey study]
@@ -190,9 +190,9 @@ projects:
     approach:
       - Weighted the sample to census margins and reported confidence intervals
     results:
-      - {metric: respondents analysed, value: 2,400}
+      - {metric: "respondents analysed", value: "2,400"}
     repo: null
-    review: {rating: 4.5, text: Rigorous and clearly written.}
+    review: {rating: 4.5, text: "Rigorous and clearly written."}
   - id: da-p11
     name: Supply chain KPI dashboard
     aliases: [Looker Studio logistics report]
@@ -207,9 +207,9 @@ projects:
     approach:
       - KPI dashboard on top of the warehouse with targets and weekly trend lines
     results:
-      - {metric: on-time delivery, value: up from 88% to 93% over two quarters}
+      - {metric: "on-time delivery", value: "up from 88% to 93% over two quarters"}
     repo: null
-    review: {rating: 4.5, text: Became our weekly ops meeting dashboard.}
+    review: {rating: 4.5, text: "Became our weekly ops meeting dashboard."}
   - id: da-p12
     name: Subscription cohort analysis
     aliases: [retention cohorts, churn by signup month]
@@ -224,9 +224,9 @@ projects:
     approach:
       - Monthly signup cohorts with retention curves and plan-level breakdowns
     results:
-      - {metric: finding, value: annual-plan cohorts retained 2.3x better than monthly}
+      - {metric: "finding", value: "annual-plan cohorts retained 2.3x better than monthly"}
     repo: null
-    review: {rating: 5, text: Changed how we price annual plans.}
+    review: {rating: 5, text: "Changed how we price annual plans."}
   - id: da-p13
     name: CRM data clean-up
     aliases: [deduplication project, contact data quality audit]
@@ -235,15 +235,15 @@ projects:
     type: client
     start: 2023-08
     end: 2023-09
-    skills_explicit: [data cleaning, data quality]
-    skills_implied: [Python, pandas, fuzzy matching]
+    skills_explicit: [data cleaning, data quality, fuzzy matching]
+    skills_implied: [Python, pandas]
     problem: The CRM had duplicate contacts and broken phone numbers.
     approach:
       - Standardised fields and merged duplicates with fuzzy matching and a manual review list
     results:
-      - {metric: duplicate records removed, value: 18% of 30,000}
+      - {metric: "duplicate records removed", value: "18% of 30,000"}
     repo: null
-    review: {rating: 4.5, text: Our CRM is usable again.}
+    review: {rating: 4.5, text: "Our CRM is usable again."}
   - id: da-p14
     name: Revenue forecast in Excel
     aliases: [Excel forecasting sheet]
@@ -252,13 +252,13 @@ projects:
     type: client
     start: 2023-01
     end: 2023-01
-    skills_explicit: [Excel, forecasting]
-    skills_implied: [exponential smoothing]
+    skills_explicit: [Excel, forecasting, exponential smoothing]
+    skills_implied: []
     problem: The NGO needed a simple donations forecast for budgeting.
     approach:
       - Exponential smoothing in Excel with a scenario table
     results:
-      - {metric: forecast error over the year, value: within 8%}
+      - {metric: "forecast error over the year", value: "within 8%"}
     repo: null
     review: null
   - id: da-p15
@@ -275,9 +275,9 @@ projects:
     approach:
       - GA4 event design and a content performance dashboard
     results:
-      - {metric: returning readers, value: up 10% after editors acted on the data}
+      - {metric: "returning readers", value: "up 10% after editors acted on the data"}
     repo: null
-    review: {rating: 4, text: Helpful dashboards.}
+    review: {rating: 4, text: "Helpful dashboards."}
   - id: da-p16
     name: Titanic exploratory analysis (coursework)
     aliases: [EDA assignment]
@@ -292,7 +292,7 @@ projects:
     approach:
       - Survival rates by class and age with charts
     results:
-      - {metric: grade, value: A-}
+      - {metric: "grade", value: "A-"}
     repo: null
     review: null
     decoy_of: da-p08
