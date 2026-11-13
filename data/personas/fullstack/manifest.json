@@ -1,0 +1,38 @@
+{
+  "persona_id": "fullstack",
+  "synthetic": true,
+  "generator": "render-v1",
+  "llm_rewrite": false,
+  "case_studies": 16,
+  "repos": {
+    "saas-billing": [
+      "README.md",
+      "src/app/api/stripe/webhook/route.ts"
+    ],
+    "tenant-dashboards": [
+      "README.md",
+      "migrations/001_rls.sql",
+      "src/reports/reports.service.ts"
+    ],
+    "live-chat": [
+      "README.md",
+      "server/index.ts"
+    ],
+    "ops-console": [
+      "README.md",
+      "src/server/routers/orders.ts"
+    ],
+    "e2e-suite": [
+      "README.md",
+      "tests/checkout.spec.ts",
+      ".github/workflows/e2e.yml"
+    ]
+  },
+  "reviews": 15,
+  "past_proposals": 150,
+  "outcomes": {
+    "replied": 23,
+    "ignored": 111,
+    "won": 16
+  }
+}
