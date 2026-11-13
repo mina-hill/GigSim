@@ -1,0 +1,43 @@
+{
+  "persona_id": "ai_ml",
+  "synthetic": true,
+  "generator": "render-v1",
+  "llm_rewrite": false,
+  "case_studies": 17,
+  "repos": {
+    "policy-qa": [
+      "README.md",
+      "app/retrieve.py",
+      "app/main.py",
+      "Dockerfile"
+    ],
+    "churn-scoring": [
+      "README.md",
+      "train.py"
+    ],
+    "sku-forecast": [
+      "README.md",
+      "forecast/backtest.py"
+    ],
+    "evalkit": [
+      "README.md",
+      "evalkit/calibrate.py",
+      "tests/test_calibrate.py"
+    ],
+    "defect-detector": [
+      "README.md",
+      "train.py"
+    ],
+    "inbox-agent": [
+      "README.md",
+      "agent/graph.py"
+    ]
+  },
+  "reviews": 14,
+  "past_proposals": 150,
+  "outcomes": {
+    "replied": 29,
+    "ignored": 101,
+    "won": 20
+  }
+}
