@@ -1,0 +1,25 @@
+# GigSim marketplace policy, version 1.
+# A "platform policy update" (the change request) ships as a new file (v2.yaml) and is
+# switched on at runtime with POST /admin/policy {"version": "v2"}.
+version: v1
+name: GigSim policy v1
+
+connects:
+  weekly_refill: 80
+  refill_every_ticks: 168          # 1 tick = 1 simulated hour, so weekly
+  # Cost of a proposal = the job's base Connects x every multiplier whose condition matches.
+  # Supported conditions: job_age_hours_gt, applicants_gt, domain_in, budget_max_gt
+  multipliers: []
+
+proposals:
+  min_cover_letter_chars: 50
+  max_cover_letter_chars: 5000
+  max_screening_answer_chars: 2000
+  one_submission_per_job: true
+
+# What GigSim's simulated clients react to. GigBid's own Compliance Guard reads its rules from
+# data/policy_pack/, not from here: the simulator and the agent are separate systems.
+client_reactions:
+  off_platform_contact: ignore     # emails, phone numbers, messaging apps in a proposal
+  guarantees: penalise             # "guaranteed results", "100% satisfaction"
+  missing_screening_answers: penalise
