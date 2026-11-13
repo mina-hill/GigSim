@@ -123,8 +123,12 @@ def score_proposal(
                         {"bid_over_ceiling": bid_amount / ceiling})
 
     # ---- soft features
+    # A must-have only counts when it is backed by evidence in the same sentence
+    # ("I built the Stripe billing for..."), not merely echoed back from the job post.
     must = (job.get("hidden") or {}).get("must_have_skills") or job.get("skills", [])[:2]
-    covered = [s for s in must if mentions(text, s)]
+    sentences = [s for s in re.split(r"(?<=[.!?])\s+|\n+", text) if s.strip()]
+    evidenced = [s for s in sentences if EVIDENCE.search(s)]
+    covered = [s for s in must if any(mentions(sent, s) for sent in evidenced)]
     feats["must_have_coverage"] = len(covered) / len(must) if must else 1.0
     if must and len(covered) < len(must):
         reasons.append("missing_must_have:" + ",".join(s for s in must if s not in covered))
