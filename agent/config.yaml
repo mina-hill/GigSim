@@ -1,0 +1,133 @@
+# GigBid runtime configuration.
+# Rules, thresholds, model routing and prompt versions live here, never in code,
+# so a platform policy change is a config + prompt edit. ${VAR:-default} reads the environment.
+version: 1
+
+marketplace:
+  mode: ${MARKETPLACE_MODE:-gigsim}          # gigsim | upwork  (R1: one port, two adapters)
+  gigsim:
+    base_url: ${GIGSIM_BASE_URL:-http://localhost:8081}
+    max_requests_per_minute: 30              # GigSim allows 60/min per token; stay well under
+  upwork:
+    url: ${UPWORK_MCP_URL:-https://mcp.upwork.com/mcp}
+    poll_interval_minutes: 180               # justified in docs/RUNBOOK.md
+
+models:
+  profile: ${MODEL_PROFILE:-open}
+  defaults:
+    temperature: 0
+    timeout_s: 60
+    max_retries: 2
+  providers:
+    # All providers speak the OpenAI-compatible chat API, so one client class serves them all.
+    groq:
+      base_url: https://api.groq.com/openai/v1
+      api_key_env: GROQ_API_KEY
+    openrouter:
+      base_url: https://openrouter.ai/api/v1
+      api_key_env: OPENROUTER_API_KEY
+    ollama:
+      base_url: ${OLLAMA_BASE_URL:-http://localhost:11434}/v1
+      api_key_env: null
+    openai:
+      base_url: https://api.openai.com/v1
+      api_key_env: OPENAI_API_KEY
+    fake:
+      base_url: null
+      api_key_env: null
+
+  # A profile maps tiers to concrete models. Model ids change often: check each provider's
+  # current model list before an evaluation run and record what you used in evals/results.
+  profiles:
+    open:                                    # required profile; the deployed site runs on it
+      tiers:
+        small:  {provider: groq, model: openai/gpt-oss-20b}
+        strong: {provider: groq, model: openai/gpt-oss-120b}
+        judge:  {provider: groq, model: llama-3.3-70b-versatile}   # different family from the writer
+      fallbacks:
+        small:  {provider: openrouter, model: openai/gpt-oss-20b}
+        strong: {provider: openrouter, model: openai/gpt-oss-120b}
+        judge:  {provider: openrouter, model: meta-llama/llama-3.3-70b-instruct}
+    open_qwen:                               # second open configuration for the model comparison
+      tiers:
+        small:  {provider: groq, model: qwen/qwen3-32b}
+        strong: {provider: groq, model: qwen/qwen3-32b}
+        judge:  {provider: groq, model: llama-3.3-70b-versatile}
+      fallbacks: {}
+    local:                                   # laptop development with Ollama, no API key
+      tiers:
+        small:  {provider: ollama, model: "qwen3:4b"}
+        strong: {provider: ollama, model: "qwen3:8b"}
+        judge:  {provider: ollama, model: "qwen3:8b"}
+      fallbacks: {}
+    paid:                                    # optional; only where it beats `open` enough to justify cost
+      tiers:
+        small:  {provider: groq, model: openai/gpt-oss-20b}
+        strong: {provider: openai, model: gpt-5-mini}
+        judge:  {provider: groq, model: llama-3.3-70b-versatile}
+      fallbacks: {}
+    test:                                    # deterministic offline model for unit tests and CI
+      tiers:
+        small:  {provider: fake, model: fake-small}
+        strong: {provider: fake, model: fake-strong}
+        judge:  {provider: fake, model: fake-judge}
+      fallbacks: {}
+
+  # Route by node: cheap, frequent nodes on the small tier; Writer and Critic on the strongest.
+  nodes:
+    scout: small
+    analyst: small
+    risk_assessor: small
+    fit_matcher: small
+    pricing: small
+    writer: strong
+    verifier: small
+    critic: strong
+    compliance: small
+    intent_classifier: small
+    client_liaison: strong
+    judge: judge
+    gigsim_client: judge          # GigSim's simulated clients (only when GIGSIM_CLIENT_MODE=llm)
+    data_generator: strong        # persona rendering and label proposals (offline scripts)
+
+  # Prompt version per node; prompts live in agent/prompts/<node>.<version>.md
+  prompt_versions:
+    analyst: v1
+    risk_assessor: v1
+    fit_matcher: v1
+    pricing: v1
+    writer: v1
+    verifier: v1
+    critic: v1
+    compliance: v1
+    intent_classifier: v1
+    client_liaison: v1
+    judge: v1
+    gigsim_client: v1
+
+retrieval:
+  embeddings: {model: BAAI/bge-m3, device: cpu}
+  reranker: {model: BAAI/bge-reranker-v2-m3, device: cpu}
+  pipeline: [dense]               # replaced by the variant your evaluation picks (R6)
+  k: 5
+
+budgets:
+  max_graph_steps: 30
+  max_revisions: 2
+  max_tokens_per_job: 12000
+  max_tokens_per_proposal: 40000
+
+thresholds:
+  minimum_fit_score: 0.60
+  maximum_risk_score: 0.70
+  watch_fit_band: [0.45, 0.60]    # between these: "watch" instead of bid or skip
+
+autonomy:
+  auto_skip_low_fit: false        # per-user default; users may turn this on
+  auto_send: false                # must stay false: config loading rejects any other value
+
+connects:
+  default_weekly_budget: 80
+
+policy_pack:
+  rules_path: data/policy_pack/rules.yaml
