@@ -1,0 +1,40 @@
+# Secrets: commit .env.example only
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+
+# Data that is downloaded or generated (see docs/DATA_CARD.md)
+data/raw/
+data/processed/
+# The held-out test split never enters the repo (load it from GIGBID_TEST_SPLIT_PATH)
+evals/datasets/test*.jsonl
+evals/datasets/hidden*
+
+# Local runtime state
+*.db
+*.sqlite
+*.sqlite3
+.cache/
+gigsim/*.db
+
+# Node / web
+node_modules/
+apps/web/.next/
+apps/web/out/
+apps/web/playwright-report/
+apps/web/test-results/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
