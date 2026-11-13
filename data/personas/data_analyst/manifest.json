@@ -1,0 +1,37 @@
+{
+  "persona_id": "data_analyst",
+  "synthetic": true,
+  "generator": "render-v1",
+  "llm_rewrite": false,
+  "case_studies": 16,
+  "repos": {
+    "shop-dbt": [
+      "README.md",
+      "models/marts/fct_orders.sql",
+      "models/marts/schema.yml"
+    ],
+    "nightly-loads": [
+      "README.md",
+      "dags/nightly_orders.py"
+    ],
+    "ab-test-report": [
+      "README.md",
+      "analysis.py"
+    ],
+    "member-segments": [
+      "README.md",
+      "segments.py"
+    ],
+    "sheets-inventory": [
+      "README.md",
+      "Code.gs"
+    ]
+  },
+  "reviews": 14,
+  "past_proposals": 150,
+  "outcomes": {
+    "ignored": 95,
+    "won": 22,
+    "replied": 33
+  }
+}
