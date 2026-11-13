@@ -1,0 +1,4 @@
+{"client_id": "cl_001", "title": "Shopify sales dashboard", "amount": 900, "rating_given": 5.0, "review": "Clear communication and delivered early.", "ended_at": "2026-05-02"}
+{"client_id": "cl_001", "title": "Customer churn analysis", "amount": 1400, "rating_given": 4.5, "review": "Solid work, needed one revision.", "ended_at": "2026-08-19"}
+{"client_id": "cl_002", "title": "Clinical notes NER prototype", "amount": 6000, "payment_type": "fixed", "rating_given": 5.0, "review": "Excellent ML engineer, rigorous evaluation.", "ended_at": "2026-02-10"}
+{"client_id": "cl_003", "title": "Excel model clean-up", "amount": 300, "rating_given": 4.0, "review": "Good.", "ended_at": "2026-09-01"}
