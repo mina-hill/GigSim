@@ -1,0 +1,340 @@
+# Persona bible: the ground truth every rendered artefact is generated from.
+# SYNTHETIC: this person, their clients and their projects are invented for GigBid.
+# Fields: aliases = other names the same project goes by in other documents;
+# skills_implied = skills shown only by code or context, never named in the case study;
+# decoy_of = a weaker near-duplicate of another project (tests ranking).
+persona_id: ai_ml
+account_id: persona_ai_ml
+synthetic: true
+name: Ayesha Raza
+headline: Machine learning engineer for NLP, RAG and production ML
+location: Lahore, Pakistan (remote)
+years_experience: 5
+rates: {hourly_usd: 45, floor_hourly_usd: 35, min_project_usd: 600}
+summary: >-
+  ML engineer who takes models from notebook to production. Five years building NLP systems,
+  retrieval-augmented assistants and forecasting models for healthcare, retail and fintech
+  clients, with a habit of measuring everything before shipping it.
+education:
+  - {degree: BS Computer Science, school: Northfield Institute of Technology (fictional), year: 2020}
+skills:
+  core: [Python, PyTorch, scikit-learn, Hugging Face Transformers, LangChain, LangGraph, FastAPI, PostgreSQL, Docker]
+  familiar: [AWS, MLflow, XGBoost, LightGBM, OpenCV, Celery, Streamlit, Whisper]
+projects:
+  - id: ai-p01
+    name: Policy QA assistant
+    aliases: [HelioDocs RAG, clinical policy chatbot]
+    client: Helio Health
+    client_industry: healthcare
+    type: client
+    start: 2025-02
+    end: 2025-05
+    skills_explicit: [RAG, LangChain, pgvector, FastAPI, evaluation]
+    skills_implied: [Python, Docker, PostgreSQL]
+    problem: Support staff spent hours searching 3,400 pages of internal policy PDFs and often quoted outdated versions.
+    approach:
+      - Chunked PDFs by section with page numbers and indexed them in pgvector with hybrid keyword search
+      - Answers cite the page and refuse when no passage supports them
+      - Built a 200-question evaluation set with the support lead and ran it on every change
+    results:
+      - {metric: citation accuracy, value: 91% on 200 labelled questions}
+      - {metric: correct refusals on out-of-scope questions, value: 96%}
+    repo: {name: policy-qa, kind: rag_service, readme_style: clear}
+    review: {rating: 5, text: Ayesha built exactly what we needed and showed us the evaluation numbers before we asked.}
+  - id: ai-p02
+    name: Clinical notes entity extraction
+    aliases: [medical NER model, discharge summary tagger]
+    client: Helio Health
+    client_industry: healthcare
+    type: client
+    start: 2024-08
+    end: 2024-12
+    skills_explicit: [NLP, named entity recognition, Hugging Face Transformers]
+    skills_implied: [PyTorch, Python, data labelling]
+    problem: Coders manually tagged medications and dosages in discharge summaries.
+    approach:
+      - Fine-tuned a biomedical BERT model on 4,800 annotated notes
+      - Added rule-based post-processing for dosage units
+      - Delivered a batch inference job with a confidence threshold for human review
+    results:
+      - {metric: entity F1, value: "0.87"}
+      - {metric: manual tagging time, value: cut by 60%}
+    repo: null
+    review: {rating: 5, text: Rigorous evaluation and clear documentation. Would hire again.}
+  - id: ai-p03
+    name: Telecom churn prediction
+    aliases: [subscriber churn model, retention risk scoring]
+    client: Kestrel Mobile
+    client_industry: telecom
+    type: client
+    start: 2024-03
+    end: 2024-05
+    skills_explicit: [machine learning, XGBoost, SHAP, feature engineering]
+    skills_implied: [scikit-learn, Python, SQL]
+    problem: The retention team called customers at random and missed most of those about to leave.
+    approach:
+      - Built features from 18 months of usage and billing data
+      - Trained gradient-boosted trees with time-based validation
+      - Explained each score with SHAP so agents knew why a customer was flagged
+    results:
+      - {metric: recall at the retention team's call capacity, value: up 18 points over the old rules}
+      - {metric: churn among contacted high-risk customers, value: down 7% in the first quarter}
+    repo: {name: churn-scoring, kind: sklearn_pipeline, readme_style: clear}
+    review: {rating: 4.5, text: Great model and explanations; one delay on the data handover was on our side.}
+  - id: ai-p04
+    name: Retail demand forecasting
+    aliases: [SKU forecasting engine, weekly demand model]
+    client: Northwind Retail
+    client_industry: retail
+    type: client
+    start: 2023-10
+    end: 2024-01
+    skills_explicit: [forecasting, LightGBM, time series]
+    skills_implied: [Python, pandas, statistics]
+    problem: Buyers over-ordered slow movers and ran out of best sellers for 300 SKUs.
+    approach:
+      - Compared a Prophet baseline with a global LightGBM model using lag and promotion features
+      - Rolling-origin backtests over 52 weeks
+      - Weekly forecasts exported to the buyers' spreadsheet
+    results:
+      - {metric: MAPE, value: 14% versus 22% for the old method}
+      - {metric: stock-outs on top 50 SKUs, value: down 30%}
+    repo: {name: sku-forecast, kind: forecasting, readme_style: vague}
+    review: {rating: 5, text: Forecasts are now something the buyers actually trust.}
+  - id: ai-p05
+    name: Invoice field extraction service
+    aliases: [OCR invoice parser, accounts payable automation]
+    client: Cargoline Logistics
+    client_industry: logistics
+    type: client
+    start: 2023-05
+    end: 2023-08
+    skills_explicit: [OCR, document AI, FastAPI]
+    skills_implied: [Python, Docker, PyTorch]
+    problem: Accounts payable typed 40,000 invoices a month by hand.
+    approach:
+      - Combined OCR with a layout-aware model to extract vendor, totals and line items
+      - Wrapped it in an API with a review queue for low-confidence fields
+    results:
+      - {metric: field-level accuracy, value: 94%}
+      - {metric: invoices processed automatically, value: 40,000 per month}
+    repo: null
+    review: {rating: 4, text: Good result. Communication could have been more frequent mid-project.}
+  - id: ai-p06
+    name: Support ticket routing
+    aliases: [ticket classifier, helpdesk triage model]
+    client: Loomly SaaS
+    client_industry: saas
+    type: client
+    start: 2022-11
+    end: 2023-02
+    skills_explicit: [text classification, DistilBERT, queues]
+    skills_implied: [Celery, Python, Redis]
+    problem: Tickets waited in a shared inbox until someone routed them by hand.
+    approach:
+      - Fine-tuned DistilBERT on 25,000 historical tickets across 14 queues
+      - Background workers classify new tickets within seconds and send unsure ones to a human
+    results:
+      - {metric: tickets routed automatically, value: 72%}
+      - {metric: median time to first response, value: from 5 hours to 40 minutes}
+    repo: null
+    review: {rating: 5, text: Saved our support team hours every day.}
+  - id: ai-p07
+    name: LLM evaluation harness
+    aliases: [evalkit, LLM-as-judge toolkit]
+    client: null
+    client_industry: open source
+    type: personal
+    start: 2025-06
+    end: 2025-09
+    skills_explicit: [LLM evaluation, LLM-as-judge, Cohen's kappa]
+    skills_implied: [Python, pytest, statistics]
+    problem: Teams trusted LLM judges without checking them against human labels.
+    approach:
+      - A small library that runs rubric-based LLM judges over datasets
+      - Calibrates each judge against human labels and reports Cohen's kappa
+    results:
+      - {metric: GitHub stars, value: "140"}
+      - {metric: judges calibrated in the example notebook, value: "3, kappa 0.41 to 0.78"}
+    repo: {name: evalkit, kind: eval_harness, readme_style: clear}
+    review: null
+  - id: ai-p08
+    name: Surface defect detection
+    aliases: [factory vision QA, defect detector]
+    client: Ferro Components
+    client_industry: manufacturing
+    type: client
+    start: 2022-06
+    end: 2022-09
+    skills_explicit: [computer vision, object detection]
+    skills_implied: [YOLO, OpenCV, PyTorch]
+    problem: Inspectors missed hairline cracks on machined parts at line speed.
+    approach:
+      - Collected and labelled 6,000 images with the QA team
+      - Trained an object detector and tuned the threshold for few missed defects
+    results:
+      - {metric: precision, value: "0.93"}
+      - {metric: recall, value: "0.89"}
+    repo: {name: defect-detector, kind: vision_training, readme_style: vague}
+    review: {rating: 4.5, text: Strong technical work; the model is running on two lines now.}
+  - id: ai-p09
+    name: Course recommendation engine
+    aliases: [e-learning recommender, next-course suggestions]
+    client: Brightpath Learning
+    client_industry: edtech
+    type: client
+    start: 2022-01
+    end: 2022-04
+    skills_explicit: [recommender systems, collaborative filtering]
+    skills_implied: [PostgreSQL, Python, SQL]
+    problem: Learners finished one course and left without starting another.
+    approach:
+      - Implicit-feedback matrix factorisation on enrolment and completion data
+      - A/B tested recommendations on the dashboard against "most popular"
+    results:
+      - {metric: click-through on recommendations, value: up 11%}
+    repo: null
+    review: {rating: 4, text: Solid recommender and a clean A/B test.}
+  - id: ai-p10
+    name: Model deployment pipeline
+    aliases: [MLOps platform, model CI/CD]
+    client: Tallyfin
+    client_industry: fintech
+    type: client
+    start: 2024-06
+    end: 2024-07
+    skills_explicit: [MLOps, MLflow, CI/CD]
+    skills_implied: [Docker, GitHub Actions, AWS]
+    problem: Shipping a retrained credit model took two days of manual steps.
+    approach:
+      - Model registry with MLflow and automated checks before promotion
+      - Containerised serving deployed by a CI pipeline
+    results:
+      - {metric: deployment time, value: from 2 days to 2 hours}
+    repo: null
+    review: {rating: 5, text: Our data scientists can deploy on their own now.}
+  - id: ai-p11
+    name: App review sentiment monitor
+    aliases: [review insights dashboard, sentiment tracker]
+    client: Pixelplay Games
+    client_industry: consumer apps
+    type: client
+    start: 2023-09
+    end: 2023-10
+    skills_explicit: [sentiment analysis, dashboards]
+    skills_implied: [Streamlit, Hugging Face Transformers, Python]
+    problem: The product team could not read 50,000 store reviews a month.
+    approach:
+      - Aspect-based sentiment model plus topic clustering
+      - A dashboard that flags sudden negative spikes after releases
+    results:
+      - {metric: reviews analysed, value: 50,000 per month}
+      - {metric: release regressions caught early, value: 2 in the first month}
+    repo: null
+    review: {rating: 4.5, text: Useful insights quickly.}
+  - id: ai-p12
+    name: Agentic email triage
+    aliases: [inbox agent, LangGraph email assistant]
+    client: Crestview Realty
+    client_industry: real estate
+    type: client
+    start: 2025-10
+    end: 2026-01
+    skills_explicit: [LangGraph, AI agents, tool calling, human approval]
+    skills_implied: [Python, Gmail API, LLM evaluation]
+    problem: Agents spent their mornings answering repetitive buyer emails.
+    approach:
+      - LangGraph agent that classifies emails, drafts replies from listing data and books viewings
+      - Every draft waits for an agent's approval before it is sent
+    results:
+      - {metric: drafts accepted without edits, value: 60%}
+      - {metric: average reply time, value: from 6 hours to 45 minutes}
+    repo: {name: inbox-agent, kind: langgraph_agent, readme_style: clear}
+    review: {rating: 5, text: The approval step made our brokers comfortable using it from day one.}
+  - id: ai-p13
+    name: Meeting transcription and summaries
+    aliases: [call summariser, Whisper notes]
+    client: Arcadia Consulting
+    client_industry: consulting
+    type: client
+    start: 2025-01
+    end: 2025-02
+    skills_explicit: [speech-to-text, summarisation, LLM]
+    skills_implied: [Whisper, Python, prompt engineering]
+    problem: Consultants wrote call notes by hand after every client meeting.
+    approach:
+      - Transcribed recordings and produced structured summaries with action items
+    results:
+      - {metric: meeting hours processed, value: 300 per month}
+    repo: null
+    review: {rating: 4.5, text: Works well; summaries are concise and accurate.}
+  - id: ai-p14
+    name: Transaction anomaly detection
+    aliases: [fraud alerts model]
+    client: Tallyfin
+    client_industry: fintech
+    type: client
+    start: 2023-12
+    end: 2024-02
+    skills_explicit: [anomaly detection, feature engineering]
+    skills_implied: [scikit-learn, Python, SQL]
+    problem: Rule-based alerts flooded analysts with false positives.
+    approach:
+      - Isolation Forest on behavioural features, ranked into a daily review queue
+    results:
+      - {metric: confirmed fraud cases caught that rules missed, value: 23 in three months}
+      - {metric: false-positive alerts, value: down 35%}
+    repo: null
+    review: {rating: 4, text: Clear improvement on our old rules.}
+  - id: ai-p15
+    name: Tabular competition entry
+    aliases: [Kaggle playground solution]
+    client: null
+    client_industry: none
+    type: personal
+    start: 2021-06
+    end: 2021-07
+    skills_explicit: [machine learning, ensembling]
+    skills_implied: [LightGBM, Python]
+    problem: A public tabular prediction competition.
+    approach:
+      - Stacked gradient-boosted models with target encoding
+    results:
+      - {metric: leaderboard position, value: top 8%}
+    repo: null
+    review: null
+  - id: ai-p16
+    name: Churn notebook (coursework)
+    aliases: [churn assignment]
+    client: null
+    client_industry: education
+    type: personal
+    start: 2019-11
+    end: 2019-12
+    skills_explicit: [machine learning, logistic regression]
+    skills_implied: [scikit-learn, pandas]
+    problem: University assignment predicting churn on a public dataset.
+    approach:
+      - Compared logistic regression with a random forest
+    results:
+      - {metric: grade, value: A}
+    repo: null
+    review: null
+    decoy_of: ai-p03
+  - id: ai-p17
+    name: Active learning for contract labelling
+    aliases: [legal clause labelling, annotation pipeline]
+    client: Meridian Legal
+    client_industry: legal
+    type: client
+    start: 2024-09
+    end: 2024-11
+    skills_explicit: [active learning, data labelling, NLP]
+    skills_implied: [Label Studio, Python, Hugging Face Transformers]
+    problem: Lawyers had to label thousands of clauses before any model could help.
+    approach:
+      - Set up an annotation workflow where the model picks the most informative clauses
+    results:
+      - {metric: labelling effort to reach target accuracy, value: down 40%}
+    repo: null
+    review: {rating: 5, text: Thoughtful about our lawyers' time.}
