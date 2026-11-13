@@ -1,0 +1,298 @@
+# Persona bible (SYNTHETIC). See data/personas/ai_ml/bible.yaml for field meanings.
+persona_id: data_analyst
+account_id: persona_data_analyst
+synthetic: true
+name: Mei Lin Tan
+headline: Data analyst for dashboards, SQL and experiment analysis
+location: Penang, Malaysia (remote)
+years_experience: 4
+rates: {hourly_usd: 32, floor_hourly_usd: 22, min_project_usd: 300}
+summary: >-
+  Data analyst who turns messy spreadsheets and databases into dashboards people use and
+  analyses people act on. Four years with SQL, Power BI, Tableau and Python, plus a statistics
+  background that keeps A/B test conclusions honest.
+education:
+  - {degree: BSc Statistics, school: Straits University (fictional), year: 2021}
+skills:
+  core: [SQL, Power BI, Excel, Tableau, Python, pandas, statistics]
+  familiar: [dbt, Airflow, BigQuery, Snowflake, Looker Studio, Google Apps Script, R]
+projects:
+  - id: da-p01
+    name: Retail sales dashboard
+    aliases: [weekly revenue report automation, Power BI sales pack]
+    client: Northwind Retail
+    client_industry: retail
+    type: client
+    start: 2025-01
+    end: 2025-02
+    skills_explicit: [Power BI, DAX, dashboards]
+    skills_implied: [SQL Server, SQL, data modelling]
+    problem: The finance team spent six hours every Monday assembling the sales report in Excel.
+    approach:
+      - Star-schema model over the sales database with incremental refresh
+      - Pages for weekly revenue, top products and regional breakdowns with drill-through
+    results:
+      - {metric: weekly reporting time, value: from 6 hours to 20 minutes}
+      - {metric: dashboard users, value: 45 managers}
+    repo: null
+    review: {rating: 5, text: Mei Lin's dashboard replaced three spreadsheets and a lot of arguments.}
+  - id: da-p02
+    name: Marketing attribution analysis
+    aliases: [channel ROI study, GA4 attribution]
+    client: Thread & Loom
+    client_industry: ecommerce
+    type: client
+    start: 2024-10
+    end: 2024-11
+    skills_explicit: [marketing analytics, GA4, attribution]
+    skills_implied: [BigQuery, SQL]
+    problem: The team could not tell which ad channels produced paying customers.
+    approach:
+      - Joined GA4 events with order data and compared last-click with position-based attribution
+    results:
+      - {metric: budget reallocated from low-return channels, value: 15%}
+      - {metric: cost per acquisition the next quarter, value: down 12%}
+    repo: null
+    review: {rating: 5, text: Clear recommendations backed by data.}
+  - id: da-p03
+    name: E-commerce warehouse models
+    aliases: [dbt project, analytics engineering setup]
+    client: Thread & Loom
+    client_industry: ecommerce
+    type: client
+    start: 2024-05
+    end: 2024-07
+    skills_explicit: [dbt, data warehouse, data tests]
+    skills_implied: [SQL, Snowflake]
+    problem: Every dashboard calculated revenue slightly differently.
+    approach:
+      - Staging, intermediate and mart models with documented definitions
+      - Tests for uniqueness, nulls and accepted values on key tables
+    results:
+      - {metric: conflicting revenue numbers in leadership meetings, value: none since launch}
+      - {metric: models with tests, value: 38 of 38}
+    repo: {name: shop-dbt, kind: dbt_model, readme_style: clear}
+    review: {rating: 5, text: Finally one source of truth.}
+  - id: da-p04
+    name: Nightly data pipeline
+    aliases: [orders ETL, scheduled data loads]
+    client: Cargoline Logistics
+    client_industry: logistics
+    type: client
+    start: 2023-11
+    end: 2024-01
+    skills_explicit: [ETL, scheduling, data quality checks]
+    skills_implied: [Airflow, Python, PostgreSQL]
+    problem: Reports ran on data exported by hand whenever someone remembered.
+    approach:
+      - Scheduled jobs pulling orders and shipments into a reporting database every night
+      - Row-count and freshness checks with alerts on failure
+    results:
+      - {metric: reports on stale data, value: from weekly to never in six months}
+    repo: {name: nightly-loads, kind: airflow_dag, readme_style: vague}
+    review: {rating: 4.5, text: Reliable pipeline, good alerts.}
+  - id: da-p05
+    name: Pricing page A/B test
+    aliases: [conversion experiment analysis]
+    client: Loomly SaaS
+    client_industry: saas
+    type: client
+    start: 2024-03
+    end: 2024-04
+    skills_explicit: [A/B testing, statistics, experiment design]
+    skills_implied: [Python, scipy]
+    problem: The team wanted to know if a new pricing page really raised sign-ups.
+    approach:
+      - Power analysis before launch, then a two-proportion test with a pre-registered metric
+    results:
+      - {metric: trial sign-up conversion, value: up 4.2% (p = 0.01)}
+    repo: {name: ab-test-report, kind: ab_test, readme_style: clear}
+    review: {rating: 5, text: Stopped us from calling the test too early.}
+  - id: da-p06
+    name: Month-end close automation
+    aliases: [Excel model clean-up, finance workbook rebuild]
+    client: Arcadia Consulting
+    client_industry: consulting
+    type: client
+    start: 2023-06
+    end: 2023-07
+    skills_explicit: [Excel, Power Query, financial reporting]
+    skills_implied: [VBA]
+    problem: Month-end close took three days of copy-pasting between workbooks.
+    approach:
+      - Rebuilt the workbook with Power Query imports and a small macro for the final export
+    results:
+      - {metric: month-end close, value: from 3 days to 1}
+    repo: null
+    review: {rating: 4.5, text: Huge time saver for our finance team.}
+  - id: da-p07
+    name: HR attrition dashboard
+    aliases: [people analytics Tableau]
+    client: Brightpath Learning
+    client_industry: edtech
+    type: client
+    start: 2023-02
+    end: 2023-03
+    skills_explicit: [Tableau, HR analytics]
+    skills_implied: [SQL]
+    problem: HR could not see which teams were losing people and why.
+    approach:
+      - Tableau dashboard of attrition by team, tenure and exit reason
+    results:
+      - {metric: teams flagged for retention plans, value: "4"}
+    repo: null
+    review: {rating: 4, text: Good dashboard.}
+  - id: da-p08
+    name: Customer segmentation
+    aliases: [RFM segments, DTC clustering]
+    client: Pulse Studios
+    client_industry: fitness
+    type: client
+    start: 2024-08
+    end: 2024-09
+    skills_explicit: [customer segmentation, RFM analysis]
+    skills_implied: [Python, scikit-learn, k-means]
+    problem: Every member got the same marketing emails.
+    approach:
+      - RFM features and clustering into five segments with plain-language profiles
+    results:
+      - {metric: email click-through, value: up 9%}
+    repo: {name: member-segments, kind: pandas_analysis, readme_style: vague}
+    review: {rating: 5, text: The segment profiles were easy for marketing to use.}
+  - id: da-p09
+    name: NGO inventory tracker
+    aliases: [Google Sheets tracker, donations inventory]
+    client: Harbour Food Bank
+    client_industry: nonprofit
+    type: client
+    start: 2022-10
+    end: 2022-11
+    skills_explicit: [Google Sheets, automation]
+    skills_implied: [Google Apps Script]
+    problem: Volunteers tracked donations on paper and lost stock counts.
+    approach:
+      - Shared Sheets tracker with form entry and low-stock email alerts
+    results:
+      - {metric: stock-count errors, value: down 80%}
+    repo: {name: sheets-inventory, kind: apps_script, readme_style: clear}
+    review: {rating: 5, text: Simple and our volunteers actually use it.}
+  - id: da-p10
+    name: Public health survey analysis
+    aliases: [survey report, weighted survey study]
+    client: Coastline Health NGO
+    client_industry: nonprofit
+    type: client
+    start: 2022-04
+    end: 2022-06
+    skills_explicit: [survey analysis, statistics, report writing]
+    skills_implied: [R, survey weighting]
+    problem: An NGO needed defensible results from a 2,400-person survey.
+    approach:
+      - Weighted the sample to census margins and reported confidence intervals
+    results:
+      - {metric: respondents analysed, value: 2,400}
+    repo: null
+    review: {rating: 4.5, text: Rigorous and clearly written.}
+  - id: da-p11
+    name: Supply chain KPI dashboard
+    aliases: [Looker Studio logistics report]
+    client: Cargoline Logistics
+    client_industry: logistics
+    type: client
+    start: 2024-02
+    end: 2024-03
+    skills_explicit: [Looker Studio, KPIs, BigQuery]
+    skills_implied: [SQL]
+    problem: Managers had no shared view of on-time delivery and warehouse throughput.
+    approach:
+      - KPI dashboard on top of the warehouse with targets and weekly trend lines
+    results:
+      - {metric: on-time delivery, value: up from 88% to 93% over two quarters}
+    repo: null
+    review: {rating: 4.5, text: Became our weekly ops meeting dashboard.}
+  - id: da-p12
+    name: Subscription cohort analysis
+    aliases: [retention cohorts, churn by signup month]
+    client: Loomly SaaS
+    client_industry: saas
+    type: client
+    start: 2025-04
+    end: 2025-05
+    skills_explicit: [cohort analysis, retention]
+    skills_implied: [SQL window functions, PostgreSQL]
+    problem: Leadership wanted to know whether newer customers churned faster.
+    approach:
+      - Monthly signup cohorts with retention curves and plan-level breakdowns
+    results:
+      - {metric: finding, value: annual-plan cohorts retained 2.3x better than monthly}
+    repo: null
+    review: {rating: 5, text: Changed how we price annual plans.}
+  - id: da-p13
+    name: CRM data clean-up
+    aliases: [deduplication project, contact data quality audit]
+    client: Crestview Realty
+    client_industry: real estate
+    type: client
+    start: 2023-08
+    end: 2023-09
+    skills_explicit: [data cleaning, data quality]
+    skills_implied: [Python, pandas, fuzzy matching]
+    problem: The CRM had duplicate contacts and broken phone numbers.
+    approach:
+      - Standardised fields and merged duplicates with fuzzy matching and a manual review list
+    results:
+      - {metric: duplicate records removed, value: 18% of 30,000}
+    repo: null
+    review: {rating: 4.5, text: Our CRM is usable again.}
+  - id: da-p14
+    name: Revenue forecast in Excel
+    aliases: [Excel forecasting sheet]
+    client: Harbour Food Bank
+    client_industry: nonprofit
+    type: client
+    start: 2023-01
+    end: 2023-01
+    skills_explicit: [Excel, forecasting]
+    skills_implied: [exponential smoothing]
+    problem: The NGO needed a simple donations forecast for budgeting.
+    approach:
+      - Exponential smoothing in Excel with a scenario table
+    results:
+      - {metric: forecast error over the year, value: within 8%}
+    repo: null
+    review: null
+  - id: da-p15
+    name: Publisher web analytics
+    aliases: [GA4 content dashboard]
+    client: Pixelplay Games
+    client_industry: media
+    type: client
+    start: 2025-07
+    end: 2025-08
+    skills_explicit: [web analytics, GA4, Looker Studio]
+    skills_implied: [event tracking]
+    problem: Editors could not see which articles brought returning readers.
+    approach:
+      - GA4 event design and a content performance dashboard
+    results:
+      - {metric: returning readers, value: up 10% after editors acted on the data}
+    repo: null
+    review: {rating: 4, text: Helpful dashboards.}
+  - id: da-p16
+    name: Titanic exploratory analysis (coursework)
+    aliases: [EDA assignment]
+    client: null
+    client_industry: education
+    type: personal
+    start: 2020-03
+    end: 2020-03
+    skills_explicit: [exploratory data analysis, Python]
+    skills_implied: [pandas, matplotlib]
+    problem: Statistics course assignment.
+    approach:
+      - Survival rates by class and age with charts
+    results:
+      - {metric: grade, value: A-}
+    repo: null
+    review: null
+    decoy_of: da-p08
