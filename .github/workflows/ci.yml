@@ -49,8 +49,46 @@ jobs:
       - run: npm ci
       - name: Generated API client is up to date
         run: |
-          (cd ../.. && uv sync --frozen && uv run python -m apps.api.export_openapi > apps/web/openapi.json)
+          (cd ../.. && uv sync --locked && uv run python -m apps.api.export_openapi --output apps/web/openapi.json)
           npm run gen:api
           git diff --exit-code -- src/lib/api openapi.json
       - run: npm run lint
       - run: npm run build
+      - run: npx playwright install --with-deps chromium --only-shell
+      - name: Browser tests against GigSim
+        env:
+          GIGSIM_DB_URL: sqlite:///${{ runner.temp }}/gigsim-web.sqlite
+          GIGBID_WEB_CHECKPOINT: ${{ runner.temp }}/gigbid-web.sqlite
+          GIGSIM_BASE_URL: http://127.0.0.1:8081
+          GIGSIM_ERROR_RATE: "0"
+          GIGSIM_LATENCY_MS_MAX: "0"
+          GIGSIM_ADMIN_TOKEN: gigbid-ci-admin
+        run: |
+          (cd ../.. && uv run python -m gigsim.seed --world gigsim/fixtures/mini_world)
+          mkdir -p .next/standalone/.next/static
+          cp -r .next/static/. .next/standalone/.next/static/
+          if [ -d public ]; then
+            mkdir -p .next/standalone/public
+            cp -r public/. .next/standalone/public/
+          fi
+
+          (cd ../.. && exec uv run uvicorn gigsim.app:app --port 8081) > "$RUNNER_TEMP/gigsim.log" 2>&1 &
+          simulator=$!
+          (cd ../.. && exec uv run uvicorn apps.api.main:app --port 8000) > "$RUNNER_TEMP/gigbid-api.log" 2>&1 &
+          api=$!
+          HOSTNAME=127.0.0.1 PORT=3000 node .next/standalone/server.js > "$RUNNER_TEMP/gigbid-web.log" 2>&1 &
+          web=$!
+          trap 'kill "$web" "$api" "$simulator" 2>/dev/null || true' EXIT
+
+          curl --retry 25 --retry-connrefused --retry-delay 1 --fail --silent --show-error http://127.0.0.1:8081/health
+          curl --retry 25 --retry-connrefused --retry-delay 1 --fail --silent --show-error http://127.0.0.1:8000/health
+          curl --retry 25 --retry-connrefused --retry-delay 1 --fail --silent --show-error http://127.0.0.1:3000/health/deps
+          npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: web-test-diagnostics
+          path: |
+            apps/web/playwright-report/
+            apps/web/test-results/
+            ${{ runner.temp }}/gig*.log
