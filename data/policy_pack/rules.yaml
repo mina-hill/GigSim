@@ -1,0 +1,54 @@
+# Machine-readable marketplace policy for GigBid's Compliance Guard.
+# The Markdown version for humans is marketplace_policy.md. Every rule here is enforced by
+# agent/compliance.py: `pattern` rules are regular expressions (case-insensitive) checked on
+# every outgoing proposal and message; `check` rules call a named check function.
+# A platform policy update (the change request) is an edit to this file, not to code.
+version: 1
+rules:
+  - id: no_contact_details
+    severity: block
+    applies_to: [proposal, message]
+    pattern: '[\w.+-]+@[\w-]+\.[\w.]+|\+?\d[\d\s().-]{8,}\d'
+    reason: "Contact details (email or phone number) are not allowed before a contract starts."
+  - id: no_off_platform_apps
+    severity: block
+    applies_to: [proposal, message]
+    pattern: '\b(whatsapp|telegram|skype|signal|wechat|discord|zoom\.us|calendly\.com)\b'
+    reason: "Moving the conversation off-platform is not allowed."
+  - id: no_external_payment
+    severity: block
+    applies_to: [proposal, message]
+    pattern: '\b(paypal|payoneer|wise\.com|bank transfer|western union|crypto|bitcoin|usdt|gift card)\b'
+    reason: "Payment must go through the platform."
+  - id: no_guarantees
+    severity: block
+    applies_to: [proposal, message]
+    pattern: '\b(guarantee[ds]?|100% (?:satisfaction|success|accuracy)|risk[- ]free|money[- ]back)\b'
+    reason: "Guaranteed outcomes cannot be promised."
+  - id: no_external_links
+    severity: warn
+    applies_to: [proposal]
+    pattern: 'https?://(?!github\.com/)[^\s)]+'
+    reason: "Links outside the platform (except public GitHub repos) are discouraged in proposals."
+  - id: no_free_work
+    severity: block
+    applies_to: [proposal, message]
+    pattern: '\b(free (?:sample|trial|test task)|work for free|unpaid (?:test|trial))\b'
+    reason: "Offering free or unpaid test work is not allowed."
+  - id: claims_must_be_supported
+    severity: block
+    applies_to: [proposal, message]
+    check: unsupported_claims
+    reason: "Every experience claim must cite portfolio evidence (R5)."
+  - id: screening_questions_answered
+    severity: block
+    applies_to: [proposal]
+    check: screening_answers_present
+    reason: "Every screening question must have an answer."
+  - id: length_limits
+    severity: block
+    applies_to: [proposal]
+    check: cover_letter_length
+    min_chars: 200
+    max_chars: 5000
+    reason: "Cover letters must be between 200 and 5,000 characters."
