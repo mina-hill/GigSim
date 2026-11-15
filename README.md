@@ -39,6 +39,9 @@ model credentials and saves pending approvals between CLI sessions.
 The [web walkthrough](docs/RUNBOOK.md#review-bids-in-the-browser) covers persona selection,
 the job inbox, proposal approval and the simulator pipeline.
 
+The [reviewer deployment guide](docs/DEPLOYMENT.md) packages the three services behind one
+authenticated HTTPS ingress with persistent simulator state.
+
 ## Evaluation
 
 <!-- BEGIN EVALUATION RESULTS -->
