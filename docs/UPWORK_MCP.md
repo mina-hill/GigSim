@@ -28,12 +28,36 @@ prepares a preview. It directs clients to authenticated `search_tools` and
 live adapter requires those authoritative contracts before mapping request or response
 fields onto GigBid's marketplace port. [Upwork's workflow guide](https://raw.githubusercontent.com/upwork/upwork-agent-plugin/master/skills/upwork-workflows/SKILL.md) · [Upwork's proposal workflow](https://raw.githubusercontent.com/upwork/upwork-agent-plugin/master/skills/write-proposal/SKILL.md)
 
-This is a desktop discovery command. Production sign-in, live read mapping, encrypted
-per-user token persistence and the separate confirmation flow still need verification or
-implementation. Tests cover discovery, the SDK's PKCE value, state and replay validation,
-and catalog pagination using a mocked authority and a real local callback. The assignment's
-marketplace send flow stays separate from discovery.
+Discovery keeps its credentials in memory and forgets them when it exits.
+
+## Connect your account
+
+The connect command signs a GigBid user in once and keeps the sign-in for later runs. Run it on
+the computer with the browser, from the repository root:
 
 ```bash
-uv run pytest -q tests/integration/test_upwork_discovery.py
+uv run python -m mcp_servers.marketplace.adapters.upwork_connect connect
+uv run python -m mcp_servers.marketplace.adapters.upwork_connect status
+uv run python -m mcp_servers.marketplace.adapters.upwork_connect disconnect
+```
+
+`--user` names the GigBid user (default `local`). Each user's tokens, registered desktop client
+and chosen Upwork account are stored in `.cache/upwork/<user>.oauth`, encrypted with the Fernet
+key in `TOKEN_ENCRYPTION_KEY`. The command adds a key to `.env` when none is set; without that
+key the file cannot be read. The callback listens on `127.0.0.1:8765` (`--port` changes it), so
+the redirect URI registered with Upwork stays the same between runs.
+
+Later runs open the session with the saved sign-in. An expired access token is refreshed at the
+token endpoint saved from the authorization server's metadata. Servers and the worker never open
+a browser: when the saved sign-in stops working they report that the user must connect again.
+
+`connect` also saves Upwork's full reference for the tools GigBid maps (`get_tool_help`) and a
+few small read-only samples in `.cache/upwork/reference.json`. The marketplace adapter's field
+mapping is checked against that file. The command only reads; it creates, submits and sends
+nothing.
+
+```bash
+uv run pytest -q tests/integration/test_upwork_discovery.py \
+  tests/integration/test_upwork_session.py tests/integration/test_upwork_connect.py \
+  tests/unit/test_upwork_token_storage.py
 ```
