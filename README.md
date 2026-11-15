@@ -35,3 +35,24 @@ Run `make help` for every command.
 
 The [local bid walkthrough](docs/RUNBOOK.md#review-a-bid-in-the-local-simulator) runs without
 model credentials and saves pending approvals between CLI sessions.
+
+## Evaluation
+
+<!-- BEGIN EVALUATION RESULTS -->
+
+### Offline bid graph smoke
+
+30 synthetic development jobs sampled by persona and job kind with seed 4016. Initial decisions are scored before drafting and watch counts as a non-bid. The graph stops at human approval. Claims are checked by the offline verifier and no proposals are sent.
+
+| Metric | Result |
+| --- | ---: |
+| Correct bid decisions | 21 / 30 |
+| Bid F1 | 0.7097 |
+| Drafts reaching review | 14 / 30 |
+| Claims flagged as unsupported at review | 0 / 28 |
+
+[Result artifact](evals/results/bid-smoke.report.json)
+
+Reproduce with <code>uv run python -m evals.runners.smoke --jobs 30 --gate</code>.
+
+<!-- END EVALUATION RESULTS -->
