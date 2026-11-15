@@ -32,3 +32,6 @@ make test
 ```
 
 Run `make help` for every command.
+
+The [local bid walkthrough](docs/RUNBOOK.md#review-a-bid-in-the-local-simulator) runs without
+model credentials and saves pending approvals between CLI sessions.

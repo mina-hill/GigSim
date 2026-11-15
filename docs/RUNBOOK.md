@@ -11,6 +11,33 @@ Services: web :3000, API :8000, GigSim :8081, MCP servers :8101 (portfolio), :81
 
 Without Docker: `make gigsim`, `make api` and `make worker` in separate terminals.
 
+## Review a bid in the local simulator
+
+Install the locked environment with `uv sync --locked --all-extras`. Seed a fresh local GigSim
+database with the mini-world fixture, then start the simulator.
+
+```bash
+uv run python -m gigsim.seed --world gigsim/fixtures/mini_world
+uv run uvicorn gigsim.app:app --port 8081
+```
+
+In a separate terminal, set `GIGBID_SIM_TOKEN=dev-token-web` (PowerShell:
+`$env:GIGBID_SIM_TOKEN = "dev-token-web"`) and run:
+
+```bash
+uv run python -m scripts.bid_demo job_web_stripe --persona fullstack
+```
+
+The demo prints the exact proposal and Connects quote. Choose approve, edit, reject or save and
+exit. After an edit passes verification and compliance, review the revised preview and approve
+it explicitly. Re-run the same command to reopen a pending approval. Use `--retry` to continue
+a run interrupted during a marketplace call. Use a separate checkpoint file with
+`--checkpoint` for each fresh simulator database and one reviewer per checkpoint file.
+
+This path uses deterministic synthetic portfolio evidence, the local GigSim adapter and a
+SQLite checkpointer. Production MCP transport, Postgres checkpoints and the web approval
+screen remain separate milestones.
+
 ## Seed GigSim
 
 ```bash
