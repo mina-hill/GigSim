@@ -134,3 +134,13 @@ async def test_loopback_callback_rejects_a_non_upwork_consent_url():
     with LoopbackCallback(asyncio.get_running_loop()) as callback:
         with pytest.raises(DiscoveryError, match="official Upwork"):
             await callback.redirect("https://unrelated.invalid/oauth", lambda _: True)
+
+
+async def test_loopback_callback_can_listen_on_a_fixed_port():
+    import socket
+
+    with socket.socket() as probe:
+        probe.bind(("127.0.0.1", 0))
+        port = probe.getsockname()[1]
+    with LoopbackCallback(asyncio.get_running_loop(), port=port) as callback:
+        assert callback.url == f"http://127.0.0.1:{port}/oauth/callback"

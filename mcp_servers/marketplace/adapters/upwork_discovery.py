@@ -53,7 +53,9 @@ def _single(parameters: dict[str, list[str]], name: str) -> str | None:
 
 
 class LoopbackCallback:
-    def __init__(self, loop: asyncio.AbstractEventLoop) -> None:
+    def __init__(self, loop: asyncio.AbstractEventLoop, port: int = 0) -> None:
+        """Listen on 127.0.0.1. Port 0 picks a free port for one-off discovery; a saved sign-in
+        uses a fixed port so its registered redirect URI stays valid between runs."""
         self.loop = loop
         self.received: asyncio.Future[tuple[str | None, str]] = loop.create_future()
         self.state: str | None = None
@@ -81,7 +83,7 @@ class LoopbackCallback:
                 self.end_headers()
                 self.wfile.write(body)
 
-        self.server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+        self.server = ThreadingHTTPServer(("127.0.0.1", port), Handler)
         self.host = f"127.0.0.1:{self.server.server_port}"
         self.url = f"http://{self.host}{CALLBACK_PATH}"
         self.thread = threading.Thread(
