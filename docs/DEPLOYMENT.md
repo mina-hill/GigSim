@@ -51,3 +51,13 @@ The test checks reviewer authentication, checkpoint recovery after refresh, the 
 Connects quote and the single submission receipt. CI also restarts the image with a pending
 Stripe approval to verify that the mounted volume preserves it. A reviewer can use that job
 separately from the AI/RAG smoke run.
+
+## Render free tier
+
+The public demo runs this image as a Render web service on the Free instance type:
+Dockerfile path `./infra/docker/reviewer.Dockerfile`, build context `.`, health check path
+`/healthz`, and `GIGBID_REVIEWER_HASH` / `GIGBID_REVIEWER_USER` as environment variables.
+Free instances cannot attach a persistent disk, so `/var/lib/gigbid` is ephemeral there: the
+service reseeds the synthetic mini-world on every start, and pending approvals do not survive
+a restart or the sleep after 15 idle minutes. Use a paid instance with a disk at
+`/var/lib/gigbid` to keep state between restarts.
