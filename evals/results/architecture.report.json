@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "experiment": "Part C · Three orchestration architectures",
+  "scope": "50 synthetic dev jobs stratified by label kind and persona. All arms share deterministic analysis, writer and policy tools. The prebuilt single-agent ReAct and the installed LangGraph Supervisor reference use scripted tool calls. No model inference, tokens, clients contacted or proposals sent. Local timings and per-job failure annotations are in architecture.dev.json.",
+  "command": "uv run --extra eval python -m evals.runners.architectures",
+  "metrics": [
+    {
+      "name": "Single deterministic ReAct controller correct initial decisions",
+      "value": 38,
+      "denominator": 50
+    },
+    {
+      "name": "Single deterministic ReAct controller bid F1",
+      "value": 0.7778
+    },
+    {
+      "name": "Single deterministic ReAct controller drafts reaching review",
+      "value": 27,
+      "denominator": 50
+    },
+    {
+      "name": "Single deterministic ReAct controller simulated replies",
+      "value": 0
+    },
+    {
+      "name": "Single deterministic ReAct controller unsupported claims flagged",
+      "value": 0
+    },
+    {
+      "name": "Single deterministic ReAct controller compliance blocks",
+      "value": 0
+    },
+    {
+      "name": "LangGraph Supervisor with deterministic controller correct initial decisions",
+      "value": 38,
+      "denominator": 50
+    },
+    {
+      "name": "LangGraph Supervisor with deterministic controller bid F1",
+      "value": 0.7778
+    },
+    {
+      "name": "LangGraph Supervisor with deterministic controller drafts reaching review",
+      "value": 27,
+      "denominator": 50
+    },
+    {
+      "name": "LangGraph Supervisor with deterministic controller simulated replies",
+      "value": 0
+    },
+    {
+      "name": "LangGraph Supervisor with deterministic controller unsupported claims flagged",
+      "value": 0
+    },
+    {
+      "name": "LangGraph Supervisor with deterministic controller compliance blocks",
+      "value": 0
+    },
+    {
+      "name": "Hand-built bid graph correct initial decisions",
+      "value": 38,
+      "denominator": 50
+    },
+    {
+      "name": "Hand-built bid graph bid F1",
+      "value": 0.7778
+    },
+    {
+      "name": "Hand-built bid graph drafts reaching review",
+      "value": 27,
+      "denominator": 50
+    },
+    {
+      "name": "Hand-built bid graph simulated replies",
+      "value": 0
+    },
+    {
+      "name": "Hand-built bid graph unsupported claims flagged",
+      "value": 0
+    },
+    {
+      "name": "Hand-built bid graph compliance blocks",
+      "value": 0
+    }
+  ]
+}

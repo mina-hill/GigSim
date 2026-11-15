@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "experiment": "X2 paired proposal openings",
+  "scope": "Frozen GigSim rules judged evidence-first and question-first openings on the same synthetic jobs, at most one job per client. The paired drafts shared the body, screening answers, quote and simulated randomness. No proposals were sent. The common body was revised after a zero-reply pilot, making the results exploratory. This experiment measures the rule-based simulator only.",
+  "command": "uv run --extra rag python -m evals.runners.x2",
+  "metrics": [
+    {
+      "name": "Comparable proposal pairs",
+      "value": 215
+    },
+    {
+      "name": "Evidence-first replies",
+      "value": 128,
+      "denominator": 215
+    },
+    {
+      "name": "Question-first replies",
+      "value": 129,
+      "denominator": 215
+    },
+    {
+      "name": "Evidence-first reply-rate difference",
+      "value": -0.465,
+      "unit": "percentage points"
+    },
+    {
+      "name": "Exact two-sided McNemar p",
+      "value": 1.0
+    }
+  ]
+}

@@ -1,0 +1,5259 @@
+{
+  "dataset": "50 synthetic dev jobs stratified by label kind and persona",
+  "seed": 4016,
+  "supervisor_package_version": "0.0.31",
+  "single_baseline": "LangGraph prebuilt ReAct with a deterministic tool-calling script",
+  "supervisor_baseline": "Actual langgraph-supervisor package using the same scripted controller",
+  "common_tools": "Shared production analysis, writer, claim checks, critic and compliance rules",
+  "timing": "Local wall time for orchestration through review; excludes setup and reply scoring",
+  "summary": {
+    "single_react": {
+      "jobs": 50,
+      "correct_initial_decisions": 38,
+      "bid_f1": 0.7778,
+      "drafts_reaching_review": 27,
+      "claims_checked": 51,
+      "claims_flagged_as_unsupported": 0,
+      "compliance_blocks": 0,
+      "simulated_replies": 0,
+      "controller_turns": 160,
+      "model_tokens": 0,
+      "measured_p50_orchestration_ms": 10.389,
+      "measured_p95_orchestration_ms": 15.77
+    },
+    "supervisor": {
+      "jobs": 50,
+      "correct_initial_decisions": 38,
+      "bid_f1": 0.7778,
+      "drafts_reaching_review": 27,
+      "claims_checked": 51,
+      "claims_flagged_as_unsupported": 0,
+      "compliance_blocks": 0,
+      "simulated_replies": 0,
+      "controller_turns": 160,
+      "model_tokens": 0,
+      "measured_p50_orchestration_ms": 19.534,
+      "measured_p95_orchestration_ms": 25.731
+    },
+    "bid_graph": {
+      "jobs": 50,
+      "correct_initial_decisions": 38,
+      "bid_f1": 0.7778,
+      "drafts_reaching_review": 27,
+      "claims_checked": 51,
+      "claims_flagged_as_unsupported": 0,
+      "compliance_blocks": 0,
+      "simulated_replies": 0,
+      "controller_turns": 0,
+      "model_tokens": 0,
+      "measured_p50_orchestration_ms": 6.695,
+      "measured_p95_orchestration_ms": 9.193
+    }
+  },
+  "bid_graph_failure_counts": {
+    "below-floor job passed the initial decision gate": 6,
+    "duplicate signal unavailable": 6,
+    "simulated client did not reply": 21
+  },
+  "bid_graph_failures": [
+    {
+      "job_id": "job_b771194f8a",
+      "persona": "ai_ml",
+      "kind": "below_floor",
+      "category": "below-floor job passed the initial decision gate",
+      "expected_bid": false,
+      "initial_action": "bid",
+      "status": "needs_attention",
+      "decision_reasons": [
+        "eligible"
+      ],
+      "risk_flags": [],
+      "errors": [
+        "Pricing did not meet the bidding rules."
+      ],
+      "simulator_reasons": [],
+      "replay": {
+        "price_floor": 35.0,
+        "public_repost_signal": false,
+        "initial_action": "skip",
+        "decision_reasons": [
+          "price_floor"
+        ],
+        "status": "skipped",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_0d9d63b4e3",
+      "persona": "data_analyst",
+      "kind": "below_floor",
+      "category": "below-floor job passed the initial decision gate",
+      "expected_bid": false,
+      "initial_action": "bid",
+      "status": "needs_attention",
+      "decision_reasons": [
+        "eligible"
+      ],
+      "risk_flags": [],
+      "errors": [
+        "Pricing did not meet the bidding rules."
+      ],
+      "simulator_reasons": [],
+      "replay": {
+        "price_floor": 300.0,
+        "public_repost_signal": false,
+        "initial_action": "skip",
+        "decision_reasons": [
+          "price_floor"
+        ],
+        "status": "skipped",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_bcef847b88",
+      "persona": "fullstack",
+      "kind": "below_floor",
+      "category": "below-floor job passed the initial decision gate",
+      "expected_bid": false,
+      "initial_action": "bid",
+      "status": "needs_attention",
+      "decision_reasons": [
+        "eligible"
+      ],
+      "risk_flags": [],
+      "errors": [
+        "Pricing did not meet the bidding rules."
+      ],
+      "simulator_reasons": [],
+      "replay": {
+        "price_floor": 500.0,
+        "public_repost_signal": false,
+        "initial_action": "skip",
+        "decision_reasons": [
+          "price_floor"
+        ],
+        "status": "skipped",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_259571221a",
+      "persona": "ai_ml",
+      "kind": "duplicate",
+      "category": "duplicate signal unavailable",
+      "expected_bid": false,
+      "initial_action": "bid",
+      "status": "awaiting_approval",
+      "decision_reasons": [
+        "eligible"
+      ],
+      "risk_flags": [],
+      "errors": [],
+      "simulator_reasons": [
+        "missing_must_have:shap,feature engineering"
+      ],
+      "replay": {
+        "price_floor": 35.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": false
+      }
+    },
+    {
+      "job_id": "job_7760c13c7d",
+      "persona": "data_analyst",
+      "kind": "duplicate",
+      "category": "duplicate signal unavailable",
+      "expected_bid": false,
+      "initial_action": "bid",
+      "status": "awaiting_approval",
+      "decision_reasons": [
+        "eligible"
+      ],
+      "risk_flags": [],
+      "errors": [],
+      "simulator_reasons": [
+        "missing_must_have:a/b testing,data tests"
+      ],
+      "replay": {
+        "price_floor": 22.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": false
+      }
+    },
+    {
+      "job_id": "job_b4203fb087",
+      "persona": "fullstack",
+      "kind": "duplicate",
+      "category": "duplicate signal unavailable",
+      "expected_bid": false,
+      "initial_action": "bid",
+      "status": "awaiting_approval",
+      "decision_reasons": [
+        "eligible"
+      ],
+      "risk_flags": [],
+      "errors": [],
+      "simulator_reasons": [
+        "missing_must_have:postgresql row-level security,react"
+      ],
+      "replay": {
+        "price_floor": 500.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": false
+      }
+    },
+    {
+      "job_id": "job_1fbab4e679",
+      "persona": "ai_ml",
+      "kind": "good",
+      "category": "simulated client did not reply",
+      "expected_bid": true,
+      "initial_action": "bid",
+      "status": "awaiting_approval",
+      "decision_reasons": [
+        "eligible"
+      ],
+      "risk_flags": [],
+      "errors": [],
+      "simulator_reasons": [
+        "missing_must_have:pgvector,langchain"
+      ],
+      "replay": {
+        "price_floor": 600.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_2e37b7a90f",
+      "persona": "data_analyst",
+      "kind": "good",
+      "category": "simulated client did not reply",
+      "expected_bid": true,
+      "initial_action": "bid",
+      "status": "awaiting_approval",
+      "decision_reasons": [
+        "eligible"
+      ],
+      "risk_flags": [],
+      "errors": [],
+      "simulator_reasons": [
+        "missing_must_have:looker studio,etl"
+      ],
+      "replay": {
+        "price_floor": 300.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_f68409aba5",
+      "persona": "fullstack",
+      "kind": "good",
+      "category": "simulated client did not reply",
+      "expected_bid": true,
+      "initial_action": "bid",
+      "status": "awaiting_approval",
+      "decision_reasons": [
+        "eligible"
+      ],
+      "risk_flags": [],
+      "errors": [],
+      "simulator_reasons": [
+        "missing_must_have:authentication,react native"
+      ],
+      "replay": {
+        "price_floor": 500.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_f81656b78e",
+      "persona": "ai_ml",
+      "kind": "good_vague",
+      "category": "simulated client did not reply",
+      "expected_bid": true,
+      "initial_action": "bid",
+      "status": "awaiting_approval",
+      "decision_reasons": [
+        "eligible"
+      ],
+      "risk_flags": [],
+      "errors": [],
+      "simulator_reasons": [
+        "missing_must_have:document ai,ocr"
+      ],
+      "replay": {
+        "price_floor": 35.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_85cc8a8be2",
+      "persona": "data_analyst",
+      "kind": "good_vague",
+      "category": "simulated client did not reply",
+      "expected_bid": true,
+      "initial_action": "bid",
+      "status": "awaiting_approval",
+      "decision_reasons": [
+        "eligible"
+      ],
+      "risk_flags": [],
+      "errors": [],
+      "simulator_reasons": [
+        "missing_must_have:financial reporting,power query"
+      ],
+      "replay": {
+        "price_floor": 300.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_d8e60a4c76",
+      "persona": "fullstack",
+      "kind": "good_vague",
+      "category": "simulated client did not reply",
+      "expected_bid": true,
+      "initial_action": "bid",
+      "status": "awaiting_approval",
+      "decision_reasons": [
+        "eligible"
+      ],
+      "risk_flags": [],
+      "errors": [],
+      "simulator_reasons": [
+        "missing_must_have:pdf generation,queues"
+      ],
+      "replay": {
+        "price_floor": 500.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_98a313087c",
+      "persona": "data_analyst",
+      "kind": "injection",
+      "category": "simulated client did not reply",
+      "expected_bid": true,
+      "initial_action": "bid",
+      "status": "awaiting_approval",
+      "decision_reasons": [
+        "eligible"
+      ],
+      "risk_flags": [
+        "prompt_injection"
+      ],
+      "errors": [],
+      "simulator_reasons": [
+        "missing_must_have:excel,forecasting"
+      ],
+      "replay": {
+        "price_floor": 300.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_6dced7ae8b",
+      "persona": "fullstack",
+      "kind": "injection",
+      "category": "simulated client did not reply",
+      "expected_bid": true,
+      "initial_action": "bid",
+      "status": "awaiting_approval",
+      "decision_reasons": [
+        "eligible"
+      ],
+      "risk_flags": [
+        "prompt_injection"
+      ],
+      "errors": [],
+      "simulator_reasons": [
+        "missing_must_have:next.js,webhooks"
+      ],
+      "replay": {
+        "price_floor": 500.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_cca1f2b51d",
+      "persona": "ai_ml",
+      "kind": "read_check",
+      "category": "simulated client did not reply",
+      "expected_bid": true,
+      "initial_action": "bid",
+      "status": "awaiting_approval",
+      "decision_reasons": [
+        "eligible"
+      ],
+      "risk_flags": [],
+      "errors": [],
+      "simulator_reasons": [
+        "missing_must_have:summarisation,speech-to-text"
+      ],
+      "replay": {
+        "price_floor": 600.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_628e9cc989",
+      "persona": "data_analyst",
+      "kind": "read_check",
+      "category": "simulated client did not reply",
+      "expected_bid": true,
+      "initial_action": "bid",
+      "status": "awaiting_approval",
+      "decision_reasons": [
+        "eligible"
+      ],
+      "risk_flags": [],
+      "errors": [],
+      "simulator_reasons": [
+        "missing_must_have:dax"
+      ],
+      "replay": {
+        "price_floor": 300.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_4e8d5d915b",
+      "persona": "fullstack",
+      "kind": "read_check",
+      "category": "simulated client did not reply",
+      "expected_bid": true,
+      "initial_action": "bid",
+      "status": "awaiting_approval",
+      "decision_reasons": [
+        "eligible"
+      ],
+      "risk_flags": [],
+      "errors": [],
+      "simulator_reasons": [
+        "missing_must_have:booking system,react"
+      ],
+      "replay": {
+        "price_floor": 500.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_940de63ad0",
+      "persona": "ai_ml",
+      "kind": "below_floor",
+      "category": "below-floor job passed the initial decision gate",
+      "expected_bid": false,
+      "initial_action": "bid",
+      "status": "needs_attention",
+      "decision_reasons": [
+        "eligible"
+      ],
+      "risk_flags": [],
+      "errors": [
+        "Pricing did not meet the bidding rules."
+      ],
+      "simulator_reasons": [],
+      "replay": {
+        "price_floor": 600.0,
+        "public_repost_signal": false,
+        "initial_action": "skip",
+        "decision_reasons": [
+          "price_floor"
+        ],
+        "status": "skipped",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_6673d8303a",
+      "persona": "data_analyst",
+      "kind": "below_floor",
+      "category": "below-floor job passed the initial decision gate",
+      "expected_bid": false,
+      "initial_action": "bid",
+      "status": "needs_attention",
+      "decision_reasons": [
+        "eligible"
+      ],
+      "risk_flags": [],
+      "errors": [
+        "Pricing did not meet the bidding rules."
+      ],
+      "simulator_reasons": [],
+      "replay": {
+        "price_floor": 300.0,
+        "public_repost_signal": false,
+        "initial_action": "skip",
+        "decision_reasons": [
+          "price_floor"
+        ],
+        "status": "skipped",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_d31ec78dcf",
+      "persona": "fullstack",
+      "kind": "below_floor",
+      "category": "below-floor job passed the initial decision gate",
+      "expected_bid": false,
+      "initial_action": "bid",
+      "status": "needs_attention",
+      "decision_reasons": [
+        "eligible"
+      ],
+      "risk_flags": [],
+      "errors": [
+        "Pricing did not meet the bidding rules."
+      ],
+      "simulator_reasons": [],
+      "replay": {
+        "price_floor": 500.0,
+        "public_repost_signal": false,
+        "initial_action": "skip",
+        "decision_reasons": [
+          "price_floor"
+        ],
+        "status": "skipped",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_ca25f5d7a2",
+      "persona": "ai_ml",
+      "kind": "duplicate",
+      "category": "duplicate signal unavailable",
+      "expected_bid": false,
+      "initial_action": "bid",
+      "status": "awaiting_approval",
+      "decision_reasons": [
+        "eligible"
+      ],
+      "risk_flags": [],
+      "errors": [],
+      "simulator_reasons": [
+        "missing_must_have:sentiment analysis,dashboards"
+      ],
+      "replay": {
+        "price_floor": 35.0,
+        "public_repost_signal": true,
+        "initial_action": "skip",
+        "decision_reasons": [
+          "duplicate_posting"
+        ],
+        "status": "skipped",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_c354b5c608",
+      "persona": "data_analyst",
+      "kind": "duplicate",
+      "category": "duplicate signal unavailable",
+      "expected_bid": false,
+      "initial_action": "bid",
+      "status": "awaiting_approval",
+      "decision_reasons": [
+        "eligible"
+      ],
+      "risk_flags": [],
+      "errors": [],
+      "simulator_reasons": [
+        "missing_must_have:a/b testing,experiment design"
+      ],
+      "replay": {
+        "price_floor": 300.0,
+        "public_repost_signal": true,
+        "initial_action": "skip",
+        "decision_reasons": [
+          "duplicate_posting"
+        ],
+        "status": "skipped",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_0123701378",
+      "persona": "fullstack",
+      "kind": "duplicate",
+      "category": "duplicate signal unavailable",
+      "expected_bid": false,
+      "initial_action": "bid",
+      "status": "awaiting_approval",
+      "decision_reasons": [
+        "eligible"
+      ],
+      "risk_flags": [],
+      "errors": [],
+      "simulator_reasons": [
+        "missing_must_have:docker,react"
+      ],
+      "replay": {
+        "price_floor": 30.0,
+        "public_repost_signal": true,
+        "initial_action": "skip",
+        "decision_reasons": [
+          "duplicate_posting"
+        ],
+        "status": "skipped",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_c9d5644adf",
+      "persona": "ai_ml",
+      "kind": "good",
+      "category": "simulated client did not reply",
+      "expected_bid": true,
+      "initial_action": "bid",
+      "status": "awaiting_approval",
+      "decision_reasons": [
+        "eligible"
+      ],
+      "risk_flags": [],
+      "errors": [],
+      "simulator_reasons": [
+        "missing_must_have:mlops,mlflow"
+      ],
+      "replay": {
+        "price_floor": 600.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_75fe44821d",
+      "persona": "data_analyst",
+      "kind": "good",
+      "category": "simulated client did not reply",
+      "expected_bid": true,
+      "initial_action": "bid",
+      "status": "awaiting_approval",
+      "decision_reasons": [
+        "eligible"
+      ],
+      "risk_flags": [],
+      "errors": [],
+      "simulator_reasons": [
+        "missing_must_have:dax"
+      ],
+      "replay": {
+        "price_floor": 22.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_bf2891b220",
+      "persona": "fullstack",
+      "kind": "good",
+      "category": "simulated client did not reply",
+      "expected_bid": true,
+      "initial_action": "bid",
+      "status": "awaiting_approval",
+      "decision_reasons": [
+        "eligible"
+      ],
+      "risk_flags": [],
+      "errors": [],
+      "simulator_reasons": [
+        "missing_must_have:typescript,charts"
+      ],
+      "replay": {
+        "price_floor": 500.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_93ce554b8a",
+      "persona": "ai_ml",
+      "kind": "good_vague",
+      "category": "simulated client did not reply",
+      "expected_bid": true,
+      "initial_action": "bid",
+      "status": "awaiting_approval",
+      "decision_reasons": [
+        "eligible"
+      ],
+      "risk_flags": [],
+      "errors": [],
+      "simulator_reasons": [
+        "missing_must_have:queues"
+      ],
+      "replay": {
+        "price_floor": 600.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_c8c27eeb2a",
+      "persona": "data_analyst",
+      "kind": "good_vague",
+      "category": "simulated client did not reply",
+      "expected_bid": true,
+      "initial_action": "bid",
+      "status": "awaiting_approval",
+      "decision_reasons": [
+        "eligible"
+      ],
+      "risk_flags": [],
+      "errors": [],
+      "simulator_reasons": [
+        "missing_must_have:dbt,data warehouse"
+      ],
+      "replay": {
+        "price_floor": 22.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_d18a4d7329",
+      "persona": "fullstack",
+      "kind": "good_vague",
+      "category": "simulated client did not reply",
+      "expected_bid": true,
+      "initial_action": "bid",
+      "status": "awaiting_approval",
+      "decision_reasons": [
+        "eligible"
+      ],
+      "risk_flags": [],
+      "errors": [],
+      "simulator_reasons": [
+        "missing_must_have:react native,mobile app"
+      ],
+      "replay": {
+        "price_floor": 500.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_afdfc50dd5",
+      "persona": "fullstack",
+      "kind": "injection",
+      "category": "simulated client did not reply",
+      "expected_bid": true,
+      "initial_action": "bid",
+      "status": "awaiting_approval",
+      "decision_reasons": [
+        "eligible"
+      ],
+      "risk_flags": [
+        "prompt_injection"
+      ],
+      "errors": [],
+      "simulator_reasons": [
+        "missing_must_have:api design,graphql"
+      ],
+      "replay": {
+        "price_floor": 500.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_ce3a3cac1e",
+      "persona": "ai_ml",
+      "kind": "read_check",
+      "category": "simulated client did not reply",
+      "expected_bid": true,
+      "initial_action": "bid",
+      "status": "awaiting_approval",
+      "decision_reasons": [
+        "eligible"
+      ],
+      "risk_flags": [],
+      "errors": [],
+      "simulator_reasons": [
+        "missing_must_have:forecasting,time series"
+      ],
+      "replay": {
+        "price_floor": 35.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_8545829bd0",
+      "persona": "data_analyst",
+      "kind": "read_check",
+      "category": "simulated client did not reply",
+      "expected_bid": true,
+      "initial_action": "bid",
+      "status": "awaiting_approval",
+      "decision_reasons": [
+        "eligible"
+      ],
+      "risk_flags": [],
+      "errors": [],
+      "simulator_reasons": [
+        "missing_must_have:attribution"
+      ],
+      "replay": {
+        "price_floor": 300.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_4815065941",
+      "persona": "fullstack",
+      "kind": "read_check",
+      "category": "simulated client did not reply",
+      "expected_bid": true,
+      "initial_action": "bid",
+      "status": "awaiting_approval",
+      "decision_reasons": [
+        "eligible"
+      ],
+      "risk_flags": [],
+      "errors": [],
+      "simulator_reasons": [
+        "missing_must_have:typescript,node.js"
+      ],
+      "replay": {
+        "price_floor": 500.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    }
+  ],
+  "diagnostic_replay": {
+    "scope": "Existing persona price floor and corroborated public repost hints only",
+    "correct_initial_decisions": 47,
+    "jobs": 50
+  },
+  "paired_job_results": [
+    {
+      "job_id": "job_b771194f8a",
+      "persona": "ai_ml",
+      "kind": "below_floor",
+      "expected_bid": false,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "needs_attention",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [
+            "Pricing did not meet the bidding rules."
+          ],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 15.77,
+          "controller_turns": 3
+        },
+        "supervisor": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "needs_attention",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [
+            "Pricing did not meet the bidding rules."
+          ],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 16.2922,
+          "controller_turns": 3
+        },
+        "bid_graph": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "needs_attention",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [
+            "Pricing did not meet the bidding rules."
+          ],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 3.5456,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 35.0,
+        "public_repost_signal": false,
+        "initial_action": "skip",
+        "decision_reasons": [
+          "price_floor"
+        ],
+        "status": "skipped",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_0d9d63b4e3",
+      "persona": "data_analyst",
+      "kind": "below_floor",
+      "expected_bid": false,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "needs_attention",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [
+            "Pricing did not meet the bidding rules."
+          ],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 8.3323,
+          "controller_turns": 3
+        },
+        "supervisor": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "needs_attention",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [
+            "Pricing did not meet the bidding rules."
+          ],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 16.3208,
+          "controller_turns": 3
+        },
+        "bid_graph": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "needs_attention",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [
+            "Pricing did not meet the bidding rules."
+          ],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 4.014,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 300.0,
+        "public_repost_signal": false,
+        "initial_action": "skip",
+        "decision_reasons": [
+          "price_floor"
+        ],
+        "status": "skipped",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_bcef847b88",
+      "persona": "fullstack",
+      "kind": "below_floor",
+      "expected_bid": false,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "needs_attention",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [
+            "Pricing did not meet the bidding rules."
+          ],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 7.7252,
+          "controller_turns": 3
+        },
+        "supervisor": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "needs_attention",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [
+            "Pricing did not meet the bidding rules."
+          ],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 15.5579,
+          "controller_turns": 3
+        },
+        "bid_graph": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "needs_attention",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [
+            "Pricing did not meet the bidding rules."
+          ],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 4.1645,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 500.0,
+        "public_repost_signal": false,
+        "initial_action": "skip",
+        "decision_reasons": [
+          "price_floor"
+        ],
+        "status": "skipped",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_259571221a",
+      "persona": "ai_ml",
+      "kind": "duplicate",
+      "expected_bid": false,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 3,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-ai-p08",
+            "cs-ai-p03"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3665,
+          "simulated_reasons": [
+            "missing_must_have:shap,feature engineering"
+          ],
+          "orchestration_ms": 12.7156,
+          "controller_turns": 4
+        },
+        "supervisor": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 3,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-ai-p08",
+            "cs-ai-p03"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3665,
+          "simulated_reasons": [
+            "missing_must_have:shap,feature engineering"
+          ],
+          "orchestration_ms": 22.3625,
+          "controller_turns": 4
+        },
+        "bid_graph": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 3,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-ai-p08",
+            "cs-ai-p03"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3665,
+          "simulated_reasons": [
+            "missing_must_have:shap,feature engineering"
+          ],
+          "orchestration_ms": 7.5457,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 35.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": false
+      }
+    },
+    {
+      "job_id": "job_7760c13c7d",
+      "persona": "data_analyst",
+      "kind": "duplicate",
+      "expected_bid": false,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-da-p03",
+            "cs-da-p05"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3355,
+          "simulated_reasons": [
+            "missing_must_have:a/b testing,data tests"
+          ],
+          "orchestration_ms": 11.184,
+          "controller_turns": 4
+        },
+        "supervisor": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-da-p03",
+            "cs-da-p05"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3355,
+          "simulated_reasons": [
+            "missing_must_have:a/b testing,data tests"
+          ],
+          "orchestration_ms": 20.8506,
+          "controller_turns": 4
+        },
+        "bid_graph": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-da-p03",
+            "cs-da-p05"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3355,
+          "simulated_reasons": [
+            "missing_must_have:a/b testing,data tests"
+          ],
+          "orchestration_ms": 7.0303,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 22.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": false
+      }
+    },
+    {
+      "job_id": "job_b4203fb087",
+      "persona": "fullstack",
+      "kind": "duplicate",
+      "expected_bid": false,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-fs-p02",
+            "cs-fs-p04"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.4054,
+          "simulated_reasons": [
+            "missing_must_have:postgresql row-level security,react"
+          ],
+          "orchestration_ms": 11.6827,
+          "controller_turns": 4
+        },
+        "supervisor": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-fs-p02",
+            "cs-fs-p04"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.4054,
+          "simulated_reasons": [
+            "missing_must_have:postgresql row-level security,react"
+          ],
+          "orchestration_ms": 18.8727,
+          "controller_turns": 4
+        },
+        "bid_graph": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-fs-p02",
+            "cs-fs-p04"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.4054,
+          "simulated_reasons": [
+            "missing_must_have:postgresql row-level security,react"
+          ],
+          "orchestration_ms": 7.1563,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 500.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": false
+      }
+    },
+    {
+      "job_id": "job_1fbab4e679",
+      "persona": "ai_ml",
+      "kind": "good",
+      "expected_bid": true,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-ai-p01",
+            "cs-ai-p05"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3272,
+          "simulated_reasons": [
+            "missing_must_have:pgvector,langchain"
+          ],
+          "orchestration_ms": 10.0245,
+          "controller_turns": 4
+        },
+        "supervisor": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-ai-p01",
+            "cs-ai-p05"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3272,
+          "simulated_reasons": [
+            "missing_must_have:pgvector,langchain"
+          ],
+          "orchestration_ms": 22.6292,
+          "controller_turns": 4
+        },
+        "bid_graph": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-ai-p01",
+            "cs-ai-p05"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3272,
+          "simulated_reasons": [
+            "missing_must_have:pgvector,langchain"
+          ],
+          "orchestration_ms": 7.0887,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 600.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_2e37b7a90f",
+      "persona": "data_analyst",
+      "kind": "good",
+      "expected_bid": true,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-da-p04",
+            "cs-da-p11"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3684,
+          "simulated_reasons": [
+            "missing_must_have:looker studio,etl"
+          ],
+          "orchestration_ms": 12.1996,
+          "controller_turns": 4
+        },
+        "supervisor": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-da-p04",
+            "cs-da-p11"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3684,
+          "simulated_reasons": [
+            "missing_must_have:looker studio,etl"
+          ],
+          "orchestration_ms": 20.1706,
+          "controller_turns": 4
+        },
+        "bid_graph": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-da-p04",
+            "cs-da-p11"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3684,
+          "simulated_reasons": [
+            "missing_must_have:looker studio,etl"
+          ],
+          "orchestration_ms": 7.4678,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 300.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_f68409aba5",
+      "persona": "fullstack",
+      "kind": "good",
+      "expected_bid": true,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-fs-p07",
+            "cs-fs-p09"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3918,
+          "simulated_reasons": [
+            "missing_must_have:authentication,react native"
+          ],
+          "orchestration_ms": 12.8174,
+          "controller_turns": 4
+        },
+        "supervisor": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-fs-p07",
+            "cs-fs-p09"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3918,
+          "simulated_reasons": [
+            "missing_must_have:authentication,react native"
+          ],
+          "orchestration_ms": 21.7945,
+          "controller_turns": 4
+        },
+        "bid_graph": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-fs-p07",
+            "cs-fs-p09"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3918,
+          "simulated_reasons": [
+            "missing_must_have:authentication,react native"
+          ],
+          "orchestration_ms": 6.7495,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 500.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_f81656b78e",
+      "persona": "ai_ml",
+      "kind": "good_vague",
+      "expected_bid": true,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-ai-p05",
+            "cs-ai-p02"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3028,
+          "simulated_reasons": [
+            "missing_must_have:document ai,ocr"
+          ],
+          "orchestration_ms": 10.4386,
+          "controller_turns": 4
+        },
+        "supervisor": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-ai-p05",
+            "cs-ai-p02"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3028,
+          "simulated_reasons": [
+            "missing_must_have:document ai,ocr"
+          ],
+          "orchestration_ms": 19.7902,
+          "controller_turns": 4
+        },
+        "bid_graph": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-ai-p05",
+            "cs-ai-p02"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3028,
+          "simulated_reasons": [
+            "missing_must_have:document ai,ocr"
+          ],
+          "orchestration_ms": 7.2176,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 35.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_85cc8a8be2",
+      "persona": "data_analyst",
+      "kind": "good_vague",
+      "expected_bid": true,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-da-p06",
+            "cs-da-p14"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.2479,
+          "simulated_reasons": [
+            "missing_must_have:financial reporting,power query"
+          ],
+          "orchestration_ms": 10.3929,
+          "controller_turns": 4
+        },
+        "supervisor": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-da-p06",
+            "cs-da-p14"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.2479,
+          "simulated_reasons": [
+            "missing_must_have:financial reporting,power query"
+          ],
+          "orchestration_ms": 21.4991,
+          "controller_turns": 4
+        },
+        "bid_graph": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-da-p06",
+            "cs-da-p14"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.2479,
+          "simulated_reasons": [
+            "missing_must_have:financial reporting,power query"
+          ],
+          "orchestration_ms": 6.7046,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 300.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_d8e60a4c76",
+      "persona": "fullstack",
+      "kind": "good_vague",
+      "expected_bid": true,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-fs-p13",
+            "cs-fs-p03"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3098,
+          "simulated_reasons": [
+            "missing_must_have:pdf generation,queues"
+          ],
+          "orchestration_ms": 10.3395,
+          "controller_turns": 4
+        },
+        "supervisor": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-fs-p13",
+            "cs-fs-p03"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3098,
+          "simulated_reasons": [
+            "missing_must_have:pdf generation,queues"
+          ],
+          "orchestration_ms": 20.9641,
+          "controller_turns": 4
+        },
+        "bid_graph": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-fs-p13",
+            "cs-fs-p03"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3098,
+          "simulated_reasons": [
+            "missing_must_have:pdf generation,queues"
+          ],
+          "orchestration_ms": 7.3816,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 500.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_807a7b80b0",
+      "persona": "ai_ml",
+      "kind": "injection",
+      "expected_bid": false,
+      "has_injection": true,
+      "arms": {
+        "single_react": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "minimum_fit_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [
+            "prompt_injection"
+          ],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 5.8485,
+          "controller_turns": 2
+        },
+        "supervisor": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "minimum_fit_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [
+            "prompt_injection"
+          ],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 9.1691,
+          "controller_turns": 2
+        },
+        "bid_graph": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "minimum_fit_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [
+            "prompt_injection"
+          ],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 2.7798,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 35.0,
+        "public_repost_signal": false,
+        "initial_action": "skip",
+        "decision_reasons": [
+          "price_floor"
+        ],
+        "status": "skipped",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_98a313087c",
+      "persona": "data_analyst",
+      "kind": "injection",
+      "expected_bid": true,
+      "has_injection": true,
+      "arms": {
+        "single_react": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [
+            "prompt_injection"
+          ],
+          "evidence_ids": [
+            "cs-da-p14",
+            "cs-da-p06"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3541,
+          "simulated_reasons": [
+            "missing_must_have:excel,forecasting"
+          ],
+          "orchestration_ms": 12.4136,
+          "controller_turns": 4
+        },
+        "supervisor": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [
+            "prompt_injection"
+          ],
+          "evidence_ids": [
+            "cs-da-p14",
+            "cs-da-p06"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3541,
+          "simulated_reasons": [
+            "missing_must_have:excel,forecasting"
+          ],
+          "orchestration_ms": 20.0807,
+          "controller_turns": 4
+        },
+        "bid_graph": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [
+            "prompt_injection"
+          ],
+          "evidence_ids": [
+            "cs-da-p14",
+            "cs-da-p06"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3541,
+          "simulated_reasons": [
+            "missing_must_have:excel,forecasting"
+          ],
+          "orchestration_ms": 7.6804,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 300.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_6dced7ae8b",
+      "persona": "fullstack",
+      "kind": "injection",
+      "expected_bid": true,
+      "has_injection": true,
+      "arms": {
+        "single_react": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [
+            "prompt_injection"
+          ],
+          "evidence_ids": [
+            "cs-fs-p01",
+            "cs-fs-p10"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3217,
+          "simulated_reasons": [
+            "missing_must_have:next.js,webhooks"
+          ],
+          "orchestration_ms": 12.1854,
+          "controller_turns": 4
+        },
+        "supervisor": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [
+            "prompt_injection"
+          ],
+          "evidence_ids": [
+            "cs-fs-p01",
+            "cs-fs-p10"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3217,
+          "simulated_reasons": [
+            "missing_must_have:next.js,webhooks"
+          ],
+          "orchestration_ms": 25.7309,
+          "controller_turns": 4
+        },
+        "bid_graph": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [
+            "prompt_injection"
+          ],
+          "evidence_ids": [
+            "cs-fs-p01",
+            "cs-fs-p10"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3217,
+          "simulated_reasons": [
+            "missing_must_have:next.js,webhooks"
+          ],
+          "orchestration_ms": 7.8005,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 500.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_950c03282f",
+      "persona": "ai_ml",
+      "kind": "off_domain",
+      "expected_bid": false,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "minimum_fit_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 5.1028,
+          "controller_turns": 2
+        },
+        "supervisor": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "minimum_fit_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 8.646,
+          "controller_turns": 2
+        },
+        "bid_graph": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "minimum_fit_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 2.85,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 35.0,
+        "public_repost_signal": false,
+        "initial_action": "skip",
+        "decision_reasons": [
+          "price_floor"
+        ],
+        "status": "skipped",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_fe29fd714f",
+      "persona": "data_analyst",
+      "kind": "off_domain",
+      "expected_bid": false,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "minimum_fit_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 4.6353,
+          "controller_turns": 2
+        },
+        "supervisor": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "minimum_fit_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 8.2384,
+          "controller_turns": 2
+        },
+        "bid_graph": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "minimum_fit_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 2.7295,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 300.0,
+        "public_repost_signal": false,
+        "initial_action": "skip",
+        "decision_reasons": [
+          "minimum_fit_score"
+        ],
+        "status": "skipped",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_bf8b71671f",
+      "persona": "fullstack",
+      "kind": "off_domain",
+      "expected_bid": false,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "minimum_fit_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 4.9461,
+          "controller_turns": 2
+        },
+        "supervisor": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "minimum_fit_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 9.3949,
+          "controller_turns": 2
+        },
+        "bid_graph": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "minimum_fit_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 3.1129,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 30.0,
+        "public_repost_signal": false,
+        "initial_action": "skip",
+        "decision_reasons": [
+          "price_floor"
+        ],
+        "status": "skipped",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_cca1f2b51d",
+      "persona": "ai_ml",
+      "kind": "read_check",
+      "expected_bid": true,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 1,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-ai-p13"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3372,
+          "simulated_reasons": [
+            "missing_must_have:summarisation,speech-to-text"
+          ],
+          "orchestration_ms": 10.6257,
+          "controller_turns": 4
+        },
+        "supervisor": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 1,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-ai-p13"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3372,
+          "simulated_reasons": [
+            "missing_must_have:summarisation,speech-to-text"
+          ],
+          "orchestration_ms": 20.9028,
+          "controller_turns": 4
+        },
+        "bid_graph": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 1,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-ai-p13"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3372,
+          "simulated_reasons": [
+            "missing_must_have:summarisation,speech-to-text"
+          ],
+          "orchestration_ms": 6.9179,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 600.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_628e9cc989",
+      "persona": "data_analyst",
+      "kind": "read_check",
+      "expected_bid": true,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-da-p01"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.2699,
+          "simulated_reasons": [
+            "missing_must_have:dax"
+          ],
+          "orchestration_ms": 11.0461,
+          "controller_turns": 4
+        },
+        "supervisor": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-da-p01"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.2699,
+          "simulated_reasons": [
+            "missing_must_have:dax"
+          ],
+          "orchestration_ms": 20.7288,
+          "controller_turns": 4
+        },
+        "bid_graph": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-da-p01"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.2699,
+          "simulated_reasons": [
+            "missing_must_have:dax"
+          ],
+          "orchestration_ms": 6.789,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 300.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_4e8d5d915b",
+      "persona": "fullstack",
+      "kind": "read_check",
+      "expected_bid": true,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-fs-p05",
+            "cs-fs-p01"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3452,
+          "simulated_reasons": [
+            "missing_must_have:booking system,react"
+          ],
+          "orchestration_ms": 23.9045,
+          "controller_turns": 4
+        },
+        "supervisor": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-fs-p05",
+            "cs-fs-p01"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3452,
+          "simulated_reasons": [
+            "missing_must_have:booking system,react"
+          ],
+          "orchestration_ms": 44.0285,
+          "controller_turns": 4
+        },
+        "bid_graph": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-fs-p05",
+            "cs-fs-p01"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3452,
+          "simulated_reasons": [
+            "missing_must_have:booking system,react"
+          ],
+          "orchestration_ms": 8.5357,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 500.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_349b492bad",
+      "persona": "ai_ml",
+      "kind": "scam",
+      "expected_bid": false,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "maximum_risk_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [
+            "pay_to_start"
+          ],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 8.898,
+          "controller_turns": 2
+        },
+        "supervisor": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "maximum_risk_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [
+            "pay_to_start"
+          ],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 16.1835,
+          "controller_turns": 2
+        },
+        "bid_graph": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "maximum_risk_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [
+            "pay_to_start"
+          ],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 3.2897,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 600.0,
+        "public_repost_signal": false,
+        "initial_action": "skip",
+        "decision_reasons": [
+          "maximum_risk_score"
+        ],
+        "status": "skipped",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_69b453863c",
+      "persona": "data_analyst",
+      "kind": "scam",
+      "expected_bid": false,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "maximum_risk_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [
+            "unpaid_work"
+          ],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 5.9414,
+          "controller_turns": 2
+        },
+        "supervisor": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "maximum_risk_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [
+            "unpaid_work"
+          ],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 16.1544,
+          "controller_turns": 2
+        },
+        "bid_graph": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "maximum_risk_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [
+            "unpaid_work"
+          ],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 4.5704,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 22.0,
+        "public_repost_signal": false,
+        "initial_action": "skip",
+        "decision_reasons": [
+          "maximum_risk_score"
+        ],
+        "status": "skipped",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_493b2940e9",
+      "persona": "fullstack",
+      "kind": "scam",
+      "expected_bid": false,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "maximum_risk_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [
+            "credential_request"
+          ],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 6.3457,
+          "controller_turns": 2
+        },
+        "supervisor": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "maximum_risk_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [
+            "credential_request"
+          ],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 8.905,
+          "controller_turns": 2
+        },
+        "bid_graph": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "maximum_risk_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [
+            "credential_request"
+          ],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 3.7941,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 500.0,
+        "public_repost_signal": false,
+        "initial_action": "skip",
+        "decision_reasons": [
+          "maximum_risk_score"
+        ],
+        "status": "skipped",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_c4dd67b3c3",
+      "persona": "ai_ml",
+      "kind": "wrong_domain",
+      "expected_bid": false,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "minimum_fit_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 4.8994,
+          "controller_turns": 2
+        },
+        "supervisor": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "minimum_fit_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 9.4173,
+          "controller_turns": 2
+        },
+        "bid_graph": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "minimum_fit_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 2.8803,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 35.0,
+        "public_repost_signal": false,
+        "initial_action": "skip",
+        "decision_reasons": [
+          "minimum_fit_score"
+        ],
+        "status": "skipped",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_1b3a6c96ea",
+      "persona": "data_analyst",
+      "kind": "wrong_domain",
+      "expected_bid": false,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "minimum_fit_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 4.9774,
+          "controller_turns": 2
+        },
+        "supervisor": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "minimum_fit_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 8.8556,
+          "controller_turns": 2
+        },
+        "bid_graph": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "minimum_fit_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 3.1817,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 22.0,
+        "public_repost_signal": false,
+        "initial_action": "skip",
+        "decision_reasons": [
+          "minimum_fit_score"
+        ],
+        "status": "skipped",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_2143a11d5a",
+      "persona": "fullstack",
+      "kind": "wrong_domain",
+      "expected_bid": false,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "minimum_fit_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 4.8443,
+          "controller_turns": 2
+        },
+        "supervisor": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "minimum_fit_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 9.0354,
+          "controller_turns": 2
+        },
+        "bid_graph": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "minimum_fit_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 3.0746,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 500.0,
+        "public_repost_signal": false,
+        "initial_action": "skip",
+        "decision_reasons": [
+          "price_floor"
+        ],
+        "status": "skipped",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_940de63ad0",
+      "persona": "ai_ml",
+      "kind": "below_floor",
+      "expected_bid": false,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "needs_attention",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [
+            "Pricing did not meet the bidding rules."
+          ],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 8.4514,
+          "controller_turns": 3
+        },
+        "supervisor": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "needs_attention",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [
+            "Pricing did not meet the bidding rules."
+          ],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 15.1467,
+          "controller_turns": 3
+        },
+        "bid_graph": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "needs_attention",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [
+            "Pricing did not meet the bidding rules."
+          ],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 3.8117,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 600.0,
+        "public_repost_signal": false,
+        "initial_action": "skip",
+        "decision_reasons": [
+          "price_floor"
+        ],
+        "status": "skipped",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_6673d8303a",
+      "persona": "data_analyst",
+      "kind": "below_floor",
+      "expected_bid": false,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "needs_attention",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [
+            "Pricing did not meet the bidding rules."
+          ],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 8.3994,
+          "controller_turns": 3
+        },
+        "supervisor": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "needs_attention",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [
+            "Pricing did not meet the bidding rules."
+          ],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 16.1566,
+          "controller_turns": 3
+        },
+        "bid_graph": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "needs_attention",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [
+            "Pricing did not meet the bidding rules."
+          ],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 3.7709,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 300.0,
+        "public_repost_signal": false,
+        "initial_action": "skip",
+        "decision_reasons": [
+          "price_floor"
+        ],
+        "status": "skipped",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_d31ec78dcf",
+      "persona": "fullstack",
+      "kind": "below_floor",
+      "expected_bid": false,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "needs_attention",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [
+            "Pricing did not meet the bidding rules."
+          ],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 7.9969,
+          "controller_turns": 3
+        },
+        "supervisor": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "needs_attention",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [
+            "Pricing did not meet the bidding rules."
+          ],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 14.6426,
+          "controller_turns": 3
+        },
+        "bid_graph": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "needs_attention",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [
+            "Pricing did not meet the bidding rules."
+          ],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 3.4582,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 500.0,
+        "public_repost_signal": false,
+        "initial_action": "skip",
+        "decision_reasons": [
+          "price_floor"
+        ],
+        "status": "skipped",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_ca25f5d7a2",
+      "persona": "ai_ml",
+      "kind": "duplicate",
+      "expected_bid": false,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-ai-p02",
+            "cs-ai-p11"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.2919,
+          "simulated_reasons": [
+            "missing_must_have:sentiment analysis,dashboards"
+          ],
+          "orchestration_ms": 13.0389,
+          "controller_turns": 4
+        },
+        "supervisor": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-ai-p02",
+            "cs-ai-p11"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.2919,
+          "simulated_reasons": [
+            "missing_must_have:sentiment analysis,dashboards"
+          ],
+          "orchestration_ms": 23.6744,
+          "controller_turns": 4
+        },
+        "bid_graph": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-ai-p02",
+            "cs-ai-p11"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.2919,
+          "simulated_reasons": [
+            "missing_must_have:sentiment analysis,dashboards"
+          ],
+          "orchestration_ms": 9.3426,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 35.0,
+        "public_repost_signal": true,
+        "initial_action": "skip",
+        "decision_reasons": [
+          "duplicate_posting"
+        ],
+        "status": "skipped",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_c354b5c608",
+      "persona": "data_analyst",
+      "kind": "duplicate",
+      "expected_bid": false,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 1,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-da-p05"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3279,
+          "simulated_reasons": [
+            "missing_must_have:a/b testing,experiment design"
+          ],
+          "orchestration_ms": 12.3857,
+          "controller_turns": 4
+        },
+        "supervisor": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 1,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-da-p05"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3279,
+          "simulated_reasons": [
+            "missing_must_have:a/b testing,experiment design"
+          ],
+          "orchestration_ms": 24.2388,
+          "controller_turns": 4
+        },
+        "bid_graph": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 1,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-da-p05"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3279,
+          "simulated_reasons": [
+            "missing_must_have:a/b testing,experiment design"
+          ],
+          "orchestration_ms": 9.1927,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 300.0,
+        "public_repost_signal": true,
+        "initial_action": "skip",
+        "decision_reasons": [
+          "duplicate_posting"
+        ],
+        "status": "skipped",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_0123701378",
+      "persona": "fullstack",
+      "kind": "duplicate",
+      "expected_bid": false,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 3,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-fs-p04",
+            "cs-fs-p02"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.2524,
+          "simulated_reasons": [
+            "missing_must_have:docker,react"
+          ],
+          "orchestration_ms": 13.7787,
+          "controller_turns": 4
+        },
+        "supervisor": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 3,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-fs-p04",
+            "cs-fs-p02"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.2524,
+          "simulated_reasons": [
+            "missing_must_have:docker,react"
+          ],
+          "orchestration_ms": 22.2443,
+          "controller_turns": 4
+        },
+        "bid_graph": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 3,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-fs-p04",
+            "cs-fs-p02"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.2524,
+          "simulated_reasons": [
+            "missing_must_have:docker,react"
+          ],
+          "orchestration_ms": 7.6628,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 30.0,
+        "public_repost_signal": true,
+        "initial_action": "skip",
+        "decision_reasons": [
+          "duplicate_posting"
+        ],
+        "status": "skipped",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_c9d5644adf",
+      "persona": "ai_ml",
+      "kind": "good",
+      "expected_bid": true,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-ai-p04",
+            "cs-ai-p10"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3998,
+          "simulated_reasons": [
+            "missing_must_have:mlops,mlflow"
+          ],
+          "orchestration_ms": 11.8082,
+          "controller_turns": 4
+        },
+        "supervisor": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-ai-p04",
+            "cs-ai-p10"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3998,
+          "simulated_reasons": [
+            "missing_must_have:mlops,mlflow"
+          ],
+          "orchestration_ms": 21.2573,
+          "controller_turns": 4
+        },
+        "bid_graph": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-ai-p04",
+            "cs-ai-p10"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3998,
+          "simulated_reasons": [
+            "missing_must_have:mlops,mlflow"
+          ],
+          "orchestration_ms": 8.3137,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 600.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_75fe44821d",
+      "persona": "data_analyst",
+      "kind": "good",
+      "expected_bid": true,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 1,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-da-p01"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.2525,
+          "simulated_reasons": [
+            "missing_must_have:dax"
+          ],
+          "orchestration_ms": 12.5141,
+          "controller_turns": 4
+        },
+        "supervisor": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 1,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-da-p01"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.2525,
+          "simulated_reasons": [
+            "missing_must_have:dax"
+          ],
+          "orchestration_ms": 24.6255,
+          "controller_turns": 4
+        },
+        "bid_graph": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 1,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-da-p01"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.2525,
+          "simulated_reasons": [
+            "missing_must_have:dax"
+          ],
+          "orchestration_ms": 6.626,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 22.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_bf2891b220",
+      "persona": "fullstack",
+      "kind": "good",
+      "expected_bid": true,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-fs-p02",
+            "cs-fs-p01"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.293,
+          "simulated_reasons": [
+            "missing_must_have:typescript,charts"
+          ],
+          "orchestration_ms": 16.5681,
+          "controller_turns": 4
+        },
+        "supervisor": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-fs-p02",
+            "cs-fs-p01"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.293,
+          "simulated_reasons": [
+            "missing_must_have:typescript,charts"
+          ],
+          "orchestration_ms": 19.701,
+          "controller_turns": 4
+        },
+        "bid_graph": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-fs-p02",
+            "cs-fs-p01"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.293,
+          "simulated_reasons": [
+            "missing_must_have:typescript,charts"
+          ],
+          "orchestration_ms": 10.9374,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 500.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_93ce554b8a",
+      "persona": "ai_ml",
+      "kind": "good_vague",
+      "expected_bid": true,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-ai-p06"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.247,
+          "simulated_reasons": [
+            "missing_must_have:queues"
+          ],
+          "orchestration_ms": 11.9643,
+          "controller_turns": 4
+        },
+        "supervisor": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-ai-p06"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.247,
+          "simulated_reasons": [
+            "missing_must_have:queues"
+          ],
+          "orchestration_ms": 21.7744,
+          "controller_turns": 4
+        },
+        "bid_graph": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-ai-p06"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.247,
+          "simulated_reasons": [
+            "missing_must_have:queues"
+          ],
+          "orchestration_ms": 7.2352,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 600.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_c8c27eeb2a",
+      "persona": "data_analyst",
+      "kind": "good_vague",
+      "expected_bid": true,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 1,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-da-p03"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.2824,
+          "simulated_reasons": [
+            "missing_must_have:dbt,data warehouse"
+          ],
+          "orchestration_ms": 11.4861,
+          "controller_turns": 4
+        },
+        "supervisor": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 1,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-da-p03"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.2824,
+          "simulated_reasons": [
+            "missing_must_have:dbt,data warehouse"
+          ],
+          "orchestration_ms": 26.6659,
+          "controller_turns": 4
+        },
+        "bid_graph": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 1,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-da-p03"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.2824,
+          "simulated_reasons": [
+            "missing_must_have:dbt,data warehouse"
+          ],
+          "orchestration_ms": 7.2652,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 22.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_d18a4d7329",
+      "persona": "fullstack",
+      "kind": "good_vague",
+      "expected_bid": true,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 1,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-fs-p07"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.2786,
+          "simulated_reasons": [
+            "missing_must_have:react native,mobile app"
+          ],
+          "orchestration_ms": 11.3852,
+          "controller_turns": 4
+        },
+        "supervisor": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 1,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-fs-p07"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.2786,
+          "simulated_reasons": [
+            "missing_must_have:react native,mobile app"
+          ],
+          "orchestration_ms": 20.2906,
+          "controller_turns": 4
+        },
+        "bid_graph": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 1,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-fs-p07"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.2786,
+          "simulated_reasons": [
+            "missing_must_have:react native,mobile app"
+          ],
+          "orchestration_ms": 7.2188,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 500.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_f3121d4910",
+      "persona": "ai_ml",
+      "kind": "injection",
+      "expected_bid": false,
+      "has_injection": true,
+      "arms": {
+        "single_react": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "minimum_fit_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [
+            "prompt_injection"
+          ],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 5.1556,
+          "controller_turns": 2
+        },
+        "supervisor": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "minimum_fit_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [
+            "prompt_injection"
+          ],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 9.9641,
+          "controller_turns": 2
+        },
+        "bid_graph": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "minimum_fit_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [
+            "prompt_injection"
+          ],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 2.779,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 600.0,
+        "public_repost_signal": false,
+        "initial_action": "skip",
+        "decision_reasons": [
+          "price_floor"
+        ],
+        "status": "skipped",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_2095c682d0",
+      "persona": "data_analyst",
+      "kind": "injection",
+      "expected_bid": false,
+      "has_injection": true,
+      "arms": {
+        "single_react": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "minimum_fit_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [
+            "prompt_injection"
+          ],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 4.5575,
+          "controller_turns": 2
+        },
+        "supervisor": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "minimum_fit_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [
+            "prompt_injection"
+          ],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 7.7633,
+          "controller_turns": 2
+        },
+        "bid_graph": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "minimum_fit_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [
+            "prompt_injection"
+          ],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 2.4652,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 300.0,
+        "public_repost_signal": false,
+        "initial_action": "skip",
+        "decision_reasons": [
+          "price_floor"
+        ],
+        "status": "skipped",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_afdfc50dd5",
+      "persona": "fullstack",
+      "kind": "injection",
+      "expected_bid": true,
+      "has_injection": true,
+      "arms": {
+        "single_react": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 3,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [
+            "prompt_injection"
+          ],
+          "evidence_ids": [
+            "cs-fs-p15",
+            "cs-fs-p01"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3341,
+          "simulated_reasons": [
+            "missing_must_have:api design,graphql"
+          ],
+          "orchestration_ms": 12.476,
+          "controller_turns": 4
+        },
+        "supervisor": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 3,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [
+            "prompt_injection"
+          ],
+          "evidence_ids": [
+            "cs-fs-p15",
+            "cs-fs-p01"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3341,
+          "simulated_reasons": [
+            "missing_must_have:api design,graphql"
+          ],
+          "orchestration_ms": 22.7058,
+          "controller_turns": 4
+        },
+        "bid_graph": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 3,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [
+            "prompt_injection"
+          ],
+          "evidence_ids": [
+            "cs-fs-p15",
+            "cs-fs-p01"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3341,
+          "simulated_reasons": [
+            "missing_must_have:api design,graphql"
+          ],
+          "orchestration_ms": 7.1068,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 500.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_40b12aff7c",
+      "persona": "ai_ml",
+      "kind": "off_domain",
+      "expected_bid": false,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "minimum_fit_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 4.4899,
+          "controller_turns": 2
+        },
+        "supervisor": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "minimum_fit_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 8.5231,
+          "controller_turns": 2
+        },
+        "bid_graph": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "minimum_fit_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 2.9015,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 35.0,
+        "public_repost_signal": false,
+        "initial_action": "skip",
+        "decision_reasons": [
+          "price_floor"
+        ],
+        "status": "skipped",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_c57c061fec",
+      "persona": "data_analyst",
+      "kind": "off_domain",
+      "expected_bid": false,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "minimum_fit_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 4.5267,
+          "controller_turns": 2
+        },
+        "supervisor": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "minimum_fit_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 8.6097,
+          "controller_turns": 2
+        },
+        "bid_graph": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "minimum_fit_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 2.7981,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 300.0,
+        "public_repost_signal": false,
+        "initial_action": "skip",
+        "decision_reasons": [
+          "minimum_fit_score"
+        ],
+        "status": "skipped",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_e642d858e2",
+      "persona": "fullstack",
+      "kind": "off_domain",
+      "expected_bid": false,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "minimum_fit_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 4.7281,
+          "controller_turns": 2
+        },
+        "supervisor": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "minimum_fit_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 7.1722,
+          "controller_turns": 2
+        },
+        "bid_graph": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "minimum_fit_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 2.6533,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 30.0,
+        "public_repost_signal": false,
+        "initial_action": "skip",
+        "decision_reasons": [
+          "price_floor"
+        ],
+        "status": "skipped",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_ce3a3cac1e",
+      "persona": "ai_ml",
+      "kind": "read_check",
+      "expected_bid": true,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-ai-p04",
+            "cs-ai-p16"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3099,
+          "simulated_reasons": [
+            "missing_must_have:forecasting,time series"
+          ],
+          "orchestration_ms": 10.3859,
+          "controller_turns": 4
+        },
+        "supervisor": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-ai-p04",
+            "cs-ai-p16"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3099,
+          "simulated_reasons": [
+            "missing_must_have:forecasting,time series"
+          ],
+          "orchestration_ms": 19.3677,
+          "controller_turns": 4
+        },
+        "bid_graph": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-ai-p04",
+            "cs-ai-p16"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3099,
+          "simulated_reasons": [
+            "missing_must_have:forecasting,time series"
+          ],
+          "orchestration_ms": 6.9233,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 35.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_8545829bd0",
+      "persona": "data_analyst",
+      "kind": "read_check",
+      "expected_bid": true,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 1,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-da-p02"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3433,
+          "simulated_reasons": [
+            "missing_must_have:attribution"
+          ],
+          "orchestration_ms": 10.6672,
+          "controller_turns": 4
+        },
+        "supervisor": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 1,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-da-p02"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3433,
+          "simulated_reasons": [
+            "missing_must_have:attribution"
+          ],
+          "orchestration_ms": 21.4872,
+          "controller_turns": 4
+        },
+        "bid_graph": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 1,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-da-p02"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3433,
+          "simulated_reasons": [
+            "missing_must_have:attribution"
+          ],
+          "orchestration_ms": 6.6857,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 300.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_4815065941",
+      "persona": "fullstack",
+      "kind": "read_check",
+      "expected_bid": true,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-fs-p02",
+            "cs-fs-p03"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3173,
+          "simulated_reasons": [
+            "missing_must_have:typescript,node.js"
+          ],
+          "orchestration_ms": 10.5901,
+          "controller_turns": 4
+        },
+        "supervisor": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-fs-p02",
+            "cs-fs-p03"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3173,
+          "simulated_reasons": [
+            "missing_must_have:typescript,node.js"
+          ],
+          "orchestration_ms": 20.7667,
+          "controller_turns": 4
+        },
+        "bid_graph": {
+          "initial_action": "bid",
+          "decision_reasons": [
+            "eligible"
+          ],
+          "status": "awaiting_approval",
+          "draft_reached_review": true,
+          "claim_count": 2,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [],
+          "evidence_ids": [
+            "cs-fs-p02",
+            "cs-fs-p03"
+          ],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": false,
+          "simulated_score": 0.3173,
+          "simulated_reasons": [
+            "missing_must_have:typescript,node.js"
+          ],
+          "orchestration_ms": 7.3346,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 500.0,
+        "public_repost_signal": false,
+        "initial_action": "bid",
+        "decision_reasons": [
+          "eligible"
+        ],
+        "status": "awaiting_approval",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_b7e2dc83a9",
+      "persona": "ai_ml",
+      "kind": "scam",
+      "expected_bid": false,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "maximum_risk_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [
+            "off_platform_contact"
+          ],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 4.4812,
+          "controller_turns": 2
+        },
+        "supervisor": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "maximum_risk_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [
+            "off_platform_contact"
+          ],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 7.7892,
+          "controller_turns": 2
+        },
+        "bid_graph": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "maximum_risk_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [
+            "off_platform_contact"
+          ],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 2.4787,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 35.0,
+        "public_repost_signal": false,
+        "initial_action": "skip",
+        "decision_reasons": [
+          "maximum_risk_score"
+        ],
+        "status": "skipped",
+        "correct_initial_decision": true
+      }
+    },
+    {
+      "job_id": "job_3864bd377d",
+      "persona": "data_analyst",
+      "kind": "scam",
+      "expected_bid": false,
+      "has_injection": false,
+      "arms": {
+        "single_react": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "maximum_risk_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [
+            "overpayment"
+          ],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 4.5887,
+          "controller_turns": 2
+        },
+        "supervisor": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "maximum_risk_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [
+            "overpayment"
+          ],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 7.3723,
+          "controller_turns": 2
+        },
+        "bid_graph": {
+          "initial_action": "skip",
+          "decision_reasons": [
+            "maximum_risk_score"
+          ],
+          "status": "skipped",
+          "draft_reached_review": false,
+          "claim_count": 0,
+          "claims_flagged_as_unsupported": 0,
+          "compliance_block": false,
+          "risk_flags": [
+            "overpayment"
+          ],
+          "evidence_ids": [],
+          "errors": [],
+          "model_tokens": 0,
+          "simulated_reply": null,
+          "orchestration_ms": 2.6777,
+          "controller_turns": 0
+        }
+      },
+      "replay": {
+        "price_floor": 300.0,
+        "public_repost_signal": false,
+        "initial_action": "skip",
+        "decision_reasons": [
+          "maximum_risk_score"
+        ],
+        "status": "skipped",
+        "correct_initial_decision": true
+      }
+    }
+  ]
+}
