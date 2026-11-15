@@ -1,0 +1,33 @@
+{
+	admin off
+	auto_https off
+}
+
+:{$PORT:10000} {
+	@health {
+		method GET
+		path /healthz
+	}
+	handle @health {
+		rewrite * /health
+		reverse_proxy 127.0.0.1:8000 {
+			header_up -Authorization
+		}
+	}
+
+	@cross_origin_write {
+		method POST PUT PATCH DELETE
+		not header Sec-Fetch-Site same-origin
+	}
+	handle {
+		route {
+			basic_auth bcrypt "GigBid reviewer" {
+				{$GIGBID_REVIEWER_USER:reviewer} {$GIGBID_REVIEWER_HASH}
+			}
+			respond @cross_origin_write 403
+			reverse_proxy 127.0.0.1:3000 {
+				header_up -Authorization
+			}
+		}
+	}
+}
