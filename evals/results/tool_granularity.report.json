@@ -1,0 +1,58 @@
+{
+  "command": "uv run python -m evals.runners.tool_granularity --output evals/results/tool_granularity.report.json --details evals/results/tool_granularity.cases.json",
+  "experiment": "Marketplace MCP tool granularity",
+  "metrics": [
+    {
+      "name": "Tools advertised (granular)",
+      "value": 14
+    },
+    {
+      "name": "Tool calls (granular)",
+      "value": 66
+    },
+    {
+      "name": "Request JSON bytes (granular)",
+      "value": 3847
+    },
+    {
+      "name": "Response JSON bytes (granular)",
+      "value": 32546
+    },
+    {
+      "name": "Advertised schema JSON bytes (granular)",
+      "value": 25921
+    },
+    {
+      "denominator": 40,
+      "name": "Verified cases (granular)",
+      "value": 40
+    },
+    {
+      "name": "Tools advertised (bundled)",
+      "value": 3
+    },
+    {
+      "name": "Tool calls (bundled)",
+      "value": 40
+    },
+    {
+      "name": "Request JSON bytes (bundled)",
+      "value": 3281
+    },
+    {
+      "name": "Response JSON bytes (bundled)",
+      "value": 29448
+    },
+    {
+      "name": "Advertised schema JSON bytes (bundled)",
+      "value": 11038
+    },
+    {
+      "denominator": 40,
+      "name": "Verified cases (bundled)",
+      "value": 40
+    }
+  ],
+  "schema_version": 1,
+  "scope": "Both toolsets used fixed routing for 40 read-only cases against the same seeded GigSim fixture. Payload sizes are canonical UTF-8 JSON bytes. Tool selection by a language model and provider token usage are outside this measurement."
+}

@@ -1,0 +1,1157 @@
+{
+  "benchmark": "tool_granularity",
+  "case_count": 40,
+  "cases": [
+    {
+      "id": "A-01",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "job_id": "job_ai_rag",
+              "sections": [
+                "job"
+              ]
+            },
+            "name": "inspect_job"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {
+              "job_id": "job_ai_rag"
+            },
+            "name": "get_job"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-02",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "job_id": "job_ai_rag",
+              "sections": [
+                "quote"
+              ]
+            },
+            "name": "inspect_job"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {
+              "job_id": "job_ai_rag"
+            },
+            "name": "quote_connects"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-03",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "job_id": "job_ai_rag",
+              "sections": [
+                "history"
+              ]
+            },
+            "name": "inspect_job"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {
+              "job_id": "job_ai_rag"
+            },
+            "name": "get_job"
+          },
+          {
+            "arguments": {
+              "client_id": "cl_002"
+            },
+            "name": "get_client_history"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-04",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "job_id": "job_ai_rag",
+              "sections": [
+                "job",
+                "quote"
+              ]
+            },
+            "name": "inspect_job"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {
+              "job_id": "job_ai_rag"
+            },
+            "name": "get_job"
+          },
+          {
+            "arguments": {
+              "job_id": "job_ai_rag"
+            },
+            "name": "quote_connects"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-05",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "job_id": "job_ai_rag",
+              "sections": [
+                "job",
+                "history",
+                "quote"
+              ]
+            },
+            "name": "inspect_job"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {
+              "job_id": "job_ai_rag"
+            },
+            "name": "get_job"
+          },
+          {
+            "arguments": {
+              "client_id": "cl_002"
+            },
+            "name": "get_client_history"
+          },
+          {
+            "arguments": {
+              "job_id": "job_ai_rag"
+            },
+            "name": "quote_connects"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-06",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "q": "rag chatbot"
+            },
+            "name": "search_marketplace"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {
+              "q": "rag chatbot"
+            },
+            "name": "search_jobs"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-07",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "domain": "ai_ml",
+              "payment_type": "fixed"
+            },
+            "name": "search_marketplace"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {
+              "domain": "ai_ml",
+              "payment_type": "fixed"
+            },
+            "name": "search_jobs"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-08",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "job_id": "job_web_stripe",
+              "sections": [
+                "job"
+              ]
+            },
+            "name": "inspect_job"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {
+              "job_id": "job_web_stripe"
+            },
+            "name": "get_job"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-09",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "job_id": "job_web_stripe",
+              "sections": [
+                "quote"
+              ]
+            },
+            "name": "inspect_job"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {
+              "job_id": "job_web_stripe"
+            },
+            "name": "quote_connects"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-10",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "job_id": "job_web_stripe",
+              "sections": [
+                "history"
+              ]
+            },
+            "name": "inspect_job"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {
+              "job_id": "job_web_stripe"
+            },
+            "name": "get_job"
+          },
+          {
+            "arguments": {
+              "client_id": "cl_001"
+            },
+            "name": "get_client_history"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-11",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "job_id": "job_web_stripe",
+              "sections": [
+                "job",
+                "quote"
+              ]
+            },
+            "name": "inspect_job"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {
+              "job_id": "job_web_stripe"
+            },
+            "name": "get_job"
+          },
+          {
+            "arguments": {
+              "job_id": "job_web_stripe"
+            },
+            "name": "quote_connects"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-12",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "job_id": "job_web_stripe",
+              "sections": [
+                "job",
+                "history",
+                "quote"
+              ]
+            },
+            "name": "inspect_job"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {
+              "job_id": "job_web_stripe"
+            },
+            "name": "get_job"
+          },
+          {
+            "arguments": {
+              "client_id": "cl_001"
+            },
+            "name": "get_client_history"
+          },
+          {
+            "arguments": {
+              "job_id": "job_web_stripe"
+            },
+            "name": "quote_connects"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-13",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "q": "stripe subscriptions"
+            },
+            "name": "search_marketplace"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {
+              "q": "stripe subscriptions"
+            },
+            "name": "search_jobs"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-14",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "domain": "fullstack_web",
+              "payment_type": "fixed"
+            },
+            "name": "search_marketplace"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {
+              "domain": "fullstack_web",
+              "payment_type": "fixed"
+            },
+            "name": "search_jobs"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-15",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "job_id": "job_data_pbi",
+              "sections": [
+                "job"
+              ]
+            },
+            "name": "inspect_job"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {
+              "job_id": "job_data_pbi"
+            },
+            "name": "get_job"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-16",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "job_id": "job_data_pbi",
+              "sections": [
+                "quote"
+              ]
+            },
+            "name": "inspect_job"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {
+              "job_id": "job_data_pbi"
+            },
+            "name": "quote_connects"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-17",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "job_id": "job_data_pbi",
+              "sections": [
+                "history"
+              ]
+            },
+            "name": "inspect_job"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {
+              "job_id": "job_data_pbi"
+            },
+            "name": "get_job"
+          },
+          {
+            "arguments": {
+              "client_id": "cl_003"
+            },
+            "name": "get_client_history"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-18",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "job_id": "job_data_pbi",
+              "sections": [
+                "job",
+                "quote"
+              ]
+            },
+            "name": "inspect_job"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {
+              "job_id": "job_data_pbi"
+            },
+            "name": "get_job"
+          },
+          {
+            "arguments": {
+              "job_id": "job_data_pbi"
+            },
+            "name": "quote_connects"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-19",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "job_id": "job_data_pbi",
+              "sections": [
+                "job",
+                "history",
+                "quote"
+              ]
+            },
+            "name": "inspect_job"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {
+              "job_id": "job_data_pbi"
+            },
+            "name": "get_job"
+          },
+          {
+            "arguments": {
+              "client_id": "cl_003"
+            },
+            "name": "get_client_history"
+          },
+          {
+            "arguments": {
+              "job_id": "job_data_pbi"
+            },
+            "name": "quote_connects"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-20",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "q": "power bi"
+            },
+            "name": "search_marketplace"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {
+              "q": "power bi"
+            },
+            "name": "search_jobs"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-21",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "domain": "data_analysis",
+              "payment_type": "hourly"
+            },
+            "name": "search_marketplace"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {
+              "domain": "data_analysis",
+              "payment_type": "hourly"
+            },
+            "name": "search_jobs"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-22",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "job_id": "job_scam_entry",
+              "sections": [
+                "job"
+              ]
+            },
+            "name": "inspect_job"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {
+              "job_id": "job_scam_entry"
+            },
+            "name": "get_job"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-23",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "job_id": "job_scam_entry",
+              "sections": [
+                "quote"
+              ]
+            },
+            "name": "inspect_job"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {
+              "job_id": "job_scam_entry"
+            },
+            "name": "quote_connects"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-24",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "job_id": "job_scam_entry",
+              "sections": [
+                "history"
+              ]
+            },
+            "name": "inspect_job"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {
+              "job_id": "job_scam_entry"
+            },
+            "name": "get_job"
+          },
+          {
+            "arguments": {
+              "client_id": "cl_scam"
+            },
+            "name": "get_client_history"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-25",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "job_id": "job_scam_entry",
+              "sections": [
+                "job",
+                "quote"
+              ]
+            },
+            "name": "inspect_job"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {
+              "job_id": "job_scam_entry"
+            },
+            "name": "get_job"
+          },
+          {
+            "arguments": {
+              "job_id": "job_scam_entry"
+            },
+            "name": "quote_connects"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-26",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "job_id": "job_scam_entry",
+              "sections": [
+                "job",
+                "history",
+                "quote"
+              ]
+            },
+            "name": "inspect_job"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {
+              "job_id": "job_scam_entry"
+            },
+            "name": "get_job"
+          },
+          {
+            "arguments": {
+              "client_id": "cl_scam"
+            },
+            "name": "get_client_history"
+          },
+          {
+            "arguments": {
+              "job_id": "job_scam_entry"
+            },
+            "name": "quote_connects"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-27",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "q": "ai data labelling"
+            },
+            "name": "search_marketplace"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {
+              "q": "ai data labelling"
+            },
+            "name": "search_jobs"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-28",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "domain": "other",
+              "payment_type": "hourly"
+            },
+            "name": "search_marketplace"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {
+              "domain": "other",
+              "payment_type": "hourly"
+            },
+            "name": "search_jobs"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-29",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "job_id": "job_inj_etl",
+              "sections": [
+                "job"
+              ]
+            },
+            "name": "inspect_job"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {
+              "job_id": "job_inj_etl"
+            },
+            "name": "get_job"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-30",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "job_id": "job_inj_etl",
+              "sections": [
+                "quote"
+              ]
+            },
+            "name": "inspect_job"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {
+              "job_id": "job_inj_etl"
+            },
+            "name": "quote_connects"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-31",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "job_id": "job_inj_etl",
+              "sections": [
+                "history"
+              ]
+            },
+            "name": "inspect_job"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {
+              "job_id": "job_inj_etl"
+            },
+            "name": "get_job"
+          },
+          {
+            "arguments": {
+              "client_id": "cl_001"
+            },
+            "name": "get_client_history"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-32",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "job_id": "job_inj_etl",
+              "sections": [
+                "job",
+                "quote"
+              ]
+            },
+            "name": "inspect_job"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {
+              "job_id": "job_inj_etl"
+            },
+            "name": "get_job"
+          },
+          {
+            "arguments": {
+              "job_id": "job_inj_etl"
+            },
+            "name": "quote_connects"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-33",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "job_id": "job_inj_etl",
+              "sections": [
+                "job",
+                "history",
+                "quote"
+              ]
+            },
+            "name": "inspect_job"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {
+              "job_id": "job_inj_etl"
+            },
+            "name": "get_job"
+          },
+          {
+            "arguments": {
+              "client_id": "cl_001"
+            },
+            "name": "get_client_history"
+          },
+          {
+            "arguments": {
+              "job_id": "job_inj_etl"
+            },
+            "name": "quote_connects"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-34",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "q": "nightly csv"
+            },
+            "name": "search_marketplace"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {
+              "q": "nightly csv"
+            },
+            "name": "search_jobs"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-35",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "domain": "data_analysis",
+              "payment_type": "fixed"
+            },
+            "name": "search_marketplace"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {
+              "domain": "data_analysis",
+              "payment_type": "fixed"
+            },
+            "name": "search_jobs"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-36",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "sections": [
+                "balance"
+              ]
+            },
+            "name": "account_snapshot"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {},
+            "name": "get_connects_balance"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-37",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "sections": [
+                "proposals",
+                "events"
+              ]
+            },
+            "name": "account_snapshot"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {},
+            "name": "list_proposals"
+          },
+          {
+            "arguments": {},
+            "name": "list_events"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-38",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "sections": [
+                "threads",
+                "events"
+              ]
+            },
+            "name": "account_snapshot"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {},
+            "name": "list_threads"
+          },
+          {
+            "arguments": {},
+            "name": "list_events"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-39",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "sections": [
+                "balance",
+                "proposals"
+              ]
+            },
+            "name": "account_snapshot"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {},
+            "name": "get_connects_balance"
+          },
+          {
+            "arguments": {},
+            "name": "list_proposals"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-40",
+      "paired_success": true,
+      "tool_calls": {
+        "bundled": [
+          {
+            "arguments": {
+              "sections": [
+                "balance",
+                "proposals",
+                "threads",
+                "events"
+              ]
+            },
+            "name": "account_snapshot"
+          }
+        ],
+        "granular": [
+          {
+            "arguments": {},
+            "name": "get_connects_balance"
+          },
+          {
+            "arguments": {},
+            "name": "list_proposals"
+          },
+          {
+            "arguments": {},
+            "name": "list_threads"
+          },
+          {
+            "arguments": {},
+            "name": "list_events"
+          }
+        ]
+      }
+    }
+  ],
+  "fixture": "gigsim/fixtures/mini_world at initial tick, fullstack account",
+  "measurement": "Canonical UTF-8 JSON payload bytes. Excludes JSON-RPC envelopes and text duplicates.",
+  "profiles": {
+    "bundled": {
+      "calls": 40,
+      "request_json_bytes": 3281,
+      "response_json_bytes": 29448,
+      "schema_json_bytes": 11038,
+      "tools": 3,
+      "verified_cases": 40
+    },
+    "granular": {
+      "calls": 66,
+      "request_json_bytes": 3847,
+      "response_json_bytes": 32546,
+      "schema_json_bytes": 25921,
+      "tools": 14,
+      "verified_cases": 40
+    }
+  },
+  "routing": "Fixed oracle routes. No LLM tool selection or token counts measured."
+}

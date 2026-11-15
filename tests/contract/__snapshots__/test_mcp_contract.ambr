@@ -1,0 +1,3004 @@
+# serializer version: 1
+# name: test_list_tools_matches_contract[marketplace][marketplace]
+  list([
+    dict({
+      'annotations': dict({
+        'destructiveHint': False,
+        'idempotentHint': True,
+        'openWorldHint': True,
+        'readOnlyHint': False,
+      }),
+      'inputSchema': dict({
+        '$defs': dict({
+          'ProposalInput': dict({
+            'properties': dict({
+              'bid_amount': dict({
+                'exclusiveMinimum': 0,
+                'maximum': 1000000,
+                'title': 'Bid Amount',
+                'type': 'number',
+              }),
+              'bid_type': dict({
+                'default': 'fixed',
+                'enum': list([
+                  'fixed',
+                  'hourly',
+                ]),
+                'title': 'Bid Type',
+                'type': 'string',
+              }),
+              'cover_letter': dict({
+                'maxLength': 20000,
+                'minLength': 1,
+                'title': 'Cover Letter',
+                'type': 'string',
+              }),
+              'duration_days': dict({
+                'anyOf': list([
+                  dict({
+                    'maximum': 730,
+                    'minimum': 1,
+                    'type': 'integer',
+                  }),
+                  dict({
+                    'type': 'null',
+                  }),
+                ]),
+                'default': None,
+                'title': 'Duration Days',
+              }),
+              'job_id': dict({
+                'maxLength': 64,
+                'minLength': 1,
+                'pattern': '^[\\w~\\-][\\w.~\\-]*$',
+                'title': 'Job Id',
+                'type': 'string',
+              }),
+              'screening_answers': dict({
+                'items': dict({
+                  'type': 'string',
+                }),
+                'maxItems': 20,
+                'title': 'Screening Answers',
+                'type': 'array',
+              }),
+            }),
+            'required': list([
+              'job_id',
+              'cover_letter',
+              'bid_amount',
+            ]),
+            'title': 'ProposalInput',
+            'type': 'object',
+          }),
+        }),
+        'properties': dict({
+          'dry_run': dict({
+            'default': True,
+            'title': 'Dry Run',
+            'type': 'boolean',
+          }),
+          'idempotency_key': dict({
+            'maxLength': 128,
+            'minLength': 1,
+            'pattern': '^[!-~]+$',
+            'title': 'Idempotency Key',
+            'type': 'string',
+          }),
+          'proposal': dict({
+            '$ref': '#/$defs/ProposalInput',
+          }),
+        }),
+        'required': list([
+          'proposal',
+          'idempotency_key',
+        ]),
+        'title': 'create_proposal_draftArguments',
+        'type': 'object',
+      }),
+      'name': 'create_proposal_draft',
+      'outputSchema': dict({
+        '$defs': dict({
+          'ConnectsQuote': dict({
+            'properties': dict({
+              'balance': dict({
+                'title': 'Balance',
+                'type': 'integer',
+              }),
+              'balance_after': dict({
+                'title': 'Balance After',
+                'type': 'integer',
+              }),
+              'connects_cost': dict({
+                'title': 'Connects Cost',
+                'type': 'integer',
+              }),
+              'job_id': dict({
+                'title': 'Job Id',
+                'type': 'string',
+              }),
+              'multipliers_applied': dict({
+                'items': dict({
+                  'type': 'string',
+                }),
+                'title': 'Multipliers Applied',
+                'type': 'array',
+              }),
+              'policy_version': dict({
+                'title': 'Policy Version',
+                'type': 'string',
+              }),
+            }),
+            'required': list([
+              'job_id',
+              'connects_cost',
+              'multipliers_applied',
+              'balance',
+              'balance_after',
+              'policy_version',
+            ]),
+            'title': 'ConnectsQuote',
+            'type': 'object',
+          }),
+          'Proposal': dict({
+            'properties': dict({
+              'bid_amount': dict({
+                'title': 'Bid Amount',
+                'type': 'number',
+              }),
+              'bid_type': dict({
+                'title': 'Bid Type',
+                'type': 'string',
+              }),
+              'connects_cost': dict({
+                'title': 'Connects Cost',
+                'type': 'integer',
+              }),
+              'connects_spent': dict({
+                'title': 'Connects Spent',
+                'type': 'integer',
+              }),
+              'cover_letter': dict({
+                'title': 'Cover Letter',
+                'type': 'string',
+              }),
+              'created_at': dict({
+                'title': 'Created At',
+                'type': 'string',
+              }),
+              'job_id': dict({
+                'title': 'Job Id',
+                'type': 'string',
+              }),
+              'proposal_id': dict({
+                'title': 'Proposal Id',
+                'type': 'string',
+              }),
+              'screening_answers': dict({
+                'items': dict({
+                  'type': 'string',
+                }),
+                'title': 'Screening Answers',
+                'type': 'array',
+              }),
+              'stage': dict({
+                'title': 'Stage',
+                'type': 'string',
+              }),
+              'status': dict({
+                'enum': list([
+                  'draft',
+                  'submitted',
+                ]),
+                'title': 'Status',
+                'type': 'string',
+              }),
+              'submitted_at': dict({
+                'anyOf': list([
+                  dict({
+                    'type': 'string',
+                  }),
+                  dict({
+                    'type': 'null',
+                  }),
+                ]),
+                'title': 'Submitted At',
+              }),
+            }),
+            'required': list([
+              'proposal_id',
+              'job_id',
+              'cover_letter',
+              'bid_amount',
+              'bid_type',
+              'screening_answers',
+              'status',
+              'stage',
+              'connects_spent',
+              'connects_cost',
+              'created_at',
+              'submitted_at',
+            ]),
+            'title': 'Proposal',
+            'type': 'object',
+          }),
+          'ProposalInput': dict({
+            'properties': dict({
+              'bid_amount': dict({
+                'exclusiveMinimum': 0,
+                'maximum': 1000000,
+                'title': 'Bid Amount',
+                'type': 'number',
+              }),
+              'bid_type': dict({
+                'default': 'fixed',
+                'enum': list([
+                  'fixed',
+                  'hourly',
+                ]),
+                'title': 'Bid Type',
+                'type': 'string',
+              }),
+              'cover_letter': dict({
+                'maxLength': 20000,
+                'minLength': 1,
+                'title': 'Cover Letter',
+                'type': 'string',
+              }),
+              'duration_days': dict({
+                'anyOf': list([
+                  dict({
+                    'maximum': 730,
+                    'minimum': 1,
+                    'type': 'integer',
+                  }),
+                  dict({
+                    'type': 'null',
+                  }),
+                ]),
+                'default': None,
+                'title': 'Duration Days',
+              }),
+              'job_id': dict({
+                'maxLength': 64,
+                'minLength': 1,
+                'pattern': '^[\\w~\\-][\\w.~\\-]*$',
+                'title': 'Job Id',
+                'type': 'string',
+              }),
+              'screening_answers': dict({
+                'items': dict({
+                  'type': 'string',
+                }),
+                'maxItems': 20,
+                'title': 'Screening Answers',
+                'type': 'array',
+              }),
+            }),
+            'required': list([
+              'job_id',
+              'cover_letter',
+              'bid_amount',
+            ]),
+            'title': 'ProposalInput',
+            'type': 'object',
+          }),
+        }),
+        'properties': dict({
+          'dry_run': dict({
+            'title': 'Dry Run',
+            'type': 'boolean',
+          }),
+          'payload': dict({
+            '$ref': '#/$defs/ProposalInput',
+          }),
+          'proposal': dict({
+            'anyOf': list([
+              dict({
+                '$ref': '#/$defs/Proposal',
+              }),
+              dict({
+                'type': 'null',
+              }),
+            ]),
+            'default': None,
+          }),
+          'quote': dict({
+            'anyOf': list([
+              dict({
+                '$ref': '#/$defs/ConnectsQuote',
+              }),
+              dict({
+                'type': 'null',
+              }),
+            ]),
+            'default': None,
+          }),
+        }),
+        'required': list([
+          'dry_run',
+          'payload',
+        ]),
+        'title': 'DraftResult',
+        'type': 'object',
+      }),
+    }),
+    dict({
+      'annotations': dict({
+        'destructiveHint': False,
+        'idempotentHint': True,
+        'openWorldHint': True,
+        'readOnlyHint': True,
+      }),
+      'inputSchema': dict({
+        'properties': dict({
+          'client_id': dict({
+            'maxLength': 128,
+            'minLength': 1,
+            'pattern': '^[\\w~\\-][\\w.~\\-]*$',
+            'title': 'Client Id',
+            'type': 'string',
+          }),
+        }),
+        'required': list([
+          'client_id',
+        ]),
+        'title': 'get_client_historyArguments',
+        'type': 'object',
+      }),
+      'name': 'get_client_history',
+      'outputSchema': dict({
+        '$defs': dict({
+          'ClientSummary': dict({
+            'properties': dict({
+              'client_id': dict({
+                'title': 'Client Id',
+                'type': 'string',
+              }),
+              'country': dict({
+                'title': 'Country',
+                'type': 'string',
+              }),
+              'hire_rate': dict({
+                'anyOf': list([
+                  dict({
+                    'type': 'number',
+                  }),
+                  dict({
+                    'type': 'null',
+                  }),
+                ]),
+                'title': 'Hire Rate',
+              }),
+              'jobs_posted': dict({
+                'title': 'Jobs Posted',
+                'type': 'integer',
+              }),
+              'member_since': dict({
+                'title': 'Member Since',
+                'type': 'string',
+              }),
+              'payment_verified': dict({
+                'title': 'Payment Verified',
+                'type': 'boolean',
+              }),
+              'rating': dict({
+                'anyOf': list([
+                  dict({
+                    'type': 'number',
+                  }),
+                  dict({
+                    'type': 'null',
+                  }),
+                ]),
+                'title': 'Rating',
+              }),
+              'reviews_count': dict({
+                'title': 'Reviews Count',
+                'type': 'integer',
+              }),
+              'total_spent': dict({
+                'title': 'Total Spent',
+                'type': 'number',
+              }),
+            }),
+            'required': list([
+              'client_id',
+              'country',
+              'payment_verified',
+              'total_spent',
+              'rating',
+              'reviews_count',
+              'hire_rate',
+              'jobs_posted',
+              'member_since',
+            ]),
+            'title': 'ClientSummary',
+            'type': 'object',
+          }),
+          'PastContract': dict({
+            'properties': dict({
+              'amount': dict({
+                'title': 'Amount',
+                'type': 'number',
+              }),
+              'ended_at': dict({
+                'title': 'Ended At',
+                'type': 'string',
+              }),
+              'freelancer_feedback': dict({
+                'title': 'Freelancer Feedback',
+                'type': 'string',
+              }),
+              'payment_type': dict({
+                'title': 'Payment Type',
+                'type': 'string',
+              }),
+              'rating_given': dict({
+                'anyOf': list([
+                  dict({
+                    'type': 'number',
+                  }),
+                  dict({
+                    'type': 'null',
+                  }),
+                ]),
+                'title': 'Rating Given',
+              }),
+              'review': dict({
+                'title': 'Review',
+                'type': 'string',
+              }),
+              'title': dict({
+                'title': 'Title',
+                'type': 'string',
+              }),
+            }),
+            'required': list([
+              'title',
+              'amount',
+              'payment_type',
+              'rating_given',
+              'review',
+              'freelancer_feedback',
+              'ended_at',
+            ]),
+            'title': 'PastContract',
+            'type': 'object',
+          }),
+        }),
+        'properties': dict({
+          'client': dict({
+            '$ref': '#/$defs/ClientSummary',
+          }),
+          'enterprise': dict({
+            'title': 'Enterprise',
+            'type': 'boolean',
+          }),
+          'industry': dict({
+            'title': 'Industry',
+            'type': 'string',
+          }),
+          'open_jobs': dict({
+            'title': 'Open Jobs',
+            'type': 'integer',
+          }),
+          'past_contracts': dict({
+            'items': dict({
+              '$ref': '#/$defs/PastContract',
+            }),
+            'title': 'Past Contracts',
+            'type': 'array',
+          }),
+        }),
+        'required': list([
+          'client',
+          'industry',
+          'enterprise',
+          'past_contracts',
+          'open_jobs',
+        ]),
+        'title': 'ClientHistory',
+        'type': 'object',
+      }),
+    }),
+    dict({
+      'annotations': dict({
+        'destructiveHint': False,
+        'idempotentHint': True,
+        'openWorldHint': True,
+        'readOnlyHint': True,
+      }),
+      'inputSchema': dict({
+        'properties': dict({
+        }),
+        'title': 'get_connects_balanceArguments',
+        'type': 'object',
+      }),
+      'name': 'get_connects_balance',
+      'outputSchema': dict({
+        'properties': dict({
+          'account_id': dict({
+            'title': 'Account Id',
+            'type': 'string',
+          }),
+          'balance': dict({
+            'title': 'Balance',
+            'type': 'integer',
+          }),
+          'next_refill_at': dict({
+            'title': 'Next Refill At',
+            'type': 'string',
+          }),
+          'weekly_refill': dict({
+            'title': 'Weekly Refill',
+            'type': 'integer',
+          }),
+        }),
+        'required': list([
+          'account_id',
+          'balance',
+          'weekly_refill',
+          'next_refill_at',
+        ]),
+        'title': 'ConnectsBalance',
+        'type': 'object',
+      }),
+    }),
+    dict({
+      'annotations': dict({
+        'destructiveHint': False,
+        'idempotentHint': True,
+        'openWorldHint': True,
+        'readOnlyHint': True,
+      }),
+      'inputSchema': dict({
+        'properties': dict({
+          'job_id': dict({
+            'maxLength': 64,
+            'minLength': 1,
+            'pattern': '^[\\w~\\-][\\w.~\\-]*$',
+            'title': 'Job Id',
+            'type': 'string',
+          }),
+        }),
+        'required': list([
+          'job_id',
+        ]),
+        'title': 'get_jobArguments',
+        'type': 'object',
+      }),
+      'name': 'get_job',
+      'outputSchema': dict({
+        '$defs': dict({
+          'ClientSummary': dict({
+            'properties': dict({
+              'client_id': dict({
+                'title': 'Client Id',
+                'type': 'string',
+              }),
+              'country': dict({
+                'title': 'Country',
+                'type': 'string',
+              }),
+              'hire_rate': dict({
+                'anyOf': list([
+                  dict({
+                    'type': 'number',
+                  }),
+                  dict({
+                    'type': 'null',
+                  }),
+                ]),
+                'title': 'Hire Rate',
+              }),
+              'jobs_posted': dict({
+                'title': 'Jobs Posted',
+                'type': 'integer',
+              }),
+              'member_since': dict({
+                'title': 'Member Since',
+                'type': 'string',
+              }),
+              'payment_verified': dict({
+                'title': 'Payment Verified',
+                'type': 'boolean',
+              }),
+              'rating': dict({
+                'anyOf': list([
+                  dict({
+                    'type': 'number',
+                  }),
+                  dict({
+                    'type': 'null',
+                  }),
+                ]),
+                'title': 'Rating',
+              }),
+              'reviews_count': dict({
+                'title': 'Reviews Count',
+                'type': 'integer',
+              }),
+              'total_spent': dict({
+                'title': 'Total Spent',
+                'type': 'number',
+              }),
+            }),
+            'required': list([
+              'client_id',
+              'country',
+              'payment_verified',
+              'total_spent',
+              'rating',
+              'reviews_count',
+              'hire_rate',
+              'jobs_posted',
+              'member_since',
+            ]),
+            'title': 'ClientSummary',
+            'type': 'object',
+          }),
+        }),
+        'properties': dict({
+          'applicants': dict({
+            'title': 'Applicants',
+            'type': 'integer',
+          }),
+          'budget_max': dict({
+            'anyOf': list([
+              dict({
+                'type': 'number',
+              }),
+              dict({
+                'type': 'null',
+              }),
+            ]),
+            'title': 'Budget Max',
+          }),
+          'budget_min': dict({
+            'anyOf': list([
+              dict({
+                'type': 'number',
+              }),
+              dict({
+                'type': 'null',
+              }),
+            ]),
+            'title': 'Budget Min',
+          }),
+          'client': dict({
+            '$ref': '#/$defs/ClientSummary',
+          }),
+          'connects_cost': dict({
+            'title': 'Connects Cost',
+            'type': 'integer',
+          }),
+          'description': dict({
+            'title': 'Description',
+            'type': 'string',
+          }),
+          'domain': dict({
+            'title': 'Domain',
+            'type': 'string',
+          }),
+          'duration': dict({
+            'title': 'Duration',
+            'type': 'string',
+          }),
+          'experience_level': dict({
+            'title': 'Experience Level',
+            'type': 'string',
+          }),
+          'hourly_max': dict({
+            'anyOf': list([
+              dict({
+                'type': 'number',
+              }),
+              dict({
+                'type': 'null',
+              }),
+            ]),
+            'title': 'Hourly Max',
+          }),
+          'hourly_min': dict({
+            'anyOf': list([
+              dict({
+                'type': 'number',
+              }),
+              dict({
+                'type': 'null',
+              }),
+            ]),
+            'title': 'Hourly Min',
+          }),
+          'job_id': dict({
+            'title': 'Job Id',
+            'type': 'string',
+          }),
+          'payment_type': dict({
+            'enum': list([
+              'fixed',
+              'hourly',
+            ]),
+            'title': 'Payment Type',
+            'type': 'string',
+          }),
+          'posted_at': dict({
+            'title': 'Posted At',
+            'type': 'string',
+          }),
+          'screening_questions': dict({
+            'items': dict({
+              'type': 'string',
+            }),
+            'title': 'Screening Questions',
+            'type': 'array',
+          }),
+          'skills': dict({
+            'items': dict({
+              'type': 'string',
+            }),
+            'title': 'Skills',
+            'type': 'array',
+          }),
+          'status': dict({
+            'title': 'Status',
+            'type': 'string',
+          }),
+          'title': dict({
+            'title': 'Title',
+            'type': 'string',
+          }),
+        }),
+        'required': list([
+          'job_id',
+          'title',
+          'description',
+          'skills',
+          'domain',
+          'experience_level',
+          'payment_type',
+          'budget_min',
+          'budget_max',
+          'hourly_min',
+          'hourly_max',
+          'duration',
+          'screening_questions',
+          'applicants',
+          'connects_cost',
+          'status',
+          'posted_at',
+          'client',
+        ]),
+        'title': 'Job',
+        'type': 'object',
+      }),
+    }),
+    dict({
+      'annotations': dict({
+        'destructiveHint': False,
+        'idempotentHint': True,
+        'openWorldHint': True,
+        'readOnlyHint': True,
+      }),
+      'inputSchema': dict({
+        'properties': dict({
+          'domain': dict({
+            'anyOf': list([
+              dict({
+                'maxLength': 80,
+                'type': 'string',
+              }),
+              dict({
+                'type': 'null',
+              }),
+            ]),
+            'default': None,
+            'title': 'Domain',
+          }),
+          'experience_level': dict({
+            'anyOf': list([
+              dict({
+                'maxLength': 80,
+                'type': 'string',
+              }),
+              dict({
+                'type': 'null',
+              }),
+            ]),
+            'default': None,
+            'title': 'Experience Level',
+          }),
+          'payment_type': dict({
+            'anyOf': list([
+              dict({
+                'enum': list([
+                  'fixed',
+                  'hourly',
+                ]),
+                'type': 'string',
+              }),
+              dict({
+                'type': 'null',
+              }),
+            ]),
+            'default': None,
+            'title': 'Payment Type',
+          }),
+        }),
+        'title': 'get_market_statsArguments',
+        'type': 'object',
+      }),
+      'name': 'get_market_stats',
+      'outputSchema': dict({
+        '$defs': dict({
+          'MarketStat': dict({
+            'properties': dict({
+              'domain': dict({
+                'title': 'Domain',
+                'type': 'string',
+              }),
+              'experience_level': dict({
+                'title': 'Experience Level',
+                'type': 'string',
+              }),
+              'n': dict({
+                'title': 'N',
+                'type': 'integer',
+              }),
+              'p25': dict({
+                'title': 'P25',
+                'type': 'number',
+              }),
+              'p50': dict({
+                'title': 'P50',
+                'type': 'number',
+              }),
+              'p75': dict({
+                'title': 'P75',
+                'type': 'number',
+              }),
+              'payment_type': dict({
+                'title': 'Payment Type',
+                'type': 'string',
+              }),
+              'source': dict({
+                'title': 'Source',
+                'type': 'string',
+              }),
+              'unit': dict({
+                'title': 'Unit',
+                'type': 'string',
+              }),
+            }),
+            'required': list([
+              'domain',
+              'experience_level',
+              'payment_type',
+              'n',
+              'p25',
+              'p50',
+              'p75',
+              'unit',
+              'source',
+            ]),
+            'title': 'MarketStat',
+            'type': 'object',
+          }),
+        }),
+        'properties': dict({
+          'result': dict({
+            'items': dict({
+              '$ref': '#/$defs/MarketStat',
+            }),
+            'title': 'Result',
+            'type': 'array',
+          }),
+        }),
+        'required': list([
+          'result',
+        ]),
+        'title': 'get_market_statsOutput',
+        'type': 'object',
+      }),
+    }),
+    dict({
+      'annotations': dict({
+        'destructiveHint': False,
+        'idempotentHint': True,
+        'openWorldHint': True,
+        'readOnlyHint': True,
+      }),
+      'inputSchema': dict({
+        'properties': dict({
+          'proposal_id': dict({
+            'maxLength': 128,
+            'minLength': 1,
+            'pattern': '^[\\w~\\-][\\w.~\\-]*$',
+            'title': 'Proposal Id',
+            'type': 'string',
+          }),
+        }),
+        'required': list([
+          'proposal_id',
+        ]),
+        'title': 'get_proposalArguments',
+        'type': 'object',
+      }),
+      'name': 'get_proposal',
+      'outputSchema': dict({
+        'properties': dict({
+          'bid_amount': dict({
+            'title': 'Bid Amount',
+            'type': 'number',
+          }),
+          'bid_type': dict({
+            'title': 'Bid Type',
+            'type': 'string',
+          }),
+          'connects_cost': dict({
+            'title': 'Connects Cost',
+            'type': 'integer',
+          }),
+          'connects_spent': dict({
+            'title': 'Connects Spent',
+            'type': 'integer',
+          }),
+          'cover_letter': dict({
+            'title': 'Cover Letter',
+            'type': 'string',
+          }),
+          'created_at': dict({
+            'title': 'Created At',
+            'type': 'string',
+          }),
+          'job_id': dict({
+            'title': 'Job Id',
+            'type': 'string',
+          }),
+          'proposal_id': dict({
+            'title': 'Proposal Id',
+            'type': 'string',
+          }),
+          'screening_answers': dict({
+            'items': dict({
+              'type': 'string',
+            }),
+            'title': 'Screening Answers',
+            'type': 'array',
+          }),
+          'stage': dict({
+            'title': 'Stage',
+            'type': 'string',
+          }),
+          'status': dict({
+            'enum': list([
+              'draft',
+              'submitted',
+            ]),
+            'title': 'Status',
+            'type': 'string',
+          }),
+          'submitted_at': dict({
+            'anyOf': list([
+              dict({
+                'type': 'string',
+              }),
+              dict({
+                'type': 'null',
+              }),
+            ]),
+            'title': 'Submitted At',
+          }),
+        }),
+        'required': list([
+          'proposal_id',
+          'job_id',
+          'cover_letter',
+          'bid_amount',
+          'bid_type',
+          'screening_answers',
+          'status',
+          'stage',
+          'connects_spent',
+          'connects_cost',
+          'created_at',
+          'submitted_at',
+        ]),
+        'title': 'Proposal',
+        'type': 'object',
+      }),
+    }),
+    dict({
+      'annotations': dict({
+        'destructiveHint': False,
+        'idempotentHint': True,
+        'openWorldHint': True,
+        'readOnlyHint': True,
+      }),
+      'inputSchema': dict({
+        'properties': dict({
+          'limit': dict({
+            'default': 100,
+            'maximum': 500,
+            'minimum': 1,
+            'title': 'Limit',
+            'type': 'integer',
+          }),
+          'since': dict({
+            'default': 0,
+            'minimum': 0,
+            'title': 'Since',
+            'type': 'integer',
+          }),
+        }),
+        'title': 'list_eventsArguments',
+        'type': 'object',
+      }),
+      'name': 'list_events',
+      'outputSchema': dict({
+        '$defs': dict({
+          'Event': dict({
+            'properties': dict({
+              'at': dict({
+                'title': 'At',
+                'type': 'string',
+              }),
+              'id': dict({
+                'title': 'Id',
+                'type': 'integer',
+              }),
+              'job_id': dict({
+                'anyOf': list([
+                  dict({
+                    'type': 'string',
+                  }),
+                  dict({
+                    'type': 'null',
+                  }),
+                ]),
+                'title': 'Job Id',
+              }),
+              'payload': dict({
+                'additionalProperties': True,
+                'title': 'Payload',
+                'type': 'object',
+              }),
+              'proposal_id': dict({
+                'anyOf': list([
+                  dict({
+                    'type': 'string',
+                  }),
+                  dict({
+                    'type': 'null',
+                  }),
+                ]),
+                'title': 'Proposal Id',
+              }),
+              'thread_id': dict({
+                'anyOf': list([
+                  dict({
+                    'type': 'string',
+                  }),
+                  dict({
+                    'type': 'null',
+                  }),
+                ]),
+                'title': 'Thread Id',
+              }),
+              'type': dict({
+                'title': 'Type',
+                'type': 'string',
+              }),
+            }),
+            'required': list([
+              'id',
+              'type',
+              'at',
+              'job_id',
+              'proposal_id',
+              'thread_id',
+              'payload',
+            ]),
+            'title': 'Event',
+            'type': 'object',
+          }),
+        }),
+        'properties': dict({
+          'result': dict({
+            'items': dict({
+              '$ref': '#/$defs/Event',
+            }),
+            'title': 'Result',
+            'type': 'array',
+          }),
+        }),
+        'required': list([
+          'result',
+        ]),
+        'title': 'list_eventsOutput',
+        'type': 'object',
+      }),
+    }),
+    dict({
+      'annotations': dict({
+        'destructiveHint': False,
+        'idempotentHint': True,
+        'openWorldHint': True,
+        'readOnlyHint': True,
+      }),
+      'inputSchema': dict({
+        'properties': dict({
+          'thread_id': dict({
+            'maxLength': 128,
+            'minLength': 1,
+            'pattern': '^[\\w~\\-][\\w.~\\-]*$',
+            'title': 'Thread Id',
+            'type': 'string',
+          }),
+        }),
+        'required': list([
+          'thread_id',
+        ]),
+        'title': 'list_messagesArguments',
+        'type': 'object',
+      }),
+      'name': 'list_messages',
+      'outputSchema': dict({
+        '$defs': dict({
+          'Message': dict({
+            'properties': dict({
+              'body': dict({
+                'title': 'Body',
+                'type': 'string',
+              }),
+              'id': dict({
+                'title': 'Id',
+                'type': 'integer',
+              }),
+              'sender': dict({
+                'enum': list([
+                  'client',
+                  'freelancer',
+                ]),
+                'title': 'Sender',
+                'type': 'string',
+              }),
+              'sent_at': dict({
+                'title': 'Sent At',
+                'type': 'string',
+              }),
+            }),
+            'required': list([
+              'id',
+              'sender',
+              'body',
+              'sent_at',
+            ]),
+            'title': 'Message',
+            'type': 'object',
+          }),
+        }),
+        'properties': dict({
+          'result': dict({
+            'items': dict({
+              '$ref': '#/$defs/Message',
+            }),
+            'title': 'Result',
+            'type': 'array',
+          }),
+        }),
+        'required': list([
+          'result',
+        ]),
+        'title': 'list_messagesOutput',
+        'type': 'object',
+      }),
+    }),
+    dict({
+      'annotations': dict({
+        'destructiveHint': False,
+        'idempotentHint': True,
+        'openWorldHint': True,
+        'readOnlyHint': True,
+      }),
+      'inputSchema': dict({
+        'properties': dict({
+        }),
+        'title': 'list_proposalsArguments',
+        'type': 'object',
+      }),
+      'name': 'list_proposals',
+      'outputSchema': dict({
+        '$defs': dict({
+          'Proposal': dict({
+            'properties': dict({
+              'bid_amount': dict({
+                'title': 'Bid Amount',
+                'type': 'number',
+              }),
+              'bid_type': dict({
+                'title': 'Bid Type',
+                'type': 'string',
+              }),
+              'connects_cost': dict({
+                'title': 'Connects Cost',
+                'type': 'integer',
+              }),
+              'connects_spent': dict({
+                'title': 'Connects Spent',
+                'type': 'integer',
+              }),
+              'cover_letter': dict({
+                'title': 'Cover Letter',
+                'type': 'string',
+              }),
+              'created_at': dict({
+                'title': 'Created At',
+                'type': 'string',
+              }),
+              'job_id': dict({
+                'title': 'Job Id',
+                'type': 'string',
+              }),
+              'proposal_id': dict({
+                'title': 'Proposal Id',
+                'type': 'string',
+              }),
+              'screening_answers': dict({
+                'items': dict({
+                  'type': 'string',
+                }),
+                'title': 'Screening Answers',
+                'type': 'array',
+              }),
+              'stage': dict({
+                'title': 'Stage',
+                'type': 'string',
+              }),
+              'status': dict({
+                'enum': list([
+                  'draft',
+                  'submitted',
+                ]),
+                'title': 'Status',
+                'type': 'string',
+              }),
+              'submitted_at': dict({
+                'anyOf': list([
+                  dict({
+                    'type': 'string',
+                  }),
+                  dict({
+                    'type': 'null',
+                  }),
+                ]),
+                'title': 'Submitted At',
+              }),
+            }),
+            'required': list([
+              'proposal_id',
+              'job_id',
+              'cover_letter',
+              'bid_amount',
+              'bid_type',
+              'screening_answers',
+              'status',
+              'stage',
+              'connects_spent',
+              'connects_cost',
+              'created_at',
+              'submitted_at',
+            ]),
+            'title': 'Proposal',
+            'type': 'object',
+          }),
+        }),
+        'properties': dict({
+          'result': dict({
+            'items': dict({
+              '$ref': '#/$defs/Proposal',
+            }),
+            'title': 'Result',
+            'type': 'array',
+          }),
+        }),
+        'required': list([
+          'result',
+        ]),
+        'title': 'list_proposalsOutput',
+        'type': 'object',
+      }),
+    }),
+    dict({
+      'annotations': dict({
+        'destructiveHint': False,
+        'idempotentHint': True,
+        'openWorldHint': True,
+        'readOnlyHint': True,
+      }),
+      'inputSchema': dict({
+        'properties': dict({
+        }),
+        'title': 'list_threadsArguments',
+        'type': 'object',
+      }),
+      'name': 'list_threads',
+      'outputSchema': dict({
+        '$defs': dict({
+          'Thread': dict({
+            'properties': dict({
+              'client_id': dict({
+                'title': 'Client Id',
+                'type': 'string',
+              }),
+              'job_id': dict({
+                'title': 'Job Id',
+                'type': 'string',
+              }),
+              'job_title': dict({
+                'title': 'Job Title',
+                'type': 'string',
+              }),
+              'last_message_at': dict({
+                'anyOf': list([
+                  dict({
+                    'type': 'string',
+                  }),
+                  dict({
+                    'type': 'null',
+                  }),
+                ]),
+                'title': 'Last Message At',
+              }),
+              'messages': dict({
+                'title': 'Messages',
+                'type': 'integer',
+              }),
+              'proposal_id': dict({
+                'title': 'Proposal Id',
+                'type': 'string',
+              }),
+              'stage': dict({
+                'title': 'Stage',
+                'type': 'string',
+              }),
+              'thread_id': dict({
+                'title': 'Thread Id',
+                'type': 'string',
+              }),
+            }),
+            'required': list([
+              'thread_id',
+              'client_id',
+              'job_id',
+              'job_title',
+              'proposal_id',
+              'stage',
+              'last_message_at',
+              'messages',
+            ]),
+            'title': 'Thread',
+            'type': 'object',
+          }),
+        }),
+        'properties': dict({
+          'result': dict({
+            'items': dict({
+              '$ref': '#/$defs/Thread',
+            }),
+            'title': 'Result',
+            'type': 'array',
+          }),
+        }),
+        'required': list([
+          'result',
+        ]),
+        'title': 'list_threadsOutput',
+        'type': 'object',
+      }),
+    }),
+    dict({
+      'annotations': dict({
+        'destructiveHint': False,
+        'idempotentHint': True,
+        'openWorldHint': True,
+        'readOnlyHint': True,
+      }),
+      'inputSchema': dict({
+        'properties': dict({
+          'job_id': dict({
+            'maxLength': 64,
+            'minLength': 1,
+            'pattern': '^[\\w~\\-][\\w.~\\-]*$',
+            'title': 'Job Id',
+            'type': 'string',
+          }),
+        }),
+        'required': list([
+          'job_id',
+        ]),
+        'title': 'quote_connectsArguments',
+        'type': 'object',
+      }),
+      'name': 'quote_connects',
+      'outputSchema': dict({
+        'properties': dict({
+          'balance': dict({
+            'title': 'Balance',
+            'type': 'integer',
+          }),
+          'balance_after': dict({
+            'title': 'Balance After',
+            'type': 'integer',
+          }),
+          'connects_cost': dict({
+            'title': 'Connects Cost',
+            'type': 'integer',
+          }),
+          'job_id': dict({
+            'title': 'Job Id',
+            'type': 'string',
+          }),
+          'multipliers_applied': dict({
+            'items': dict({
+              'type': 'string',
+            }),
+            'title': 'Multipliers Applied',
+            'type': 'array',
+          }),
+          'policy_version': dict({
+            'title': 'Policy Version',
+            'type': 'string',
+          }),
+        }),
+        'required': list([
+          'job_id',
+          'connects_cost',
+          'multipliers_applied',
+          'balance',
+          'balance_after',
+          'policy_version',
+        ]),
+        'title': 'ConnectsQuote',
+        'type': 'object',
+      }),
+    }),
+    dict({
+      'annotations': dict({
+        'destructiveHint': False,
+        'idempotentHint': True,
+        'openWorldHint': True,
+        'readOnlyHint': True,
+      }),
+      'inputSchema': dict({
+        'properties': dict({
+          'cursor': dict({
+            'default': 0,
+            'minimum': 0,
+            'title': 'Cursor',
+            'type': 'integer',
+          }),
+          'domain': dict({
+            'anyOf': list([
+              dict({
+                'maxLength': 80,
+                'type': 'string',
+              }),
+              dict({
+                'type': 'null',
+              }),
+            ]),
+            'default': None,
+            'title': 'Domain',
+          }),
+          'limit': dict({
+            'default': 20,
+            'maximum': 50,
+            'minimum': 1,
+            'title': 'Limit',
+            'type': 'integer',
+          }),
+          'min_budget': dict({
+            'anyOf': list([
+              dict({
+                'minimum': 0,
+                'type': 'number',
+              }),
+              dict({
+                'type': 'null',
+              }),
+            ]),
+            'default': None,
+            'title': 'Min Budget',
+          }),
+          'payment_type': dict({
+            'anyOf': list([
+              dict({
+                'enum': list([
+                  'fixed',
+                  'hourly',
+                ]),
+                'type': 'string',
+              }),
+              dict({
+                'type': 'null',
+              }),
+            ]),
+            'default': None,
+            'title': 'Payment Type',
+          }),
+          'posted_after': dict({
+            'anyOf': list([
+              dict({
+                'maxLength': 64,
+                'type': 'string',
+              }),
+              dict({
+                'type': 'null',
+              }),
+            ]),
+            'default': None,
+            'title': 'Posted After',
+          }),
+          'q': dict({
+            'anyOf': list([
+              dict({
+                'maxLength': 200,
+                'type': 'string',
+              }),
+              dict({
+                'type': 'null',
+              }),
+            ]),
+            'default': None,
+            'title': 'Q',
+          }),
+        }),
+        'title': 'search_jobsArguments',
+        'type': 'object',
+      }),
+      'name': 'search_jobs',
+      'outputSchema': dict({
+        '$defs': dict({
+          'ClientSummary': dict({
+            'properties': dict({
+              'client_id': dict({
+                'title': 'Client Id',
+                'type': 'string',
+              }),
+              'country': dict({
+                'title': 'Country',
+                'type': 'string',
+              }),
+              'hire_rate': dict({
+                'anyOf': list([
+                  dict({
+                    'type': 'number',
+                  }),
+                  dict({
+                    'type': 'null',
+                  }),
+                ]),
+                'title': 'Hire Rate',
+              }),
+              'jobs_posted': dict({
+                'title': 'Jobs Posted',
+                'type': 'integer',
+              }),
+              'member_since': dict({
+                'title': 'Member Since',
+                'type': 'string',
+              }),
+              'payment_verified': dict({
+                'title': 'Payment Verified',
+                'type': 'boolean',
+              }),
+              'rating': dict({
+                'anyOf': list([
+                  dict({
+                    'type': 'number',
+                  }),
+                  dict({
+                    'type': 'null',
+                  }),
+                ]),
+                'title': 'Rating',
+              }),
+              'reviews_count': dict({
+                'title': 'Reviews Count',
+                'type': 'integer',
+              }),
+              'total_spent': dict({
+                'title': 'Total Spent',
+                'type': 'number',
+              }),
+            }),
+            'required': list([
+              'client_id',
+              'country',
+              'payment_verified',
+              'total_spent',
+              'rating',
+              'reviews_count',
+              'hire_rate',
+              'jobs_posted',
+              'member_since',
+            ]),
+            'title': 'ClientSummary',
+            'type': 'object',
+          }),
+          'Job': dict({
+            'properties': dict({
+              'applicants': dict({
+                'title': 'Applicants',
+                'type': 'integer',
+              }),
+              'budget_max': dict({
+                'anyOf': list([
+                  dict({
+                    'type': 'number',
+                  }),
+                  dict({
+                    'type': 'null',
+                  }),
+                ]),
+                'title': 'Budget Max',
+              }),
+              'budget_min': dict({
+                'anyOf': list([
+                  dict({
+                    'type': 'number',
+                  }),
+                  dict({
+                    'type': 'null',
+                  }),
+                ]),
+                'title': 'Budget Min',
+              }),
+              'client': dict({
+                '$ref': '#/$defs/ClientSummary',
+              }),
+              'connects_cost': dict({
+                'title': 'Connects Cost',
+                'type': 'integer',
+              }),
+              'description': dict({
+                'title': 'Description',
+                'type': 'string',
+              }),
+              'domain': dict({
+                'title': 'Domain',
+                'type': 'string',
+              }),
+              'duration': dict({
+                'title': 'Duration',
+                'type': 'string',
+              }),
+              'experience_level': dict({
+                'title': 'Experience Level',
+                'type': 'string',
+              }),
+              'hourly_max': dict({
+                'anyOf': list([
+                  dict({
+                    'type': 'number',
+                  }),
+                  dict({
+                    'type': 'null',
+                  }),
+                ]),
+                'title': 'Hourly Max',
+              }),
+              'hourly_min': dict({
+                'anyOf': list([
+                  dict({
+                    'type': 'number',
+                  }),
+                  dict({
+                    'type': 'null',
+                  }),
+                ]),
+                'title': 'Hourly Min',
+              }),
+              'job_id': dict({
+                'title': 'Job Id',
+                'type': 'string',
+              }),
+              'payment_type': dict({
+                'enum': list([
+                  'fixed',
+                  'hourly',
+                ]),
+                'title': 'Payment Type',
+                'type': 'string',
+              }),
+              'posted_at': dict({
+                'title': 'Posted At',
+                'type': 'string',
+              }),
+              'screening_questions': dict({
+                'items': dict({
+                  'type': 'string',
+                }),
+                'title': 'Screening Questions',
+                'type': 'array',
+              }),
+              'skills': dict({
+                'items': dict({
+                  'type': 'string',
+                }),
+                'title': 'Skills',
+                'type': 'array',
+              }),
+              'status': dict({
+                'title': 'Status',
+                'type': 'string',
+              }),
+              'title': dict({
+                'title': 'Title',
+                'type': 'string',
+              }),
+            }),
+            'required': list([
+              'job_id',
+              'title',
+              'description',
+              'skills',
+              'domain',
+              'experience_level',
+              'payment_type',
+              'budget_min',
+              'budget_max',
+              'hourly_min',
+              'hourly_max',
+              'duration',
+              'screening_questions',
+              'applicants',
+              'connects_cost',
+              'status',
+              'posted_at',
+              'client',
+            ]),
+            'title': 'Job',
+            'type': 'object',
+          }),
+        }),
+        'properties': dict({
+          'items': dict({
+            'items': dict({
+              '$ref': '#/$defs/Job',
+            }),
+            'title': 'Items',
+            'type': 'array',
+          }),
+          'next_cursor': dict({
+            'anyOf': list([
+              dict({
+                'type': 'integer',
+              }),
+              dict({
+                'type': 'null',
+              }),
+            ]),
+            'title': 'Next Cursor',
+          }),
+          'now': dict({
+            'title': 'Now',
+            'type': 'string',
+          }),
+        }),
+        'required': list([
+          'items',
+          'next_cursor',
+          'now',
+        ]),
+        'title': 'JobPage',
+        'type': 'object',
+      }),
+    }),
+    dict({
+      'annotations': dict({
+        'destructiveHint': True,
+        'idempotentHint': True,
+        'openWorldHint': True,
+        'readOnlyHint': False,
+      }),
+      'inputSchema': dict({
+        'properties': dict({
+          'body': dict({
+            'maxLength': 10000,
+            'minLength': 1,
+            'title': 'Body',
+            'type': 'string',
+          }),
+          'dry_run': dict({
+            'default': True,
+            'title': 'Dry Run',
+            'type': 'boolean',
+          }),
+          'idempotency_key': dict({
+            'maxLength': 128,
+            'minLength': 1,
+            'pattern': '^[!-~]+$',
+            'title': 'Idempotency Key',
+            'type': 'string',
+          }),
+          'thread_id': dict({
+            'maxLength': 128,
+            'minLength': 1,
+            'pattern': '^[\\w~\\-][\\w.~\\-]*$',
+            'title': 'Thread Id',
+            'type': 'string',
+          }),
+        }),
+        'required': list([
+          'thread_id',
+          'body',
+          'idempotency_key',
+        ]),
+        'title': 'send_messageArguments',
+        'type': 'object',
+      }),
+      'name': 'send_message',
+      'outputSchema': dict({
+        '$defs': dict({
+          'Message': dict({
+            'properties': dict({
+              'body': dict({
+                'title': 'Body',
+                'type': 'string',
+              }),
+              'id': dict({
+                'title': 'Id',
+                'type': 'integer',
+              }),
+              'sender': dict({
+                'enum': list([
+                  'client',
+                  'freelancer',
+                ]),
+                'title': 'Sender',
+                'type': 'string',
+              }),
+              'sent_at': dict({
+                'title': 'Sent At',
+                'type': 'string',
+              }),
+            }),
+            'required': list([
+              'id',
+              'sender',
+              'body',
+              'sent_at',
+            ]),
+            'title': 'Message',
+            'type': 'object',
+          }),
+        }),
+        'properties': dict({
+          'balance': dict({
+            'anyOf': list([
+              dict({
+                'type': 'integer',
+              }),
+              dict({
+                'type': 'null',
+              }),
+            ]),
+            'default': None,
+            'title': 'Balance',
+          }),
+          'balance_after': dict({
+            'anyOf': list([
+              dict({
+                'type': 'integer',
+              }),
+              dict({
+                'type': 'null',
+              }),
+            ]),
+            'default': None,
+            'title': 'Balance After',
+          }),
+          'body': dict({
+            'title': 'Body',
+            'type': 'string',
+          }),
+          'connects_cost': dict({
+            'default': 0,
+            'title': 'Connects Cost',
+            'type': 'integer',
+          }),
+          'dry_run': dict({
+            'title': 'Dry Run',
+            'type': 'boolean',
+          }),
+          'message': dict({
+            'anyOf': list([
+              dict({
+                '$ref': '#/$defs/Message',
+              }),
+              dict({
+                'type': 'null',
+              }),
+            ]),
+            'default': None,
+          }),
+          'thread_id': dict({
+            'title': 'Thread Id',
+            'type': 'string',
+          }),
+        }),
+        'required': list([
+          'dry_run',
+          'thread_id',
+          'body',
+        ]),
+        'title': 'MessageResult',
+        'type': 'object',
+      }),
+    }),
+    dict({
+      'annotations': dict({
+        'destructiveHint': True,
+        'idempotentHint': True,
+        'openWorldHint': True,
+        'readOnlyHint': False,
+      }),
+      'inputSchema': dict({
+        '$defs': dict({
+          'ConnectsQuote': dict({
+            'properties': dict({
+              'balance': dict({
+                'title': 'Balance',
+                'type': 'integer',
+              }),
+              'balance_after': dict({
+                'title': 'Balance After',
+                'type': 'integer',
+              }),
+              'connects_cost': dict({
+                'title': 'Connects Cost',
+                'type': 'integer',
+              }),
+              'job_id': dict({
+                'title': 'Job Id',
+                'type': 'string',
+              }),
+              'multipliers_applied': dict({
+                'items': dict({
+                  'type': 'string',
+                }),
+                'title': 'Multipliers Applied',
+                'type': 'array',
+              }),
+              'policy_version': dict({
+                'title': 'Policy Version',
+                'type': 'string',
+              }),
+            }),
+            'required': list([
+              'job_id',
+              'connects_cost',
+              'multipliers_applied',
+              'balance',
+              'balance_after',
+              'policy_version',
+            ]),
+            'title': 'ConnectsQuote',
+            'type': 'object',
+          }),
+        }),
+        'properties': dict({
+          'approved_quote': dict({
+            'anyOf': list([
+              dict({
+                '$ref': '#/$defs/ConnectsQuote',
+              }),
+              dict({
+                'type': 'null',
+              }),
+            ]),
+            'default': None,
+          }),
+          'dry_run': dict({
+            'default': True,
+            'title': 'Dry Run',
+            'type': 'boolean',
+          }),
+          'idempotency_key': dict({
+            'maxLength': 128,
+            'minLength': 1,
+            'pattern': '^[!-~]+$',
+            'title': 'Idempotency Key',
+            'type': 'string',
+          }),
+          'proposal_id': dict({
+            'maxLength': 128,
+            'minLength': 1,
+            'pattern': '^[\\w~\\-][\\w.~\\-]*$',
+            'title': 'Proposal Id',
+            'type': 'string',
+          }),
+        }),
+        'required': list([
+          'proposal_id',
+          'idempotency_key',
+        ]),
+        'title': 'submit_proposalArguments',
+        'type': 'object',
+      }),
+      'name': 'submit_proposal',
+      'outputSchema': dict({
+        '$defs': dict({
+          'ConnectsQuote': dict({
+            'properties': dict({
+              'balance': dict({
+                'title': 'Balance',
+                'type': 'integer',
+              }),
+              'balance_after': dict({
+                'title': 'Balance After',
+                'type': 'integer',
+              }),
+              'connects_cost': dict({
+                'title': 'Connects Cost',
+                'type': 'integer',
+              }),
+              'job_id': dict({
+                'title': 'Job Id',
+                'type': 'string',
+              }),
+              'multipliers_applied': dict({
+                'items': dict({
+                  'type': 'string',
+                }),
+                'title': 'Multipliers Applied',
+                'type': 'array',
+              }),
+              'policy_version': dict({
+                'title': 'Policy Version',
+                'type': 'string',
+              }),
+            }),
+            'required': list([
+              'job_id',
+              'connects_cost',
+              'multipliers_applied',
+              'balance',
+              'balance_after',
+              'policy_version',
+            ]),
+            'title': 'ConnectsQuote',
+            'type': 'object',
+          }),
+          'Proposal': dict({
+            'properties': dict({
+              'bid_amount': dict({
+                'title': 'Bid Amount',
+                'type': 'number',
+              }),
+              'bid_type': dict({
+                'title': 'Bid Type',
+                'type': 'string',
+              }),
+              'connects_cost': dict({
+                'title': 'Connects Cost',
+                'type': 'integer',
+              }),
+              'connects_spent': dict({
+                'title': 'Connects Spent',
+                'type': 'integer',
+              }),
+              'cover_letter': dict({
+                'title': 'Cover Letter',
+                'type': 'string',
+              }),
+              'created_at': dict({
+                'title': 'Created At',
+                'type': 'string',
+              }),
+              'job_id': dict({
+                'title': 'Job Id',
+                'type': 'string',
+              }),
+              'proposal_id': dict({
+                'title': 'Proposal Id',
+                'type': 'string',
+              }),
+              'screening_answers': dict({
+                'items': dict({
+                  'type': 'string',
+                }),
+                'title': 'Screening Answers',
+                'type': 'array',
+              }),
+              'stage': dict({
+                'title': 'Stage',
+                'type': 'string',
+              }),
+              'status': dict({
+                'enum': list([
+                  'draft',
+                  'submitted',
+                ]),
+                'title': 'Status',
+                'type': 'string',
+              }),
+              'submitted_at': dict({
+                'anyOf': list([
+                  dict({
+                    'type': 'string',
+                  }),
+                  dict({
+                    'type': 'null',
+                  }),
+                ]),
+                'title': 'Submitted At',
+              }),
+            }),
+            'required': list([
+              'proposal_id',
+              'job_id',
+              'cover_letter',
+              'bid_amount',
+              'bid_type',
+              'screening_answers',
+              'status',
+              'stage',
+              'connects_spent',
+              'connects_cost',
+              'created_at',
+              'submitted_at',
+            ]),
+            'title': 'Proposal',
+            'type': 'object',
+          }),
+        }),
+        'properties': dict({
+          'dry_run': dict({
+            'title': 'Dry Run',
+            'type': 'boolean',
+          }),
+          'proposal': dict({
+            'anyOf': list([
+              dict({
+                '$ref': '#/$defs/Proposal',
+              }),
+              dict({
+                'type': 'null',
+              }),
+            ]),
+            'default': None,
+          }),
+          'proposal_id': dict({
+            'title': 'Proposal Id',
+            'type': 'string',
+          }),
+          'quote': dict({
+            'anyOf': list([
+              dict({
+                '$ref': '#/$defs/ConnectsQuote',
+              }),
+              dict({
+                'type': 'null',
+              }),
+            ]),
+            'default': None,
+          }),
+        }),
+        'required': list([
+          'dry_run',
+          'proposal_id',
+        ]),
+        'title': 'SubmitResult',
+        'type': 'object',
+      }),
+    }),
+  ])
+# ---
+# name: test_list_tools_matches_contract[portfolio][portfolio]
+  list([
+    dict({
+      'annotations': dict({
+        'destructiveHint': False,
+        'idempotentHint': True,
+        'openWorldHint': False,
+        'readOnlyHint': True,
+      }),
+      'inputSchema': dict({
+        'properties': dict({
+          'id': dict({
+            'maxLength': 100,
+            'minLength': 1,
+            'pattern': '^[\\w-]+$',
+            'title': 'Id',
+            'type': 'string',
+          }),
+        }),
+        'required': list([
+          'id',
+        ]),
+        'title': 'get_case_studyArguments',
+        'type': 'object',
+      }),
+      'name': 'get_case_study',
+      'outputSchema': dict({
+        'properties': dict({
+          'client_industry': dict({
+            'anyOf': list([
+              dict({
+                'type': 'string',
+              }),
+              dict({
+                'type': 'null',
+              }),
+            ]),
+            'title': 'Client Industry',
+          }),
+          'date': dict({
+            'anyOf': list([
+              dict({
+                'type': 'string',
+              }),
+              dict({
+                'type': 'null',
+              }),
+            ]),
+            'title': 'Date',
+          }),
+          'id': dict({
+            'title': 'Id',
+            'type': 'string',
+          }),
+          'outcome': dict({
+            'anyOf': list([
+              dict({
+                'type': 'string',
+              }),
+              dict({
+                'type': 'null',
+              }),
+            ]),
+            'title': 'Outcome',
+          }),
+          'persona': dict({
+            'title': 'Persona',
+            'type': 'string',
+          }),
+          'project_id': dict({
+            'anyOf': list([
+              dict({
+                'type': 'string',
+              }),
+              dict({
+                'type': 'null',
+              }),
+            ]),
+            'title': 'Project Id',
+          }),
+          'skills': dict({
+            'items': dict({
+              'type': 'string',
+            }),
+            'title': 'Skills',
+            'type': 'array',
+          }),
+          'source': dict({
+            'title': 'Source',
+            'type': 'string',
+          }),
+          'text': dict({
+            'title': 'Text',
+            'type': 'string',
+          }),
+          'title': dict({
+            'title': 'Title',
+            'type': 'string',
+          }),
+          'type': dict({
+            'enum': list([
+              'cv',
+              'case_study',
+              'repo',
+              'review',
+              'past_proposal',
+            ]),
+            'title': 'Type',
+            'type': 'string',
+          }),
+        }),
+        'required': list([
+          'id',
+          'persona',
+          'type',
+          'source',
+          'title',
+          'text',
+          'project_id',
+          'skills',
+          'date',
+          'client_industry',
+          'outcome',
+        ]),
+        'title': 'EvidenceItem',
+        'type': 'object',
+      }),
+    }),
+    dict({
+      'annotations': dict({
+        'destructiveHint': False,
+        'idempotentHint': True,
+        'openWorldHint': False,
+        'readOnlyHint': True,
+      }),
+      'inputSchema': dict({
+        'properties': dict({
+        }),
+        'title': 'list_skillsArguments',
+        'type': 'object',
+      }),
+      'name': 'list_skills',
+      'outputSchema': dict({
+        'properties': dict({
+          'skills': dict({
+            'items': dict({
+              'type': 'string',
+            }),
+            'title': 'Skills',
+            'type': 'array',
+          }),
+        }),
+        'required': list([
+          'skills',
+        ]),
+        'title': 'Skills',
+        'type': 'object',
+      }),
+    }),
+    dict({
+      'annotations': dict({
+        'destructiveHint': False,
+        'idempotentHint': True,
+        'openWorldHint': False,
+        'readOnlyHint': True,
+      }),
+      'inputSchema': dict({
+        '$defs': dict({
+          'EvidenceFilters': dict({
+            'additionalProperties': False,
+            'properties': dict({
+              'client_industry': dict({
+                'anyOf': list([
+                  dict({
+                    'maxLength': 120,
+                    'minLength': 1,
+                    'type': 'string',
+                  }),
+                  dict({
+                    'type': 'null',
+                  }),
+                ]),
+                'default': None,
+                'title': 'Client Industry',
+              }),
+              'date': dict({
+                'anyOf': list([
+                  dict({
+                    'maxLength': 120,
+                    'minLength': 1,
+                    'type': 'string',
+                  }),
+                  dict({
+                    'type': 'null',
+                  }),
+                ]),
+                'default': None,
+                'title': 'Date',
+              }),
+              'outcome': dict({
+                'anyOf': list([
+                  dict({
+                    'maxLength': 120,
+                    'minLength': 1,
+                    'type': 'string',
+                  }),
+                  dict({
+                    'type': 'null',
+                  }),
+                ]),
+                'default': None,
+                'title': 'Outcome',
+              }),
+              'persona': dict({
+                'anyOf': list([
+                  dict({
+                    'maxLength': 120,
+                    'minLength': 1,
+                    'type': 'string',
+                  }),
+                  dict({
+                    'type': 'null',
+                  }),
+                ]),
+                'default': None,
+                'title': 'Persona',
+              }),
+              'project_id': dict({
+                'anyOf': list([
+                  dict({
+                    'maxLength': 120,
+                    'minLength': 1,
+                    'type': 'string',
+                  }),
+                  dict({
+                    'type': 'null',
+                  }),
+                ]),
+                'default': None,
+                'title': 'Project Id',
+              }),
+              'skill': dict({
+                'anyOf': list([
+                  dict({
+                    'maxLength': 120,
+                    'minLength': 1,
+                    'type': 'string',
+                  }),
+                  dict({
+                    'type': 'null',
+                  }),
+                ]),
+                'default': None,
+                'title': 'Skill',
+              }),
+              'type': dict({
+                'anyOf': list([
+                  dict({
+                    'enum': list([
+                      'cv',
+                      'case_study',
+                      'repo',
+                      'review',
+                      'past_proposal',
+                    ]),
+                    'type': 'string',
+                  }),
+                  dict({
+                    'type': 'null',
+                  }),
+                ]),
+                'default': None,
+                'title': 'Type',
+              }),
+            }),
+            'title': 'EvidenceFilters',
+            'type': 'object',
+          }),
+        }),
+        'properties': dict({
+          'filters': dict({
+            'anyOf': list([
+              dict({
+                '$ref': '#/$defs/EvidenceFilters',
+              }),
+              dict({
+                'type': 'null',
+              }),
+            ]),
+            'default': None,
+          }),
+          'k': dict({
+            'default': 5,
+            'maximum': 20,
+            'minimum': 1,
+            'title': 'K',
+            'type': 'integer',
+          }),
+          'requirement': dict({
+            'maxLength': 8000,
+            'minLength': 1,
+            'title': 'Requirement',
+            'type': 'string',
+          }),
+        }),
+        'required': list([
+          'requirement',
+        ]),
+        'title': 'search_evidenceArguments',
+        'type': 'object',
+      }),
+      'name': 'search_evidence',
+      'outputSchema': dict({
+        '$defs': dict({
+          'EvidenceHit': dict({
+            'properties': dict({
+              'evidence': dict({
+                '$ref': '#/$defs/EvidenceItem',
+              }),
+              'score': dict({
+                'title': 'Score',
+                'type': 'number',
+              }),
+            }),
+            'required': list([
+              'evidence',
+              'score',
+            ]),
+            'title': 'EvidenceHit',
+            'type': 'object',
+          }),
+          'EvidenceItem': dict({
+            'properties': dict({
+              'client_industry': dict({
+                'anyOf': list([
+                  dict({
+                    'type': 'string',
+                  }),
+                  dict({
+                    'type': 'null',
+                  }),
+                ]),
+                'title': 'Client Industry',
+              }),
+              'date': dict({
+                'anyOf': list([
+                  dict({
+                    'type': 'string',
+                  }),
+                  dict({
+                    'type': 'null',
+                  }),
+                ]),
+                'title': 'Date',
+              }),
+              'id': dict({
+                'title': 'Id',
+                'type': 'string',
+              }),
+              'outcome': dict({
+                'anyOf': list([
+                  dict({
+                    'type': 'string',
+                  }),
+                  dict({
+                    'type': 'null',
+                  }),
+                ]),
+                'title': 'Outcome',
+              }),
+              'persona': dict({
+                'title': 'Persona',
+                'type': 'string',
+              }),
+              'project_id': dict({
+                'anyOf': list([
+                  dict({
+                    'type': 'string',
+                  }),
+                  dict({
+                    'type': 'null',
+                  }),
+                ]),
+                'title': 'Project Id',
+              }),
+              'skills': dict({
+                'items': dict({
+                  'type': 'string',
+                }),
+                'title': 'Skills',
+                'type': 'array',
+              }),
+              'source': dict({
+                'title': 'Source',
+                'type': 'string',
+              }),
+              'text': dict({
+                'title': 'Text',
+                'type': 'string',
+              }),
+              'title': dict({
+                'title': 'Title',
+                'type': 'string',
+              }),
+              'type': dict({
+                'enum': list([
+                  'cv',
+                  'case_study',
+                  'repo',
+                  'review',
+                  'past_proposal',
+                ]),
+                'title': 'Type',
+                'type': 'string',
+              }),
+            }),
+            'required': list([
+              'id',
+              'persona',
+              'type',
+              'source',
+              'title',
+              'text',
+              'project_id',
+              'skills',
+              'date',
+              'client_industry',
+              'outcome',
+            ]),
+            'title': 'EvidenceItem',
+            'type': 'object',
+          }),
+        }),
+        'properties': dict({
+          'matches': dict({
+            'items': dict({
+              '$ref': '#/$defs/EvidenceHit',
+            }),
+            'title': 'Matches',
+            'type': 'array',
+          }),
+        }),
+        'required': list([
+          'matches',
+        ]),
+        'title': 'EvidenceResults',
+        'type': 'object',
+      }),
+    }),
+  ])
+# ---
+# name: test_list_tools_matches_contract[workspace][workspace]
+  list([
+    dict({
+      'annotations': dict({
+        'destructiveHint': False,
+        'idempotentHint': True,
+        'openWorldHint': False,
+        'readOnlyHint': False,
+      }),
+      'inputSchema': dict({
+        'properties': dict({
+          'body': dict({
+            'maxLength': 12000,
+            'minLength': 1,
+            'title': 'Body',
+            'type': 'string',
+          }),
+          'dry_run': dict({
+            'default': True,
+            'title': 'Dry Run',
+            'type': 'boolean',
+          }),
+          'idempotency_key': dict({
+            'maxLength': 128,
+            'minLength': 1,
+            'pattern': '^[!-~]+$',
+            'title': 'Idempotency Key',
+            'type': 'string',
+          }),
+          'subject': dict({
+            'maxLength': 200,
+            'minLength': 1,
+            'pattern': '^[^\\r\\n]+$',
+            'title': 'Subject',
+            'type': 'string',
+          }),
+          'to': dict({
+            'maxLength': 320,
+            'pattern': '^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$',
+            'title': 'To',
+            'type': 'string',
+          }),
+        }),
+        'required': list([
+          'to',
+          'subject',
+          'body',
+          'idempotency_key',
+        ]),
+        'title': 'create_email_draftArguments',
+        'type': 'object',
+      }),
+      'name': 'create_email_draft',
+      'outputSchema': dict({
+        '$defs': dict({
+          'EmailDraft': dict({
+            'properties': dict({
+              'body': dict({
+                'title': 'Body',
+                'type': 'string',
+              }),
+              'subject': dict({
+                'title': 'Subject',
+                'type': 'string',
+              }),
+              'to': dict({
+                'title': 'To',
+                'type': 'string',
+              }),
+            }),
+            'required': list([
+              'to',
+              'subject',
+              'body',
+            ]),
+            'title': 'EmailDraft',
+            'type': 'object',
+          }),
+        }),
+        'properties': dict({
+          'draft_id': dict({
+            'anyOf': list([
+              dict({
+                'type': 'string',
+              }),
+              dict({
+                'type': 'null',
+              }),
+            ]),
+            'default': None,
+            'title': 'Draft Id',
+          }),
+          'dry_run': dict({
+            'title': 'Dry Run',
+            'type': 'boolean',
+          }),
+          'payload': dict({
+            '$ref': '#/$defs/EmailDraft',
+          }),
+        }),
+        'required': list([
+          'dry_run',
+          'payload',
+        ]),
+        'title': 'EmailResult',
+        'type': 'object',
+      }),
+    }),
+    dict({
+      'annotations': dict({
+        'destructiveHint': False,
+        'idempotentHint': True,
+        'openWorldHint': False,
+        'readOnlyHint': False,
+      }),
+      'inputSchema': dict({
+        '$defs': dict({
+          'Interval': dict({
+            'properties': dict({
+              'end': dict({
+                'format': 'date-time',
+                'title': 'End',
+                'type': 'string',
+              }),
+              'start': dict({
+                'format': 'date-time',
+                'title': 'Start',
+                'type': 'string',
+              }),
+            }),
+            'required': list([
+              'start',
+              'end',
+            ]),
+            'title': 'Interval',
+            'type': 'object',
+          }),
+        }),
+        'properties': dict({
+          'client_ref': dict({
+            'maxLength': 128,
+            'minLength': 1,
+            'title': 'Client Ref',
+            'type': 'string',
+          }),
+          'dry_run': dict({
+            'default': True,
+            'title': 'Dry Run',
+            'type': 'boolean',
+          }),
+          'idempotency_key': dict({
+            'maxLength': 128,
+            'minLength': 1,
+            'pattern': '^[!-~]+$',
+            'title': 'Idempotency Key',
+            'type': 'string',
+          }),
+          'slot': dict({
+            '$ref': '#/$defs/Interval',
+          }),
+          'title': dict({
+            'maxLength': 160,
+            'minLength': 1,
+            'title': 'Title',
+            'type': 'string',
+          }),
+        }),
+        'required': list([
+          'slot',
+          'title',
+          'client_ref',
+          'idempotency_key',
+        ]),
+        'title': 'create_tentative_holdArguments',
+        'type': 'object',
+      }),
+      'name': 'create_tentative_hold',
+      'outputSchema': dict({
+        '$defs': dict({
+          'HoldDraft': dict({
+            'properties': dict({
+              'client_ref': dict({
+                'title': 'Client Ref',
+                'type': 'string',
+              }),
+              'slot': dict({
+                '$ref': '#/$defs/Interval',
+              }),
+              'title': dict({
+                'title': 'Title',
+                'type': 'string',
+              }),
+            }),
+            'required': list([
+              'slot',
+              'title',
+              'client_ref',
+            ]),
+            'title': 'HoldDraft',
+            'type': 'object',
+          }),
+          'Interval': dict({
+            'properties': dict({
+              'end': dict({
+                'format': 'date-time',
+                'title': 'End',
+                'type': 'string',
+              }),
+              'start': dict({
+                'format': 'date-time',
+                'title': 'Start',
+                'type': 'string',
+              }),
+            }),
+            'required': list([
+              'start',
+              'end',
+            ]),
+            'title': 'Interval',
+            'type': 'object',
+          }),
+        }),
+        'properties': dict({
+          'dry_run': dict({
+            'title': 'Dry Run',
+            'type': 'boolean',
+          }),
+          'hold_id': dict({
+            'anyOf': list([
+              dict({
+                'type': 'string',
+              }),
+              dict({
+                'type': 'null',
+              }),
+            ]),
+            'default': None,
+            'title': 'Hold Id',
+          }),
+          'payload': dict({
+            '$ref': '#/$defs/HoldDraft',
+          }),
+        }),
+        'required': list([
+          'dry_run',
+          'payload',
+        ]),
+        'title': 'HoldResult',
+        'type': 'object',
+      }),
+    }),
+    dict({
+      'annotations': dict({
+        'destructiveHint': False,
+        'idempotentHint': True,
+        'openWorldHint': False,
+        'readOnlyHint': True,
+      }),
+      'inputSchema': dict({
+        '$defs': dict({
+          'Interval': dict({
+            'properties': dict({
+              'end': dict({
+                'format': 'date-time',
+                'title': 'End',
+                'type': 'string',
+              }),
+              'start': dict({
+                'format': 'date-time',
+                'title': 'Start',
+                'type': 'string',
+              }),
+            }),
+            'required': list([
+              'start',
+              'end',
+            ]),
+            'title': 'Interval',
+            'type': 'object',
+          }),
+        }),
+        'properties': dict({
+          'duration': dict({
+            'maximum': 120,
+            'minimum': 15,
+            'title': 'Duration',
+            'type': 'integer',
+          }),
+          'range': dict({
+            '$ref': '#/$defs/Interval',
+          }),
+          'tz': dict({
+            'default': 'UTC',
+            'maxLength': 64,
+            'minLength': 1,
+            'title': 'Tz',
+            'type': 'string',
+          }),
+        }),
+        'required': list([
+          'range',
+          'duration',
+        ]),
+        'title': 'free_slotsArguments',
+        'type': 'object',
+      }),
+      'name': 'free_slots',
+      'outputSchema': dict({
+        '$defs': dict({
+          'Interval': dict({
+            'properties': dict({
+              'end': dict({
+                'format': 'date-time',
+                'title': 'End',
+                'type': 'string',
+              }),
+              'start': dict({
+                'format': 'date-time',
+                'title': 'Start',
+                'type': 'string',
+              }),
+            }),
+            'required': list([
+              'start',
+              'end',
+            ]),
+            'title': 'Interval',
+            'type': 'object',
+          }),
+        }),
+        'properties': dict({
+          'slots': dict({
+            'items': dict({
+              '$ref': '#/$defs/Interval',
+            }),
+            'title': 'Slots',
+            'type': 'array',
+          }),
+          'timezone': dict({
+            'title': 'Timezone',
+            'type': 'string',
+          }),
+        }),
+        'required': list([
+          'timezone',
+          'slots',
+        ]),
+        'title': 'Slots',
+        'type': 'object',
+      }),
+    }),
+  ])
+# ---
