@@ -86,6 +86,7 @@ services:
     depends_on:
       postgres: {condition: service_healthy}
       redis: {condition: service_healthy}
+      gigsim: {condition: service_healthy}
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
       interval: 5s
@@ -106,7 +107,7 @@ services:
       context: ..
       dockerfile: infra/docker/web.Dockerfile
       args:
-        NEXT_PUBLIC_API_URL: ${PUBLIC_API_URL:-http://localhost:8000}
+        GIGBID_API_URL: http://api:8000
     ports: ["3000:3000"]
     depends_on:
       api: {condition: service_healthy}

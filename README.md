@@ -4,8 +4,8 @@ A multi-agent freelancer copilot: LangGraph agents find freelance jobs, judge wh
 worth bidding on, write proposals grounded in real portfolio evidence, and manage client
 conversations. A human approves every proposal and message before it leaves the system.
 
-> Status: under construction (AI-4016 Assignment 2). The demo GIF, live link, architecture
-> diagram, results tables and trace links will be added as each part is built and measured.
+> Status: under construction (AI-4016 Assignment 2). The local simulator review workflow and
+> smoke evaluation are available. Hosted review and the comparative experiments are pending.
 
 ## Layout
 
@@ -35,6 +35,9 @@ Run `make help` for every command.
 
 The [local bid walkthrough](docs/RUNBOOK.md#review-a-bid-in-the-local-simulator) runs without
 model credentials and saves pending approvals between CLI sessions.
+
+The [web walkthrough](docs/RUNBOOK.md#review-bids-in-the-browser) covers persona selection,
+the job inbox, proposal approval and the simulator pipeline.
 
 ## Evaluation
 

@@ -4,7 +4,7 @@
 PY ?= uv run python
 PYTEST ?= uv run pytest
 
-.PHONY: help install dev api gigsim test lint fmt eval seed world personas data-download data-prep devset demo models compose-up compose-down
+.PHONY: help install dev api web api-client gigsim test lint fmt eval seed world personas data-download data-prep devset demo models compose-up compose-down
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  %-15s %s\n", $$1, $$2}'
@@ -17,6 +17,13 @@ dev: ## Run GigSim and the API locally with auto-reload (two processes)
 
 api: ## Run the API on :8000
 	uv run uvicorn apps.api.main:app --reload --port 8000
+
+web: ## Run the Next.js workspace on :3000 after npm ci
+	npm --prefix apps/web run dev
+
+api-client: ## Regenerate the web client's OpenAPI contract
+	$(PY) -m apps.api.export_openapi --output apps/web/openapi.json
+	npm --prefix apps/web run gen:api
 
 gigsim: ## Run the GigSim simulator on :8081
 	uv run uvicorn gigsim.app:app --reload --port 8081
@@ -48,8 +55,9 @@ world: ## Build the GigSim world and the dev set from processed data and persona
 seed: ## Load the world into GigSim (GigSim must be running)
 	$(PY) -m gigsim.seed --world $${GIGSIM_WORLD_PATH:-data/processed/gigsim_world}
 
-eval: ## Run the evaluation suite (Phase 3+); writes evals/results/*.json
-	$(PY) -m evals.runners.run_all
+eval: ## Run the offline smoke evaluation and regenerate report tables
+	$(PY) -m evals.runners.smoke --jobs 30 --gate
+	$(PY) -m scripts.make_tables
 
 demo: ## End-to-end demo against GigSim (Phase 2+)
 	$(PY) -m scripts.single_agent_demo

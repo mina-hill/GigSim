@@ -7,7 +7,7 @@ The brief requires this file: which AI tools were used, for what, and one mistak
 | Tool | Used for |
 | --- | --- |
 | Claude (Anthropic), in claude.ai with a code workspace | Planning the build, writing most of the code and tests, writing the persona bibles, drafting docs |
-| Codex (OpenAI), in the Codex desktop app | Restoring the Git bundle, rebuilding the simulator-backed bid workflow, writing the integration tests and local bid demo |
+| Codex (OpenAI), in the Codex desktop app | Restoring the Git bundle, rebuilding the simulator-backed bid workflow, writing the integration tests and local demo, building the web workspace, and generating report tables from the smoke evaluation |
 
 Every commit written with Claude's help says so in its message (`Co-Authored-By: Claude`).
 

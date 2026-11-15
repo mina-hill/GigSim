@@ -35,8 +35,46 @@ a run interrupted during a marketplace call. Use a separate checkpoint file with
 `--checkpoint` for each fresh simulator database and one reviewer per checkpoint file.
 
 This path uses deterministic synthetic portfolio evidence, the local GigSim adapter and a
-SQLite checkpointer. Production MCP transport, Postgres checkpoints and the web approval
-screen remain separate milestones.
+SQLite checkpointer. Production MCP transport and Postgres checkpoints remain separate
+milestones.
+
+## Review bids in the browser
+
+Install the locked Python dependencies and seed the synthetic fixture.
+
+```bash
+uv sync --locked --all-extras
+uv run python -m gigsim.seed --world gigsim/fixtures/mini_world
+uv run uvicorn gigsim.app:app --port 8081
+```
+
+Start the API in a second terminal and the Next.js app in a third.
+
+```bash
+uv run uvicorn apps.api.main:app --port 8000
+```
+
+```bash
+cd apps/web
+npm ci
+npm run dev
+```
+
+Open `http://127.0.0.1:3000` and choose the full-stack persona. Open **Add Stripe
+subscriptions to Next.js SaaS** to analyse the job and review the resulting draft. The browser
+can reload a pending approval from `GIGBID_WEB_CHECKPOINT`, which defaults to
+`.cache/gigbid-web.sqlite`. Use a fresh checkpoint when you reset the simulator world.
+
+This is a local, single-worker review workspace for synthetic personas. The UI shows read-only
+simulator conversations. Hosted login, Upwork connectivity and approved conversation replies
+require the corresponding production services before public deployment.
+
+To regenerate the web client's schema after an API change, run from the repository root:
+
+```bash
+uv run python -m apps.api.export_openapi --output apps/web/openapi.json
+npm --prefix apps/web run gen:api
+```
 
 ## Seed GigSim
 
