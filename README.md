@@ -6,8 +6,40 @@ A multi-agent freelancer copilot: LangGraph agents find freelance jobs, judge wh
 worth bidding on, write proposals grounded in real portfolio evidence, and manage client
 conversations. A human approves every proposal and message before it leaves the system.
 
-AI-4016 Assignment 2. The local review workspace covers synthetic proposal and client-reply
-approvals. The evaluation tables below describe the measured development experiments.
+AI-4016 Assignment 2. The evaluation tables below describe the measured development experiments.
+
+- **Live demo:** [gigsim.onrender.com](https://gigsim.onrender.com) (password protected; reviewer
+  login in the course submission). It runs on Render's free tier with synthetic personas, so it
+  sleeps after 15 idle minutes, takes a minute or two to wake, and resets its simulated data.
+- **Portfolio MCP server:** [install with Docker or stdio](mcp_servers/portfolio/README.md).
+- **Live Upwork mode:** the same marketplace port also connects to a real Upwork account through
+  Upwork's official MCP server. Proposals stop at Upwork's preview until the freelancer confirms
+  them, and messages are never sent. See [Upwork MCP](docs/UPWORK_MCP.md).
+
+## Architecture
+
+```mermaid
+flowchart LR
+  Reviewer[Reviewer] --> Web[Next.js workspace]
+  Web --> API[FastAPI]
+  API --> Bid[Bid graph]
+  API --> Conversation[Conversation graph]
+  API -. optional bid queue .-> Redis[Redis]
+  Redis --> Worker[Arq bid worker]
+  Worker --> Bid
+  Bid --> Checkpoints[(LangGraph checkpoints)]
+  Conversation --> Checkpoints
+  Bid --> Port[Marketplace port]
+  Conversation --> Port
+  Port --> Sim[GigSim HTTP API]
+  Port -. live mode .-> Upwork[Official Upwork MCP server]
+  API --> Corpus[Persona-scoped evidence]
+  MCP[Portfolio and Marketplace MCP servers] --> Corpus
+  MCP --> Port
+  Workspace[Workspace MCP server] --> Mock[(Mock calendar and drafts)]
+```
+
+Both graphs, rendered from code, are in [the architecture notes](docs/ARCHITECTURE.md).
 
 ## Layout
 
@@ -48,7 +80,8 @@ The [web walkthrough](docs/RUNBOOK.md#review-bids-in-the-browser) covers persona
 the job inbox, proposal approval, client replies and the simulator pipeline.
 
 The [reviewer deployment guide](docs/DEPLOYMENT.md) packages the three services behind one
-authenticated HTTPS ingress with persistent simulator state.
+authenticated HTTPS ingress. The live demo uses it on Render's free tier, without a persistent
+disk.
 
 ## Evaluation
 
