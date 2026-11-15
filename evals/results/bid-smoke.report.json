@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "experiment": "Offline bid graph smoke",
+  "scope": "30 synthetic development jobs sampled by persona and job kind with seed 4016. Initial decisions are scored before drafting and watch counts as a non-bid. The graph stops at human approval. Claims are checked by the offline verifier and no proposals are sent.",
+  "command": "uv run python -m evals.runners.smoke --jobs 30 --gate",
+  "metrics": [
+    {
+      "name": "Correct bid decisions",
+      "value": 21,
+      "denominator": 30
+    },
+    {
+      "name": "Bid F1",
+      "value": 0.7097
+    },
+    {
+      "name": "Drafts reaching review",
+      "value": 14,
+      "denominator": 30
+    },
+    {
+      "name": "Claims flagged as unsupported at review",
+      "value": 0,
+      "denominator": 28
+    }
+  ]
+}
