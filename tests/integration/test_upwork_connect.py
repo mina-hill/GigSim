@@ -7,6 +7,8 @@ from cryptography.fernet import Fernet
 
 from mcp_servers.marketplace.adapters.upwork_connect import (
     HELP_TOOLS,
+    check,
+    confirm,
     connect,
     ensure_key,
     pick_freelancer_account,
@@ -103,3 +105,97 @@ def test_the_freelancer_account_is_preferred_over_client_and_agency():
         {"org_uid": "f", "type": "Freelancer"},
     ]
     assert pick_freelancer_account({"data": accounts})["org_uid"] == "f"
+
+
+async def connected(tmp_path, monkeypatch, tools):
+    monkeypatch.delenv("TOKEN_ENCRYPTION_KEY", raising=False)
+    env_file = tmp_path / ".env"
+    mock = mock_upwork()
+    mock.tools.update(tools)
+    port = free_port()
+    await connect(
+        "mina",
+        storage_dir=tmp_path / "upwork",
+        env_file=env_file,
+        port=port,
+        timeout=10,
+        launch_browser=mock.browser,
+        httpx_client_factory=mock.client_factory(),
+    )
+    options = {
+        "port": port,
+        "timeout": 10,
+        "launch_browser": mock.browser,
+        "httpx_client_factory": mock.client_factory(),
+    }
+    return mock, {
+        "storage_dir": tmp_path / "upwork",
+        "env_file": env_file,
+        "session_options": options,
+    }
+
+
+PREVIEW = {
+    "status": "ok",
+    "preview_id": "pv_1",
+    "job_title": "RAG chatbot",
+    "charged_amount": 40,
+    "connects_cost": 14,
+    "connects_balance": 120,
+    "cover_letter": "I built a cited RAG bot.",
+}
+
+
+async def test_confirm_submits_only_after_the_person_types_submit(tmp_path, monkeypatch):
+    mock, where = await connected(
+        tmp_path,
+        monkeypatch,
+        {
+            "upwork__get_preview": lambda _: PREVIEW,
+            "upwork__confirm_preview": lambda _: {"status": "ok"},
+        },
+    )
+    shown = []
+    assert not await confirm("mina", "pv_1", ask=lambda _: "yes", show=shown.append, **where)
+    assert not any(name == "upwork__confirm_preview" for name, _ in mock.calls)
+    assert "Connects: 14 of your 120" in shown and "I built a cited RAG bot." in shown
+
+    assert await confirm("mina", "pv_1", ask=lambda _: "SUBMIT", show=shown.append, **where)
+    confirms = [args for name, args in mock.calls if name == "upwork__confirm_preview"]
+    assert confirms == [
+        {
+            "action": "confirm",
+            "org_uid": "free-1",
+            "params": {"type": "proposal", "preview_id": "pv_1"},
+        }
+    ]
+
+
+async def test_check_reads_through_the_live_adapter(tmp_path, monkeypatch):
+    row = {
+        "id": "77",
+        "title": "Python data pipeline",
+        "job_type": "fixed",
+        "budget": "$800.00",
+        "skills": ["Python", "ETL"],
+        "client": {},
+    }
+
+    def find_jobs(args):
+        if args["action"] == "get":
+            return {"status": "ok", "connects_cost": 9, "connects_balance": 42}
+        return {"status": "ok", "jobs": [row]}
+
+    mock, where = await connected(
+        tmp_path,
+        monkeypatch,
+        {
+            "upwork__find_jobs": find_jobs,
+            "upwork__get_profile": lambda _: {"status": "ok", "balance": {"connectsBalance": 42}},
+        },
+    )
+    lines = await check("mina", **where)
+    assert lines[0] == "Connects balance: 42"
+    assert lines[1].startswith("Job 77: Python data pipeline ($800.0 fixed")
+    assert lines[-1] == "Applying to job 77 would cost 9 Connects."
+    assert not {"upwork__manage_proposals", "upwork__confirm_preview"} & {n for n, _ in mock.calls}

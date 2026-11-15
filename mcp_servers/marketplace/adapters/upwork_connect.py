@@ -2,12 +2,19 @@
 
     uv run python -m mcp_servers.marketplace.adapters.upwork_connect connect
     uv run python -m mcp_servers.marketplace.adapters.upwork_connect status
+    uv run python -m mcp_servers.marketplace.adapters.upwork_connect check
+    uv run python -m mcp_servers.marketplace.adapters.upwork_connect confirm <preview_id>
     uv run python -m mcp_servers.marketplace.adapters.upwork_connect disconnect
 
 `connect` opens Upwork's own consent page once, saves the sign-in encrypted per user, and
 picks the user's freelancer account. It also saves Upwork's full tool reference
 (get_tool_help) and a few small read-only samples, which the live adapter's field mapping
 is checked against. It never creates, submits or sends anything.
+
+`check` reads the account through the live adapter (Connects, newest matching jobs, one
+job's Connects cost) to show the mapping works. `confirm` is the separate, explicit step
+that submits a proposal preview GigBid prepared: it shows Upwork's stored preview and only
+calls confirm_preview after the person types SUBMIT.
 """
 
 from __future__ import annotations
@@ -37,6 +44,7 @@ from mcp_servers.marketplace.adapters.upwork_auth import (
     upwork_session,
 )
 from mcp_servers.marketplace.adapters.upwork_discovery import DiscoveryError
+from mcp_servers.marketplace.port import MarketplaceError
 from mcp_servers.runtime import ROOT
 
 STORAGE_DIR = ROOT / ".cache" / "upwork"
@@ -175,6 +183,100 @@ async def connect(
     return {"account": account, "new_key": new_key, "reference": reference_path}
 
 
+def _signed_in(user: str, storage_dir: Path, env_file: Path) -> EncryptedTokenStorage:
+    load_dotenv(env_file, override=False)
+    storage = EncryptedTokenStorage(storage_dir, user, load_fernet())
+    if not storage.connected() or not storage.get_account():
+        raise ConnectError(f"User '{user}' is not connected. Run the connect command first.")
+    return storage
+
+
+async def check(
+    user: str,
+    *,
+    storage_dir: Path = STORAGE_DIR,
+    env_file: Path = ROOT / ".env",
+    session_options: dict[str, Any] | None = None,
+) -> list[str]:
+    """Read the account through the live adapter. Nothing is written."""
+    from mcp_servers.marketplace.adapters.upwork_live import UpworkAdapter
+
+    storage = _signed_in(user, storage_dir, env_file)
+    async with upwork_session(storage, interactive=True, **(session_options or {})) as session:
+        upwork = UpworkAdapter(session, storage.get_account()["org_uid"])
+        balance = await upwork.get_connects_balance()
+        page = await upwork.search_jobs(limit=3)
+        lines = [f"Connects balance: {balance.balance}"]
+        for job in page.items:
+            if job.payment_type == "hourly":
+                price = f"${job.hourly_min or '?'}-{job.hourly_max or '?'}/hr"
+            else:
+                price = f"${job.budget_max or '?'} fixed"
+            lines.append(f"Job {job.job_id}: {job.title} ({price}, GigBid domain {job.domain})")
+        if page.items:
+            quote = await upwork.quote_connects(page.items[0].job_id)
+            lines.append(
+                f"Applying to job {quote.job_id} would cost {quote.connects_cost} Connects."
+            )
+    return lines
+
+
+async def confirm(
+    user: str,
+    preview_id: str,
+    *,
+    ask: Callable[[str], str] = input,
+    show: Callable[[str], None] = print,
+    storage_dir: Path = STORAGE_DIR,
+    env_file: Path = ROOT / ".env",
+    session_options: dict[str, Any] | None = None,
+) -> bool:
+    """Show Upwork's stored proposal preview and submit it only after the person types SUBMIT."""
+    storage = _signed_in(user, storage_dir, env_file)
+    org_uid = storage.get_account()["org_uid"]
+    async with upwork_session(storage, interactive=True, **(session_options or {})) as session:
+        params = {"type": "proposal", "id": preview_id}
+        stored = await _call(
+            session, "get_preview", {"action": "get", "org_uid": org_uid, "params": params}
+        )
+        preview = _json(stored["text"])
+        if stored["is_error"] or not isinstance(preview, dict):
+            raise ConnectError("Upwork has no pending proposal preview with that id.")
+        cost = _find(preview, "connects_cost")
+        show(f"Job: {_find(preview, 'title', 'job_title') or _find(preview, 'job_reference')}")
+        show(f"Bid: {_find(preview, 'charged_amount', 'bid', 'amount')}")
+        show(f"Connects: {cost} of your {_find(preview, 'connects_balance')}")
+        show("Cover letter:")
+        show(str(_find(preview, "cover_letter", "coverLetter") or "(not shown)"))
+        answer = await asyncio.to_thread(
+            ask, f"Type SUBMIT to submit this proposal on Upwork and spend {cost} Connects: "
+        )
+        if answer.strip() != "SUBMIT":
+            show("Not submitted.")
+            return False
+        done = await _call(
+            session,
+            "confirm_preview",
+            {
+                "action": "confirm",
+                "org_uid": org_uid,
+                "params": {"type": "proposal", "preview_id": preview_id},
+            },
+        )
+        if done["is_error"]:
+            raise ConnectError("Upwork did not submit the proposal. Check it on Upwork.")
+    show("Submitted on Upwork.")
+    return True
+
+
+def _find(value: Any, *keys: str) -> Any:
+    for item in _dicts(value):
+        for key in keys:
+            if item.get(key) not in (None, ""):
+                return item[key]
+    return None
+
+
 def status(user: str, *, storage_dir: Path = STORAGE_DIR, env_file: Path = ROOT / ".env") -> str:
     load_dotenv(env_file, override=False)
     storage = EncryptedTokenStorage(storage_dir, user, load_fernet())
@@ -194,7 +296,8 @@ def status(user: str, *, storage_dir: Path = STORAGE_DIR, env_file: Path = ROOT 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Connect GigBid to your Upwork account.")
-    parser.add_argument("command", choices=("connect", "status", "disconnect"))
+    parser.add_argument("command", choices=("connect", "status", "check", "confirm", "disconnect"))
+    parser.add_argument("preview_id", nargs="?", help="For confirm: the proposal preview id.")
     parser.add_argument("--user", default=os.environ.get("GIGBID_USER", "local"))
     parser.add_argument("--port", type=int, default=DEFAULT_CALLBACK_PORT)
     parser.add_argument("--timeout", type=int, default=180, help="Seconds allowed for sign-in.")
@@ -207,13 +310,24 @@ def main() -> None:
         if args.command == "status":
             print(status(args.user))
             return
+        if args.command == "check":
+            for line in asyncio.run(check(args.user, session_options={"port": args.port})):
+                print(line)
+            return
+        if args.command == "confirm":
+            if not args.preview_id:
+                parser.error("confirm needs the preview id GigBid showed you.")
+            submitted = asyncio.run(
+                confirm(args.user, args.preview_id, session_options={"port": args.port})
+            )
+            parser.exit(0 if submitted else 1)
         if args.command == "disconnect":
             load_dotenv(ROOT / ".env", override=False)
             storage = EncryptedTokenStorage(STORAGE_DIR, args.user, load_fernet())
             print("Disconnected." if storage.disconnect() else "Nothing to disconnect.")
             return
         result = asyncio.run(connect(args.user, port=args.port, timeout=args.timeout))
-    except (TokenKeyError, ConnectError, DiscoveryError, SignInRequired) as error:
+    except (TokenKeyError, ConnectError, DiscoveryError, SignInRequired, MarketplaceError) as error:
         parser.exit(1, f"{error}\n")
     except TimeoutError:
         parser.exit(1, "Upwork sign-in timed out.\n")
