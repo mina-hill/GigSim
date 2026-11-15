@@ -276,10 +276,19 @@ def main() -> None:
         choices=("ai_ml", "fullstack", "data_analyst"),
     )
     parser.add_argument("--audit-db", type=Path, default=ROOT / ".cache" / "mcp-audit.sqlite3")
+    parser.add_argument(
+        "--upwork-user",
+        default=os.environ.get("GIGBID_USER", "local"),
+        help="GigBid user whose saved Upwork sign-in to use in live mode.",
+    )
     args = parser.parse_args()
     config = get_config()
-    if config.marketplace["mode"] != "gigsim":
-        raise SystemExit("Configure MARKETPLACE_MODE=gigsim for the local MCP server.")
+    mode = config.marketplace["mode"]
+    if mode == "upwork":
+        asyncio.run(_serve_upwork(args, config))
+        return
+    if mode != "gigsim":
+        raise SystemExit("Set MARKETPLACE_MODE to gigsim or upwork.")
     token = os.environ.get("GIGBID_SIM_TOKEN") or load_simulator_account_tokens().get(
         f"persona_{args.persona}"
     )
@@ -299,6 +308,31 @@ def main() -> None:
             await serve(server, args, "MCP_MARKETPLACE_TOKEN")
 
     asyncio.run(start())
+
+
+async def _serve_upwork(args, config) -> None:  # noqa: ANN001
+    """Live mode: the same tools over the user's saved Upwork sign-in. Never opens a browser."""
+    from mcp_servers.marketplace.adapters.upwork_auth import (
+        EncryptedTokenStorage,
+        load_fernet,
+        upwork_session,
+    )
+    from mcp_servers.marketplace.adapters.upwork_connect import STORAGE_DIR
+    from mcp_servers.marketplace.adapters.upwork_live import UpworkAdapter
+
+    storage = EncryptedTokenStorage(STORAGE_DIR, args.upwork_user, load_fernet())
+    account = storage.get_account()
+    if not storage.connected() or not account:
+        raise SystemExit(
+            "Connect Upwork first: python -m mcp_servers.marketplace.adapters."
+            "upwork_connect connect"
+        )
+    url = config.marketplace.get("upwork", {}).get("url") or "https://mcp.upwork.com/mcp"
+    async with upwork_session(storage, interactive=False, url=url) as session:
+        server = create_marketplace_server(
+            UpworkAdapter(session, account["org_uid"]), AuditLog(args.audit_db)
+        )
+        await serve(server, args, "MCP_MARKETPLACE_TOKEN")
 
 
 if __name__ == "__main__":
