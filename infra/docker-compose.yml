@@ -1,0 +1,117 @@
+# docker compose -f infra/docker-compose.yml --env-file .env up --build
+# Starts web, API, worker, the three MCP servers, GigSim, Postgres (pgvector), Redis and Ollama.
+name: gigbid
+
+x-python-env: &python-env
+  env_file: ../.env
+  environment:
+    DATABASE_URL: postgresql://gigbid:gigbid@postgres:5432/gigbid
+    REDIS_URL: redis://redis:6379/0
+    GIGSIM_BASE_URL: http://gigsim:8081
+    OLLAMA_BASE_URL: http://ollama:11434
+    MCP_PORTFOLIO_URL: http://mcp-portfolio:8101/mcp
+    MCP_MARKETPLACE_URL: http://mcp-marketplace:8102/mcp
+    MCP_WORKSPACE_URL: http://mcp-workspace:8103/mcp
+    LLM_CACHE_PATH: /app/.cache/llm_cache.sqlite
+  volumes:
+    - cache:/app/.cache
+    - ../data:/app/data
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: gigbid
+      POSTGRES_PASSWORD: gigbid
+      POSTGRES_DB: gigbid
+    volumes: [pgdata:/var/lib/postgresql/data]
+    ports: ["5432:5432"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gigbid"]
+      interval: 5s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      retries: 20
+
+  ollama:
+    image: ollama/ollama:latest
+    volumes: [ollama:/root/.ollama]
+    ports: ["11434:11434"]
+
+  gigsim:
+    build: {context: .., dockerfile: infra/docker/gigsim.Dockerfile}
+    env_file: ../.env
+    environment:
+      GIGSIM_DB_URL: sqlite:////app/.cache/gigsim.db
+    volumes: [cache:/app/.cache, ../data:/app/data]
+    ports: ["8081:8081"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8081/health')"]
+      interval: 5s
+      retries: 20
+
+  mcp-portfolio:
+    <<: *python-env
+    build: {context: .., dockerfile: infra/docker/mcp-portfolio.Dockerfile}
+    ports: ["8101:8101"]
+    depends_on:
+      postgres: {condition: service_healthy}
+
+  mcp-marketplace:
+    <<: *python-env
+    build: {context: .., dockerfile: infra/docker/mcp-marketplace.Dockerfile}
+    ports: ["8102:8102"]
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis: {condition: service_healthy}
+      gigsim: {condition: service_healthy}
+
+  mcp-workspace:
+    <<: *python-env
+    build: {context: .., dockerfile: infra/docker/mcp-workspace.Dockerfile}
+    ports: ["8103:8103"]
+    depends_on:
+      postgres: {condition: service_healthy}
+
+  api:
+    <<: *python-env
+    build: {context: .., dockerfile: infra/docker/api.Dockerfile}
+    ports: ["8000:8000"]
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 5s
+      retries: 20
+
+  worker:
+    <<: *python-env
+    build: {context: .., dockerfile: infra/docker/worker.Dockerfile}
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis: {condition: service_healthy}
+      mcp-portfolio: {condition: service_started}
+      mcp-marketplace: {condition: service_started}
+      mcp-workspace: {condition: service_started}
+
+  web:
+    build:
+      context: ..
+      dockerfile: infra/docker/web.Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${PUBLIC_API_URL:-http://localhost:8000}
+    ports: ["3000:3000"]
+    depends_on:
+      api: {condition: service_healthy}
+
+volumes:
+  pgdata:
+  ollama:
+  cache:
