@@ -92,3 +92,53 @@ jobs:
             apps/web/playwright-report/
             apps/web/test-results/
             ${{ runner.temp }}/gig*.log
+
+  hosted-reviewer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+      - name: Build the reviewer image
+        run: docker build -f infra/docker/reviewer.Dockerfile -t gigsim-reviewer:ci .
+      - name: Install browser test dependencies
+        working-directory: apps/web
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium --only-shell
+      - name: Exercise reviewer authentication, persistence and approval
+        run: |
+          export GIGBID_LIVE_URL=http://127.0.0.1:10000
+          export GIGBID_REVIEWER_USER=reviewer
+          GIGBID_REVIEWER_PASSWORD=$(openssl rand -hex 16)
+          export GIGBID_REVIEWER_PASSWORD
+          echo "::add-mask::$GIGBID_REVIEWER_PASSWORD"
+          GIGBID_REVIEWER_HASH=$(docker run --rm --entrypoint caddy gigsim-reviewer:ci \
+            hash-password --plaintext "$GIGBID_REVIEWER_PASSWORD")
+          export GIGBID_REVIEWER_HASH
+          echo "::add-mask::$GIGBID_REVIEWER_HASH"
+
+          docker volume create gigsim-reviewer-ci-state
+          trap 'docker logs gigsim-reviewer-ci; docker rm -f gigsim-reviewer-ci; docker volume rm gigsim-reviewer-ci-state' EXIT
+          docker run --detach --name gigsim-reviewer-ci --memory 512m --cpus 0.5 \
+            --publish 127.0.0.1:10000:10000 --mount source=gigsim-reviewer-ci-state,target=/var/lib/gigbid \
+            --env GIGBID_REVIEWER_USER --env GIGBID_REVIEWER_HASH gigsim-reviewer:ci
+
+          wait_for_health() {
+            curl --fail --silent --show-error --retry 40 --retry-delay 2 --retry-all-errors \
+              "$GIGBID_LIVE_URL/healthz" >/dev/null
+          }
+          wait_for_health
+          url="$GIGBID_LIVE_URL/api/v1/jobs/job_web_stripe/run?persona=fullstack"
+          auth="$GIGBID_REVIEWER_USER:$GIGBID_REVIEWER_PASSWORD"
+          before=$(curl -fsS --user "$auth" -H 'Sec-Fetch-Site: same-origin' -X POST "$url" | jq -er .pending.proposal_digest)
+          docker restart gigsim-reviewer-ci
+          wait_for_health
+          after=$(curl -fsS --user "$auth" "$url" | jq -er .pending.proposal_digest)
+          test "$before" = "$after"
+
+          cd apps/web
+          npx playwright test --config=playwright.hosted.config.ts
