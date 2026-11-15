@@ -32,8 +32,31 @@ The score command requires exactly one valid rating for every item on both sides
 reports raw agreement, Cohen's kappa and the 3-by-3 confusion matrix in
 `calibration-result.json`. Kappa is reported as null if chance adjustment is undefined.
 The sample reuses ten excerpts and focuses on factual grounding, so a score does not
-generalize to broad proposal quality or independent human preference. No independently
-completed ratings or measured LLM kappa are included in the repository.
+generalize to broad proposal quality or independent human preference.
+
+## Result
+
+I rated all 30 items before reading any automated ratings, then scored them against the
+deterministic claim verifier that GigBid ships (`--backend verifier`). GigBid's reported
+results use no LLM judge, so no LLM kappa is reported.
+
+| Measure | Value |
+| --- | --- |
+| Exact agreement | 22 / 30 (0.7333) |
+| Chance agreement | 0.3333 |
+| Cohen's kappa | 0.60 |
+
+| My rating ↓ / verifier → | supported | partly supported | unsupported |
+| --- | ---: | ---: | ---: |
+| supported | 10 | 0 | 0 |
+| partly supported | 0 | 2 | 8 |
+| unsupported | 0 | 0 | 10 |
+
+Every disagreement is on a claim I rated partly supported: the verifier called 8 of those 10
+unsupported. It never accepted a claim I rated partly supported or unsupported, so its errors
+fall on the conservative side: it removes too much rather than letting an embellished claim
+through. The cost is that a partly grounded sentence gets cut rather than rewritten.
+[Result artifact](../evals/results/judge_calibration.json)
 
 ## Blind pairwise panel
 
