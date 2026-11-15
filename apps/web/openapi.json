@@ -241,6 +241,210 @@
         "title": "ComplianceVerdict",
         "type": "object"
       },
+      "ConversationIntent": {
+        "properties": {
+          "category": {
+            "enum": [
+              "question",
+              "negotiation",
+              "interview_request",
+              "scam_signal"
+            ],
+            "title": "Category",
+            "type": "string"
+          },
+          "explanation": {
+            "title": "Explanation",
+            "type": "string"
+          },
+          "flags": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Flags",
+            "type": "array"
+          }
+        },
+        "required": [
+          "category",
+          "explanation"
+        ],
+        "title": "ConversationIntent",
+        "type": "object"
+      },
+      "ConversationPreview": {
+        "properties": {
+          "claim_verification": {
+            "items": {
+              "$ref": "#/components/schemas/ClaimVerification"
+            },
+            "title": "Claim Verification",
+            "type": "array"
+          },
+          "draft": {
+            "$ref": "#/components/schemas/ReplyDraft"
+          },
+          "draft_version": {
+            "title": "Draft Version",
+            "type": "integer"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "incoming": {
+            "$ref": "#/components/schemas/Message"
+          },
+          "intent": {
+            "$ref": "#/components/schemas/ConversationIntent"
+          },
+          "proposal_digest": {
+            "title": "Proposal Digest",
+            "type": "string"
+          },
+          "thread_id": {
+            "title": "Thread Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "thread_id",
+          "incoming",
+          "intent",
+          "draft",
+          "draft_version",
+          "claim_verification",
+          "proposal_digest"
+        ],
+        "title": "ConversationPreview",
+        "type": "object"
+      },
+      "ConversationRunView": {
+        "properties": {
+          "approval_decision": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ApprovalDecision"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "approval_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Approval Status"
+          },
+          "claim_verification": {
+            "items": {
+              "$ref": "#/components/schemas/ClaimVerification"
+            },
+            "title": "Claim Verification",
+            "type": "array"
+          },
+          "compliance_verdict": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ComplianceVerdict"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "draft": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ReplyDraft"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "errors": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Errors",
+            "type": "array"
+          },
+          "incoming": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Message"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "intent": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ConversationIntent"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "outcome": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Message"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "pending": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ConversationPreview"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "resumable": {
+            "default": false,
+            "title": "Resumable",
+            "type": "boolean"
+          },
+          "status": {
+            "default": "idle",
+            "enum": [
+              "idle",
+              "running",
+              "awaiting_approval",
+              "needs_attention",
+              "skipped",
+              "done"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "title": "ConversationRunView",
+        "type": "object"
+      },
       "Critique": {
         "properties": {
           "feedback": {
@@ -383,6 +587,26 @@
           }
         },
         "title": "HealthView",
+        "type": "object"
+      },
+      "InterviewSlot": {
+        "properties": {
+          "ends_at": {
+            "format": "date-time",
+            "title": "Ends At",
+            "type": "string"
+          },
+          "starts_at": {
+            "format": "date-time",
+            "title": "Starts At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "starts_at",
+          "ends_at"
+        ],
+        "title": "InterviewSlot",
         "type": "object"
       },
       "JobCard": {
@@ -1155,6 +1379,35 @@
         "title": "ProposalInput",
         "type": "object"
       },
+      "ReplyDraft": {
+        "properties": {
+          "body": {
+            "maxLength": 5000,
+            "minLength": 1,
+            "title": "Body",
+            "type": "string"
+          },
+          "evidence_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Evidence Ids",
+            "type": "array"
+          },
+          "interview_slots": {
+            "items": {
+              "$ref": "#/components/schemas/InterviewSlot"
+            },
+            "title": "Interview Slots",
+            "type": "array"
+          }
+        },
+        "required": [
+          "body"
+        ],
+        "title": "ReplyDraft",
+        "type": "object"
+      },
       "RiskReport": {
         "properties": {
           "explanation": {
@@ -1406,6 +1659,20 @@
           }
         },
         "title": "RunView",
+        "type": "object"
+      },
+      "StartConversation": {
+        "properties": {
+          "availability": {
+            "items": {
+              "$ref": "#/components/schemas/InterviewSlot"
+            },
+            "maxItems": 8,
+            "title": "Availability",
+            "type": "array"
+          }
+        },
+        "title": "StartConversation",
         "type": "object"
       },
       "Thread": {
@@ -2094,6 +2361,279 @@
           }
         },
         "summary": "List Messages",
+        "tags": [
+          "Simulator workspace"
+        ]
+      }
+    },
+    "/api/v1/messages/{thread_id}/decision": {
+      "post": {
+        "operationId": "decide_conversation_api_v1_messages__thread_id__decision_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "thread_id",
+            "required": true,
+            "schema": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[\\w~\\-][\\w.~\\-]*$",
+              "title": "Thread Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "persona",
+            "required": true,
+            "schema": {
+              "maxLength": 32,
+              "minLength": 1,
+              "title": "Persona",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApprovalDecision"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConversationRunView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorView"
+                }
+              }
+            },
+            "description": "Persona or resource not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorView"
+                }
+              }
+            },
+            "description": "Review the current run before retrying"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorView"
+                }
+              }
+            },
+            "description": "Simulator unavailable"
+          }
+        },
+        "summary": "Decide Conversation",
+        "tags": [
+          "Simulator workspace"
+        ]
+      }
+    },
+    "/api/v1/messages/{thread_id}/run": {
+      "get": {
+        "operationId": "get_conversation_api_v1_messages__thread_id__run_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "thread_id",
+            "required": true,
+            "schema": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[\\w~\\-][\\w.~\\-]*$",
+              "title": "Thread Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "persona",
+            "required": true,
+            "schema": {
+              "maxLength": 32,
+              "minLength": 1,
+              "title": "Persona",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConversationRunView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorView"
+                }
+              }
+            },
+            "description": "Persona or resource not found"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorView"
+                }
+              }
+            },
+            "description": "Simulator unavailable"
+          }
+        },
+        "summary": "Get Conversation",
+        "tags": [
+          "Simulator workspace"
+        ]
+      },
+      "post": {
+        "operationId": "start_conversation_api_v1_messages__thread_id__run_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "thread_id",
+            "required": true,
+            "schema": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[\\w~\\-][\\w.~\\-]*$",
+              "title": "Thread Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "persona",
+            "required": true,
+            "schema": {
+              "maxLength": 32,
+              "minLength": 1,
+              "title": "Persona",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/StartConversation"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Options"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConversationRunView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorView"
+                }
+              }
+            },
+            "description": "Persona or resource not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorView"
+                }
+              }
+            },
+            "description": "Review the current run before retrying"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorView"
+                }
+              }
+            },
+            "description": "Simulator unavailable"
+          }
+        },
+        "summary": "Start Conversation",
         "tags": [
           "Simulator workspace"
         ]

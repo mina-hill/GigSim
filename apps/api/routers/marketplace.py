@@ -5,6 +5,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, Path, Query, Request
 
 from agent.handoffs import ApprovalDecision
+from apps.api.schemas.conversation import ConversationRunView, StartConversation
 from apps.api.schemas.workflow import ErrorView, JobCard, JobRecord, PersonaView, RunView
 from apps.api.workflow import PersonaSession, WebWorkflow
 from mcp_servers.marketplace.port import Message, Proposal, Thread
@@ -64,7 +65,7 @@ async def get_run(runtime: WorkflowDep, persona: PersonaDep, job_id: ResourceId)
 
 @router.post("/jobs/{job_id}/run", responses=NOT_FOUND | CONFLICT)
 async def start_run(runtime: WorkflowDep, persona: PersonaDep, job_id: ResourceId) -> RunView:
-    return await runtime.start_run(persona, job_id)
+    return await runtime.schedule_run(persona, job_id)
 
 
 @router.post("/jobs/{job_id}/decision", responses=NOT_FOUND | CONFLICT)
@@ -92,3 +93,27 @@ async def list_messages(
 ) -> list[Message]:
     await runtime.verified_account(persona)
     return await persona.adapter.list_messages(thread_id)
+
+
+@router.get("/messages/{thread_id}/run", responses=NOT_FOUND)
+async def get_conversation(
+    runtime: WorkflowDep, persona: PersonaDep, thread_id: ResourceId
+) -> ConversationRunView:
+    return await runtime.conversation_run(persona, thread_id)
+
+
+@router.post("/messages/{thread_id}/run", responses=NOT_FOUND | CONFLICT)
+async def start_conversation(
+    runtime: WorkflowDep,
+    persona: PersonaDep,
+    thread_id: ResourceId,
+    options: StartConversation | None = None,
+) -> ConversationRunView:
+    return await runtime.start_conversation(persona, thread_id, options or StartConversation())
+
+
+@router.post("/messages/{thread_id}/decision", responses=NOT_FOUND | CONFLICT)
+async def decide_conversation(
+    runtime: WorkflowDep, persona: PersonaDep, thread_id: ResourceId, decision: ApprovalDecision
+) -> ConversationRunView:
+    return await runtime.decide_conversation(persona, thread_id, decision)

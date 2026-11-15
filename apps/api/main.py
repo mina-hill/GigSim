@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import os
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -10,13 +9,13 @@ from pathlib import Path
 import httpx
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
-from langgraph.checkpoint.sqlite.aio import AsyncSqliteSaver
 from pydantic import ValidationError
+from redis.exceptions import RedisError
 
-from agent.config import REPO_ROOT, GigBidConfig, get_config
+from agent.config import GigBidConfig
 from apps.api.routers.marketplace import router
+from apps.api.runtime import open_workflow
 from apps.api.schemas.workflow import DependencyStatus, DependencyView, ErrorView, HealthView
-from apps.api.settings import load_simulator_account_tokens
 from apps.api.workflow import WebWorkflow
 
 
@@ -32,21 +31,12 @@ def create_app(
 ) -> FastAPI:
     @asynccontextmanager
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
-        config = settings if settings is not None else get_config()
-        path = checkpoint_path or Path(
-            os.environ.get("GIGBID_WEB_CHECKPOINT", str(REPO_ROOT / ".cache/gigbid-web.sqlite"))
-        )
-        path.parent.mkdir(parents=True, exist_ok=True)
-        async with (
-            httpx.AsyncClient(
-                base_url=config.marketplace["gigsim"]["base_url"],
-                timeout=10,
-                transport=simulator_transport,
-                trust_env=False,
-            ) as client,
-            AsyncSqliteSaver.from_conn_string(str(path)) as saver,
-        ):
-            app.state.workflow = WebWorkflow(config, client, saver, load_simulator_account_tokens())
+        async with open_workflow(
+            settings=settings,
+            simulator_transport=simulator_transport,
+            checkpoint_path=checkpoint_path,
+        ) as runtime:
+            app.state.workflow = runtime
             yield
 
     app = FastAPI(title="GigBid API", version="0.1.0", lifespan=lifespan)
@@ -68,6 +58,10 @@ def create_app(
     @app.exception_handler(ValidationError)
     async def external_data(request: Request, error: ValidationError) -> JSONResponse:
         return _error(503, "Simulator or saved workflow data could not be read.")
+
+    @app.exception_handler(RedisError)
+    async def queue_connection(request: Request, error: RedisError) -> JSONResponse:
+        return _error(503, "The background queue is unavailable. Try again.")
 
     @app.get("/health")
     async def health() -> HealthView:

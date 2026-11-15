@@ -107,6 +107,41 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/messages/{thread_id}/decision": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Decide Conversation */
+        post: operations["decide_conversation_api_v1_messages__thread_id__decision_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/messages/{thread_id}/run": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Conversation */
+        get: operations["get_conversation_api_v1_messages__thread_id__run_get"];
+        put?: never;
+        /** Start Conversation */
+        post: operations["start_conversation_api_v1_messages__thread_id__run_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/personas": {
         parameters: {
             query?: never;
@@ -262,6 +297,61 @@ export interface components {
             /** Warnings */
             warnings?: string[];
         };
+        /** ConversationIntent */
+        ConversationIntent: {
+            /**
+             * Category
+             * @enum {string}
+             */
+            category: "question" | "negotiation" | "interview_request" | "scam_signal";
+            /** Explanation */
+            explanation: string;
+            /** Flags */
+            flags?: string[];
+        };
+        /** ConversationPreview */
+        ConversationPreview: {
+            /** Claim Verification */
+            claim_verification: components["schemas"]["ClaimVerification"][];
+            draft: components["schemas"]["ReplyDraft"];
+            /** Draft Version */
+            draft_version: number;
+            /** Error */
+            error?: string | null;
+            incoming: components["schemas"]["Message"];
+            intent: components["schemas"]["ConversationIntent"];
+            /** Proposal Digest */
+            proposal_digest: string;
+            /** Thread Id */
+            thread_id: string;
+        };
+        /** ConversationRunView */
+        ConversationRunView: {
+            approval_decision?: components["schemas"]["ApprovalDecision"] | null;
+            /** Approval Status */
+            approval_status?: string | null;
+            /** Claim Verification */
+            claim_verification?: components["schemas"]["ClaimVerification"][];
+            compliance_verdict?: components["schemas"]["ComplianceVerdict"] | null;
+            draft?: components["schemas"]["ReplyDraft"] | null;
+            /** Errors */
+            errors?: string[];
+            incoming?: components["schemas"]["Message"] | null;
+            intent?: components["schemas"]["ConversationIntent"] | null;
+            outcome?: components["schemas"]["Message"] | null;
+            pending?: components["schemas"]["ConversationPreview"] | null;
+            /**
+             * Resumable
+             * @default false
+             */
+            resumable: boolean;
+            /**
+             * Status
+             * @default idle
+             * @enum {string}
+             */
+            status: "idle" | "running" | "awaiting_approval" | "needs_attention" | "skipped" | "done";
+        };
         /** Critique */
         Critique: {
             /** Feedback */
@@ -317,6 +407,19 @@ export interface components {
              * @constant
              */
             status: "ok";
+        };
+        /** InterviewSlot */
+        InterviewSlot: {
+            /**
+             * Ends At
+             * Format: date-time
+             */
+            ends_at: string;
+            /**
+             * Starts At
+             * Format: date-time
+             */
+            starts_at: string;
         };
         /** JobCard */
         JobCard: {
@@ -570,6 +673,15 @@ export interface components {
             /** Screening Answers */
             screening_answers?: string[];
         };
+        /** ReplyDraft */
+        ReplyDraft: {
+            /** Body */
+            body: string;
+            /** Evidence Ids */
+            evidence_ids?: string[];
+            /** Interview Slots */
+            interview_slots?: components["schemas"]["InterviewSlot"][];
+        };
         /** RiskReport */
         RiskReport: {
             /** Explanation */
@@ -635,6 +747,11 @@ export interface components {
             steps: number;
             /** Timeline */
             timeline?: components["schemas"]["RunStep"][];
+        };
+        /** StartConversation */
+        StartConversation: {
+            /** Availability */
+            availability?: components["schemas"]["InterviewSlot"][];
         };
         /** Thread */
         Thread: {
@@ -1028,6 +1145,185 @@ export interface operations {
             };
             /** @description Persona or resource not found */
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Simulator unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorView"];
+                };
+            };
+        };
+    };
+    decide_conversation_api_v1_messages__thread_id__decision_post: {
+        parameters: {
+            query: {
+                persona: string;
+            };
+            header?: never;
+            path: {
+                thread_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ApprovalDecision"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConversationRunView"];
+                };
+            };
+            /** @description Persona or resource not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorView"];
+                };
+            };
+            /** @description Review the current run before retrying */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Simulator unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorView"];
+                };
+            };
+        };
+    };
+    get_conversation_api_v1_messages__thread_id__run_get: {
+        parameters: {
+            query: {
+                persona: string;
+            };
+            header?: never;
+            path: {
+                thread_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConversationRunView"];
+                };
+            };
+            /** @description Persona or resource not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Simulator unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorView"];
+                };
+            };
+        };
+    };
+    start_conversation_api_v1_messages__thread_id__run_post: {
+        parameters: {
+            query: {
+                persona: string;
+            };
+            header?: never;
+            path: {
+                thread_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["StartConversation"] | null;
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConversationRunView"];
+                };
+            };
+            /** @description Persona or resource not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorView"];
+                };
+            };
+            /** @description Review the current run before retrying */
+            409: {
                 headers: {
                     [name: string]: unknown;
                 };

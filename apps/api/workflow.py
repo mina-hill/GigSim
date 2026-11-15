@@ -1,4 +1,4 @@
-"""Simulator accounts and durable runs for the local, single-worker web demo."""
+"""Simulator accounts and durable, persona-scoped workflow runs."""
 
 from asyncio import Lock
 from dataclasses import dataclass
@@ -6,17 +6,22 @@ from hashlib import sha256
 from weakref import WeakValueDictionary
 
 import httpx
+from arq.connections import ArqRedis
+from arq.jobs import Job as QueueJob
+from arq.jobs import JobStatus
 from fastapi import HTTPException
 from langchain_core.runnables import RunnableConfig
-from langgraph.checkpoint.sqlite.aio import AsyncSqliteSaver
+from langgraph.checkpoint.base import BaseCheckpointSaver
 from langgraph.graph.state import CompiledStateGraph
 from langgraph.types import Command, StateSnapshot
 
 from agent.config import REPO_ROOT, GigBidConfig
 from agent.graphs.bid_graph import build_bid_graph
+from agent.graphs.conversation_graph import build_conversation_graph
 from agent.handoffs import ApprovalDecision
 from agent.marketplace_gateway import LocalBidMarketplace
 from agent.nodes.bid import OfflineBidNodes
+from apps.api.schemas.conversation import ConversationRunView, StartConversation
 from apps.api.schemas.workflow import JobCard, JobRecord, PersonaId, PersonaView, RunStep, RunView
 from mcp_servers.marketplace.adapters.gigsim import GigSimAdapter
 from mcp_servers.marketplace.port import ConnectsBalance, Job
@@ -31,12 +36,15 @@ class PersonaSession:
     account_id: str
     adapter: GigSimAdapter
     graph: CompiledStateGraph
+    conversation: CompiledStateGraph
 
 
 def _run_view(run: StateSnapshot, *, active: bool = False) -> RunView:
     data = dict(run.values)
     if run.interrupts:
         data["pending"] = run.interrupts[0].value
+    elif active and (not data or run.next):
+        data["status"] = "running"
     elif run.next and not active:
         data["status"] = "needs_attention"
         data["resumable"] = True
@@ -45,6 +53,16 @@ def _run_view(run: StateSnapshot, *, active: bool = False) -> RunView:
             "The run paused mid-step. Start the run again to resume it.",
         ]
     return RunView.model_validate(data)
+
+
+def _conversation_view(snapshot: StateSnapshot) -> ConversationRunView:
+    data = dict(snapshot.values)
+    if snapshot.interrupts:
+        data["pending"] = snapshot.interrupts[0].value
+    elif snapshot.next:
+        data["status"] = "needs_attention"
+        data["resumable"] = True
+    return ConversationRunView.model_validate(data)
 
 
 def _job_card(job: Job, run: RunView) -> JobCard:
@@ -62,11 +80,14 @@ class WebWorkflow:
         self,
         settings: GigBidConfig,
         client: httpx.AsyncClient,
-        saver: AsyncSqliteSaver,
+        saver: BaseCheckpointSaver,
         account_tokens: dict[str, str],
+        *,
+        redis: ArqRedis | None = None,
     ) -> None:
         self.settings = settings
         self.client = client
+        self.redis = redis
         self.realm = sha256(str(client.base_url).encode()).hexdigest()
         self.sessions: dict[str, PersonaSession] = {}
         self._locks: WeakValueDictionary[str, Lock] = WeakValueDictionary()
@@ -79,8 +100,9 @@ class WebWorkflow:
             if token is None:
                 continue
             adapter = GigSimAdapter(client, token=token)
+            nodes = OfflineBidNodes.from_persona(persona, config=settings)
             graph = build_bid_graph(
-                nodes=OfflineBidNodes.from_persona(persona, config=settings),
+                nodes=nodes,
                 marketplace=LocalBidMarketplace(adapter),
                 checkpointer=saver,
                 config=settings,
@@ -95,6 +117,12 @@ class WebWorkflow:
                 bible.account_id,
                 adapter,
                 graph,
+                build_conversation_graph(
+                    marketplace=adapter,
+                    checkpointer=saver,
+                    portfolio_evidence=nodes.evidence,
+                    config=settings,
+                ),
             )
 
     def _require_simulator(self) -> None:
@@ -124,6 +152,17 @@ class WebWorkflow:
 
     async def _read_run(self, persona: PersonaSession, job_id: str) -> StateSnapshot:
         return await persona.graph.aget_state(self._config(persona, job_id))
+
+    def queue_id(self, persona: PersonaSession, job_id: str) -> str:
+        return "bid:" + self._thread_id(persona, job_id)
+
+    async def _active(self, persona: PersonaSession, job_id: str, snapshot: StateSnapshot) -> bool:
+        if self._lock(persona, job_id).locked():
+            return True
+        if self.redis is None or snapshot.interrupts or (snapshot.values and not snapshot.next):
+            return False
+        status = await QueueJob(self.queue_id(persona, job_id), redis=self.redis).status()
+        return status in {JobStatus.queued, JobStatus.deferred, JobStatus.in_progress}
 
     async def _detailed_run(
         self, persona: PersonaSession, job_id: str, snapshot: StateSnapshot, *, active: bool = False
@@ -170,7 +209,7 @@ class WebWorkflow:
         cards: list[JobCard] = []
         for job in jobs.items:
             thread = await self._read_run(persona, job.job_id)
-            run = _run_view(thread, active=self._lock(persona, job.job_id).locked())
+            run = _run_view(thread, active=await self._active(persona, job.job_id, thread))
             cards.append(_job_card(job, run))
         return cards
 
@@ -178,7 +217,7 @@ class WebWorkflow:
         job = await persona.adapter.get_job(job_id)
         snapshot = await self._read_run(persona, job_id)
         run = await self._detailed_run(
-            persona, job_id, snapshot, active=self._lock(persona, job_id).locked()
+            persona, job_id, snapshot, active=await self._active(persona, job_id, snapshot)
         )
         return JobRecord(**_job_card(job, run).model_dump(), run=run)
 
@@ -187,8 +226,20 @@ class WebWorkflow:
         if not snapshot.values:
             await persona.adapter.get_job(job_id)
         return await self._detailed_run(
-            persona, job_id, snapshot, active=self._lock(persona, job_id).locked()
+            persona, job_id, snapshot, active=await self._active(persona, job_id, snapshot)
         )
+
+    async def schedule_run(self, persona: PersonaSession, job_id: str) -> RunView:
+        if self.redis is None:
+            return await self.start_run(persona, job_id)
+        snapshot = await self._read_run(persona, job_id)
+        if snapshot.interrupts or (snapshot.values and not snapshot.next):
+            return await self._detailed_run(persona, job_id, snapshot)
+        await persona.adapter.get_job(job_id)
+        await self.redis.enqueue_job(
+            "run_bid", persona.view.id, job_id, _job_id=self.queue_id(persona, job_id), _expires=600
+        )
+        return _run_view(await self._read_run(persona, job_id), active=True)
 
     async def start_run(self, persona: PersonaSession, job_id: str) -> RunView:
         async with self._lock(persona, job_id):
@@ -243,3 +294,49 @@ class WebWorkflow:
                 durability="sync",
             )
             return await self._detailed_run(persona, job_id, await persona.graph.aget_state(thread))
+
+    async def conversation_run(
+        self, persona: PersonaSession, thread_id: str
+    ) -> ConversationRunView:
+        await self.verified_account(persona)
+        await persona.adapter.list_messages(thread_id)
+        thread = self._config(persona, f"conv:{thread_id}")
+        return _conversation_view(await persona.conversation.aget_state(thread))
+
+    async def start_conversation(
+        self, persona: PersonaSession, thread_id: str, options: StartConversation
+    ) -> ConversationRunView:
+        key = f"conv:{thread_id}"
+        thread = self._config(persona, key)
+        async with self._lock(persona, key):
+            await self.verified_account(persona)
+            snapshot = await persona.conversation.aget_state(thread)
+            if snapshot.interrupts:
+                return _conversation_view(snapshot)
+            if snapshot.next:
+                data = None
+            else:
+                data = {"thread_id": thread_id, **options.model_dump(mode="json")}
+            await persona.conversation.ainvoke(data, thread, durability="sync")
+            return _conversation_view(await persona.conversation.aget_state(thread))
+
+    async def decide_conversation(
+        self, persona: PersonaSession, thread_id: str, decision: ApprovalDecision
+    ) -> ConversationRunView:
+        key = f"conv:{thread_id}"
+        thread = self._config(persona, key)
+        async with self._lock(persona, key):
+            await self.verified_account(persona)
+            snapshot = await persona.conversation.aget_state(thread)
+            if not snapshot.interrupts:
+                await persona.adapter.list_messages(thread_id)
+                raise HTTPException(409, "This conversation has no reply awaiting approval.")
+            pending = snapshot.interrupts[0]
+            if pending.value["proposal_digest"] != decision.proposal_digest:
+                raise HTTPException(409, "The reply changed. Review the current draft.")
+            await persona.conversation.ainvoke(
+                Command(resume={pending.id: decision.model_dump(mode="json")}),
+                thread,
+                durability="sync",
+            )
+            return _conversation_view(await persona.conversation.aget_state(thread))
