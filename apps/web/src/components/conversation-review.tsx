@@ -162,10 +162,12 @@ export function ConversationReview({
         ? unwrap(await api.POST("/api/v1/messages/{thread_id}/decision", { params, body: payload }))
         : unwrap(await api.POST("/api/v1/messages/{thread_id}/run", { params, body: payload }));
       setResult({ run, revision: refresh + 1 });
-      onRefresh();
+      if ("action" in payload && payload.action === "approve" && run.outcome) {
+        onRefresh();
+      }
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "The reply action could not be completed.");
-      if (error instanceof ApiError && [409, 503].includes(error.status)) onRefresh();
+      if (error instanceof ApiError && error.status === 409) onRefresh();
     } finally {
       setBusy(false);
       inFlight.current = false;

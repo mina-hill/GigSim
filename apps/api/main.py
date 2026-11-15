@@ -49,6 +49,8 @@ def create_app(
             return _error(404, "The simulator resource was not found.")
         if status == 409:
             return _error(409, "The simulator refused the action because its state changed.")
+        if status == 429:
+            return _error(503, "The simulator rate limit was reached. Wait briefly and try again.")
         return _error(503, "The simulator could not complete the request. Try again.")
 
     @app.exception_handler(httpx.RequestError)
