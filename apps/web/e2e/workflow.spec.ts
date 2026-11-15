@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("selects a persona and finds a job at mobile width", async ({ page }) => {
+test("selects a persona and navigates the workspace at mobile width", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 815 });
   await page.goto("/");
   await page.getByRole("combobox", { name: "Active persona" }).selectOption("data_analyst");
@@ -12,6 +12,10 @@ test("selects a persona and finds a job at mobile width", async ({ page }) => {
   expect(fitsViewport).toBe(true);
   await page.getByRole("button", { name: "Inbox", exact: true }).click();
   await expect(page.getByRole("searchbox", { name: "Search jobs" })).toBeVisible();
+  await page.getByRole("navigation", { name: "Workspace" }).getByRole("button", { name: "Messages" }).click();
+  await page.getByRole("link", { name: "View proposal pipeline" }).click();
+  await expect(page.getByRole("heading", { name: "Pipeline", exact: true })).toBeVisible();
+  await expect(page.getByRole("combobox", { name: "Active persona" })).toHaveValue("data_analyst");
 });
 
 test("resumes an approval after refresh and submits the proposal once", async ({ page }) => {

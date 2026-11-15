@@ -1,3 +1,4 @@
+import "@fontsource/instrument-serif/latin-400.css";
 import "@fontsource-variable/inter";
 import "./globals.css";
 
