@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "experiment": "Development retrieval and claim verification",
+  "scope": "374 gold-bearing synthetic dev jobs; relevance grades were used only for scoring. Embeddings use hash-bow-1024, reranking uses lexical-pair. The claim checks use constructed statements. Detailed group scores and local retrieval latency are in retrieval.dev.json.",
+  "command": "uv run --extra rag python -m evals.runners.retrieval",
+  "metrics": [
+    {
+      "name": "V0 Recall@5",
+      "value": 0.5209
+    },
+    {
+      "name": "V0 MRR",
+      "value": 0.6068
+    },
+    {
+      "name": "V0 nDCG@10",
+      "value": 0.4862
+    },
+    {
+      "name": "V1 Recall@5",
+      "value": 0.1958
+    },
+    {
+      "name": "V1 MRR",
+      "value": 0.2722
+    },
+    {
+      "name": "V1 nDCG@10",
+      "value": 0.2438
+    },
+    {
+      "name": "V2 Recall@5",
+      "value": 0.5099
+    },
+    {
+      "name": "V2 MRR",
+      "value": 0.6135
+    },
+    {
+      "name": "V2 nDCG@10",
+      "value": 0.5294
+    },
+    {
+      "name": "V3 Recall@5",
+      "value": 0.4065
+    },
+    {
+      "name": "V3 MRR",
+      "value": 0.4126
+    },
+    {
+      "name": "V3 nDCG@10",
+      "value": 0.3967
+    },
+    {
+      "name": "V8 Recall@5",
+      "value": 0.6417
+    },
+    {
+      "name": "V8 MRR",
+      "value": 0.9492
+    },
+    {
+      "name": "V8 nDCG@10",
+      "value": 0.731
+    },
+    {
+      "name": "V8 without bm25 Recall@5",
+      "value": 0.6815
+    },
+    {
+      "name": "V8 without bm25 MRR",
+      "value": 0.9479
+    },
+    {
+      "name": "V8 without bm25 nDCG@10",
+      "value": 0.7382
+    },
+    {
+      "name": "V8 without reranker Recall@5",
+      "value": 0.8246
+    },
+    {
+      "name": "V8 without reranker MRR",
+      "value": 0.9635
+    },
+    {
+      "name": "V8 without reranker nDCG@10",
+      "value": 0.792
+    },
+    {
+      "name": "V8 without retry Recall@5",
+      "value": 0.6136
+    },
+    {
+      "name": "V8 without retry MRR",
+      "value": 0.9479
+    },
+    {
+      "name": "V8 without retry nDCG@10",
+      "value": 0.709
+    },
+    {
+      "name": "Constructed unsupported claims detected",
+      "value": 20,
+      "denominator": 20
+    },
+    {
+      "name": "Constructed unsupported claims retained after removal",
+      "value": 0,
+      "denominator": 20
+    },
+    {
+      "name": "Faithful source statements verified",
+      "value": 10,
+      "denominator": 10
+    }
+  ]
+}

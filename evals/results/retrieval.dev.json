@@ -1,0 +1,2045 @@
+{
+  "dataset": "600 committed synthetic dev labels joined to rebuilt public job fields",
+  "dataset_jobs": 600,
+  "ranked_jobs": 374,
+  "embedding_backend": "hash-bow-1024",
+  "reranking_backend": "lexical-pair",
+  "variants": {
+    "v0": {
+      "metrics": {
+        "all": {
+          "jobs": 374,
+          "recall_at_5": 0.5209,
+          "mrr": 0.6068,
+          "ndcg_at_10": 0.4862,
+          "p95_ms_measured": 0.353
+        },
+        "kind/duplicate": {
+          "jobs": 28,
+          "recall_at_5": 0.3417,
+          "mrr": 0.5487,
+          "ndcg_at_10": 0.4252
+        },
+        "kind/good": {
+          "jobs": 240,
+          "recall_at_5": 0.5204,
+          "mrr": 0.5424,
+          "ndcg_at_10": 0.5127
+        },
+        "kind/good_vague": {
+          "jobs": 60,
+          "recall_at_5": 0.4917,
+          "mrr": 0.9319,
+          "ndcg_at_10": 0.3249
+        },
+        "kind/injection": {
+          "jobs": 34,
+          "recall_at_5": 0.652,
+          "mrr": 0.5562,
+          "ndcg_at_10": 0.6076
+        },
+        "kind/read_check": {
+          "jobs": 12,
+          "recall_at_5": 0.7222,
+          "mrr": 0.5486,
+          "ndcg_at_10": 0.5612
+        },
+        "persona/ai_ml": {
+          "jobs": 124,
+          "recall_at_5": 0.5419,
+          "mrr": 0.653,
+          "ndcg_at_10": 0.5147
+        },
+        "persona/data_analyst": {
+          "jobs": 125,
+          "recall_at_5": 0.4757,
+          "mrr": 0.5967,
+          "ndcg_at_10": 0.499
+        },
+        "persona/fullstack": {
+          "jobs": 125,
+          "recall_at_5": 0.5451,
+          "mrr": 0.5711,
+          "ndcg_at_10": 0.4452
+        },
+        "scope/four_or_more_requirements": {
+          "jobs": 110,
+          "recall_at_5": 0.3761,
+          "mrr": 0.5526,
+          "ndcg_at_10": 0.3872
+        },
+        "scope/one_to_three_requirements": {
+          "jobs": 264,
+          "recall_at_5": 0.5812,
+          "mrr": 0.6294,
+          "ndcg_at_10": 0.5275
+        }
+      },
+      "recall_at_5_zero_examples": [
+        {
+          "job_id": "job_b901c22833",
+          "persona": "ai_ml",
+          "kind": "good_vague",
+          "gold_ids": [
+            "cs-ai-p07",
+            "repo-evalkit"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-111",
+            "pp-ai_ml-113",
+            "pp-ai_ml-031",
+            "pp-ai_ml-070",
+            "pp-ai_ml-074"
+          ]
+        },
+        {
+          "job_id": "job_e781b71508",
+          "persona": "ai_ml",
+          "kind": "good",
+          "gold_ids": [
+            "cs-ai-p02",
+            "rv-ai-p02"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-066",
+            "pp-ai_ml-052",
+            "pp-ai_ml-147",
+            "pp-ai_ml-036",
+            "pp-ai_ml-082"
+          ]
+        },
+        {
+          "job_id": "job_dc7feafd4a",
+          "persona": "ai_ml",
+          "kind": "duplicate",
+          "gold_ids": [
+            "cs-ai-p02",
+            "cs-ai-p04",
+            "repo-sku-forecast",
+            "rv-ai-p02",
+            "rv-ai-p04"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-066",
+            "pp-ai_ml-147",
+            "pp-ai_ml-084",
+            "pp-ai_ml-052",
+            "pp-ai_ml-072"
+          ]
+        },
+        {
+          "job_id": "job_3d5b6456e8",
+          "persona": "ai_ml",
+          "kind": "good",
+          "gold_ids": [
+            "cs-ai-p03",
+            "cs-ai-p08",
+            "repo-churn-scoring",
+            "repo-defect-detector",
+            "rv-ai-p03",
+            "rv-ai-p08"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-035",
+            "pp-ai_ml-022",
+            "pp-ai_ml-131",
+            "pp-ai_ml-145",
+            "pp-ai_ml-028"
+          ]
+        },
+        {
+          "job_id": "job_259571221a",
+          "persona": "ai_ml",
+          "kind": "duplicate",
+          "gold_ids": [
+            "cs-ai-p03",
+            "cs-ai-p08",
+            "repo-churn-scoring",
+            "repo-defect-detector",
+            "rv-ai-p03",
+            "rv-ai-p08"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-035",
+            "pp-ai_ml-022",
+            "pp-ai_ml-131",
+            "pp-ai_ml-145",
+            "pp-ai_ml-028"
+          ]
+        },
+        {
+          "job_id": "job_f59b88d9db",
+          "persona": "ai_ml",
+          "kind": "good",
+          "gold_ids": [
+            "cs-ai-p05",
+            "cs-ai-p12",
+            "repo-inbox-agent",
+            "rv-ai-p05",
+            "rv-ai-p12"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-124",
+            "pp-ai_ml-079",
+            "pp-ai_ml-139",
+            "pp-ai_ml-104",
+            "pp-ai_ml-060"
+          ]
+        },
+        {
+          "job_id": "job_a21affb285",
+          "persona": "ai_ml",
+          "kind": "good",
+          "gold_ids": [
+            "cs-ai-p03",
+            "repo-churn-scoring",
+            "rv-ai-p03"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-000",
+            "pp-ai_ml-055",
+            "pp-ai_ml-099",
+            "pp-ai_ml-009",
+            "pp-ai_ml-036"
+          ]
+        },
+        {
+          "job_id": "job_28f3de171a",
+          "persona": "ai_ml",
+          "kind": "good",
+          "gold_ids": [
+            "cs-ai-p02",
+            "cs-ai-p04",
+            "repo-sku-forecast",
+            "rv-ai-p02",
+            "rv-ai-p04"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-066",
+            "pp-ai_ml-147",
+            "pp-ai_ml-084",
+            "pp-ai_ml-052",
+            "pp-ai_ml-072"
+          ]
+        },
+        {
+          "job_id": "job_867b90fbbf",
+          "persona": "ai_ml",
+          "kind": "good",
+          "gold_ids": [
+            "cs-ai-p02",
+            "cs-ai-p06",
+            "rv-ai-p02",
+            "rv-ai-p06"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-066",
+            "pp-ai_ml-121",
+            "pp-ai_ml-136",
+            "pp-ai_ml-096",
+            "pp-ai_ml-003"
+          ]
+        },
+        {
+          "job_id": "job_72978c59f5",
+          "persona": "data_analyst",
+          "kind": "duplicate",
+          "gold_ids": [
+            "cs-da-p05",
+            "repo-ab-test-report",
+            "rv-da-p05"
+          ],
+          "retrieved_ids": [
+            "pp-data_analyst-021",
+            "pp-data_analyst-148",
+            "pp-data_analyst-057",
+            "pp-data_analyst-142",
+            "pp-data_analyst-046"
+          ]
+        },
+        {
+          "job_id": "job_252a41c569",
+          "persona": "data_analyst",
+          "kind": "good",
+          "gold_ids": [
+            "cs-da-p05",
+            "repo-ab-test-report",
+            "rv-da-p05"
+          ],
+          "retrieved_ids": [
+            "pp-data_analyst-021",
+            "pp-data_analyst-148",
+            "pp-data_analyst-057",
+            "pp-data_analyst-142",
+            "pp-data_analyst-046"
+          ]
+        },
+        {
+          "job_id": "job_b47a50bdba",
+          "persona": "data_analyst",
+          "kind": "good",
+          "gold_ids": [
+            "cs-da-p05",
+            "cs-da-p13",
+            "repo-ab-test-report",
+            "rv-da-p05",
+            "rv-da-p13"
+          ],
+          "retrieved_ids": [
+            "pp-data_analyst-057",
+            "pp-data_analyst-013",
+            "pp-data_analyst-046",
+            "pp-data_analyst-041",
+            "pp-data_analyst-038"
+          ]
+        },
+        {
+          "job_id": "job_c354b5c608",
+          "persona": "data_analyst",
+          "kind": "duplicate",
+          "gold_ids": [
+            "cs-da-p05",
+            "repo-ab-test-report",
+            "rv-da-p05"
+          ],
+          "retrieved_ids": [
+            "pp-data_analyst-021",
+            "pp-data_analyst-148",
+            "pp-data_analyst-057",
+            "pp-data_analyst-142",
+            "pp-data_analyst-046"
+          ]
+        },
+        {
+          "job_id": "job_510690208d",
+          "persona": "data_analyst",
+          "kind": "good",
+          "gold_ids": [
+            "cs-da-p05",
+            "repo-ab-test-report",
+            "rv-da-p05"
+          ],
+          "retrieved_ids": [
+            "pp-data_analyst-021",
+            "pp-data_analyst-148",
+            "pp-data_analyst-057",
+            "pp-data_analyst-142",
+            "pp-data_analyst-046"
+          ]
+        },
+        {
+          "job_id": "job_8abc1af08a",
+          "persona": "data_analyst",
+          "kind": "good",
+          "gold_ids": [
+            "cs-da-p02",
+            "cs-da-p07",
+            "rv-da-p02",
+            "rv-da-p07"
+          ],
+          "retrieved_ids": [
+            "pp-data_analyst-096",
+            "pp-data_analyst-113",
+            "pp-data_analyst-042",
+            "pp-data_analyst-093",
+            "pp-data_analyst-092"
+          ]
+        },
+        {
+          "job_id": "job_6faed9b456",
+          "persona": "data_analyst",
+          "kind": "good_vague",
+          "gold_ids": [
+            "cs-da-p14"
+          ],
+          "retrieved_ids": [
+            "pp-data_analyst-116",
+            "pp-data_analyst-115",
+            "pp-data_analyst-034",
+            "pp-data_analyst-018",
+            "pp-data_analyst-073"
+          ]
+        },
+        {
+          "job_id": "job_0d346b1458",
+          "persona": "data_analyst",
+          "kind": "good",
+          "gold_ids": [
+            "cs-da-p08",
+            "cs-da-p15",
+            "repo-member-segments",
+            "rv-da-p08",
+            "rv-da-p15"
+          ],
+          "retrieved_ids": [
+            "pp-data_analyst-062",
+            "pp-data_analyst-028",
+            "pp-data_analyst-024",
+            "pp-data_analyst-100",
+            "pp-data_analyst-019"
+          ]
+        },
+        {
+          "job_id": "job_a5d34c584c",
+          "persona": "data_analyst",
+          "kind": "good",
+          "gold_ids": [
+            "cs-da-p05",
+            "cs-da-p10",
+            "repo-ab-test-report",
+            "rv-da-p05",
+            "rv-da-p10"
+          ],
+          "retrieved_ids": [
+            "pp-data_analyst-148",
+            "pp-data_analyst-021",
+            "pp-data_analyst-002",
+            "pp-data_analyst-142",
+            "pp-data_analyst-103"
+          ]
+        },
+        {
+          "job_id": "job_0504a3df57",
+          "persona": "data_analyst",
+          "kind": "injection",
+          "gold_ids": [
+            "cs-da-p10",
+            "rv-da-p10"
+          ],
+          "retrieved_ids": [
+            "pp-data_analyst-139",
+            "pp-data_analyst-103",
+            "pp-data_analyst-104",
+            "pp-data_analyst-134",
+            "pp-data_analyst-114"
+          ]
+        },
+        {
+          "job_id": "job_9d7556a486",
+          "persona": "data_analyst",
+          "kind": "good",
+          "gold_ids": [
+            "cs-da-p08",
+            "cs-da-p13",
+            "repo-member-segments",
+            "rv-da-p08",
+            "rv-da-p13"
+          ],
+          "retrieved_ids": [
+            "pp-data_analyst-062",
+            "pp-data_analyst-028",
+            "pp-data_analyst-024",
+            "pp-data_analyst-019",
+            "pp-data_analyst-100"
+          ]
+        }
+      ]
+    },
+    "v1": {
+      "metrics": {
+        "all": {
+          "jobs": 374,
+          "recall_at_5": 0.1958,
+          "mrr": 0.2722,
+          "ndcg_at_10": 0.2438,
+          "p95_ms_measured": 0.704
+        },
+        "kind/duplicate": {
+          "jobs": 28,
+          "recall_at_5": 0.0899,
+          "mrr": 0.1448,
+          "ndcg_at_10": 0.1609
+        },
+        "kind/good": {
+          "jobs": 240,
+          "recall_at_5": 0.1842,
+          "mrr": 0.2863,
+          "ndcg_at_10": 0.2438
+        },
+        "kind/good_vague": {
+          "jobs": 60,
+          "recall_at_5": 0.2333,
+          "mrr": 0.2859,
+          "ndcg_at_10": 0.2613
+        },
+        "kind/injection": {
+          "jobs": 34,
+          "recall_at_5": 0.2598,
+          "mrr": 0.2493,
+          "ndcg_at_10": 0.272
+        },
+        "kind/read_check": {
+          "jobs": 12,
+          "recall_at_5": 0.3056,
+          "mrr": 0.2852,
+          "ndcg_at_10": 0.2688
+        },
+        "persona/ai_ml": {
+          "jobs": 124,
+          "recall_at_5": 0.1997,
+          "mrr": 0.2844,
+          "ndcg_at_10": 0.2634
+        },
+        "persona/data_analyst": {
+          "jobs": 125,
+          "recall_at_5": 0.2144,
+          "mrr": 0.2908,
+          "ndcg_at_10": 0.262
+        },
+        "persona/fullstack": {
+          "jobs": 125,
+          "recall_at_5": 0.1732,
+          "mrr": 0.2417,
+          "ndcg_at_10": 0.2061
+        },
+        "scope/four_or_more_requirements": {
+          "jobs": 110,
+          "recall_at_5": 0.1498,
+          "mrr": 0.2415,
+          "ndcg_at_10": 0.2038
+        },
+        "scope/one_to_three_requirements": {
+          "jobs": 264,
+          "recall_at_5": 0.2149,
+          "mrr": 0.2851,
+          "ndcg_at_10": 0.2604
+        }
+      },
+      "recall_at_5_zero_examples": [
+        {
+          "job_id": "job_4b70f8dec5",
+          "persona": "ai_ml",
+          "kind": "good",
+          "gold_ids": [
+            "cs-ai-p14",
+            "rv-ai-p14"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-064",
+            "pp-ai_ml-068",
+            "pp-ai_ml-073",
+            "pp-ai_ml-044",
+            "pp-ai_ml-024"
+          ]
+        },
+        {
+          "job_id": "job_696655e089",
+          "persona": "ai_ml",
+          "kind": "good",
+          "gold_ids": [
+            "cs-ai-p02",
+            "rv-ai-p02"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-066",
+            "pp-ai_ml-084",
+            "pp-ai_ml-021",
+            "cv-ai_ml",
+            "pp-ai_ml-113"
+          ]
+        },
+        {
+          "job_id": "job_ca25f5d7a2",
+          "persona": "ai_ml",
+          "kind": "duplicate",
+          "gold_ids": [
+            "cs-ai-p11",
+            "cs-ai-p17",
+            "rv-ai-p11",
+            "rv-ai-p17"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-002",
+            "pp-ai_ml-017",
+            "pp-ai_ml-122",
+            "pp-ai_ml-043",
+            "pp-ai_ml-059"
+          ]
+        },
+        {
+          "job_id": "job_244a2f31ac",
+          "persona": "ai_ml",
+          "kind": "injection",
+          "gold_ids": [
+            "cs-ai-p11",
+            "rv-ai-p11"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-017",
+            "pp-ai_ml-052",
+            "pp-ai_ml-122",
+            "pp-ai_ml-126",
+            "pp-ai_ml-002"
+          ]
+        },
+        {
+          "job_id": "job_12495bd49d",
+          "persona": "ai_ml",
+          "kind": "injection",
+          "gold_ids": [
+            "cs-ai-p09",
+            "rv-ai-p09"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-141",
+            "pp-ai_ml-053",
+            "pp-ai_ml-100",
+            "repo-churn-scoring",
+            "cv-ai_ml"
+          ]
+        },
+        {
+          "job_id": "job_b901c22833",
+          "persona": "ai_ml",
+          "kind": "good_vague",
+          "gold_ids": [
+            "cs-ai-p07",
+            "repo-evalkit"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-135",
+            "pp-ai_ml-031",
+            "pp-ai_ml-089",
+            "pp-ai_ml-049",
+            "pp-ai_ml-033"
+          ]
+        },
+        {
+          "job_id": "job_365c008e7b",
+          "persona": "ai_ml",
+          "kind": "good",
+          "gold_ids": [
+            "cs-ai-p07",
+            "repo-evalkit"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-111",
+            "pp-ai_ml-070",
+            "pp-ai_ml-031",
+            "pp-ai_ml-135",
+            "pp-ai_ml-033"
+          ]
+        },
+        {
+          "job_id": "job_06179cdf8a",
+          "persona": "ai_ml",
+          "kind": "good",
+          "gold_ids": [
+            "cs-ai-p07",
+            "cs-ai-p12",
+            "repo-evalkit",
+            "repo-inbox-agent",
+            "rv-ai-p12"
+          ],
+          "retrieved_ids": [
+            "cv-ai_ml",
+            "pp-ai_ml-135",
+            "pp-ai_ml-031",
+            "pp-ai_ml-089",
+            "pp-ai_ml-049"
+          ]
+        },
+        {
+          "job_id": "job_8353c10cdc",
+          "persona": "ai_ml",
+          "kind": "good",
+          "gold_ids": [
+            "cs-ai-p12",
+            "repo-inbox-agent",
+            "rv-ai-p12"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-070",
+            "pp-ai_ml-033",
+            "pp-ai_ml-111",
+            "rv-ai-p01",
+            "pp-ai_ml-051"
+          ]
+        },
+        {
+          "job_id": "job_e781b71508",
+          "persona": "ai_ml",
+          "kind": "good",
+          "gold_ids": [
+            "cs-ai-p02",
+            "rv-ai-p02"
+          ],
+          "retrieved_ids": [
+            "cs-ai-p17",
+            "pp-ai_ml-113",
+            "pp-ai_ml-075",
+            "pp-ai_ml-029",
+            "cv-ai_ml"
+          ]
+        },
+        {
+          "job_id": "job_20a64580c8",
+          "persona": "ai_ml",
+          "kind": "good",
+          "gold_ids": [
+            "cs-ai-p10",
+            "cs-ai-p11",
+            "rv-ai-p10",
+            "rv-ai-p11"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-017",
+            "pp-ai_ml-002",
+            "pp-ai_ml-122",
+            "pp-ai_ml-043",
+            "pp-ai_ml-126"
+          ]
+        },
+        {
+          "job_id": "job_d020aa3a2b",
+          "persona": "ai_ml",
+          "kind": "good",
+          "gold_ids": [
+            "cs-ai-p05",
+            "cs-ai-p14",
+            "rv-ai-p05",
+            "rv-ai-p14"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-124",
+            "pp-ai_ml-139",
+            "pp-ai_ml-076",
+            "pp-ai_ml-016",
+            "pp-ai_ml-095"
+          ]
+        },
+        {
+          "job_id": "job_14a1155aee",
+          "persona": "ai_ml",
+          "kind": "good",
+          "gold_ids": [
+            "cs-ai-p14",
+            "rv-ai-p14"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-082",
+            "pp-ai_ml-064",
+            "pp-ai_ml-068",
+            "pp-ai_ml-073",
+            "pp-ai_ml-044"
+          ]
+        },
+        {
+          "job_id": "job_e81afd76ab",
+          "persona": "ai_ml",
+          "kind": "good",
+          "gold_ids": [
+            "cs-ai-p11",
+            "rv-ai-p11"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-017",
+            "pp-ai_ml-052",
+            "pp-ai_ml-122",
+            "pp-ai_ml-126",
+            "pp-ai_ml-002"
+          ]
+        },
+        {
+          "job_id": "job_d83906b236",
+          "persona": "ai_ml",
+          "kind": "good",
+          "gold_ids": [
+            "cs-ai-p11",
+            "rv-ai-p11"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-017",
+            "pp-ai_ml-002",
+            "pp-ai_ml-122",
+            "pp-ai_ml-059",
+            "cv-ai_ml"
+          ]
+        },
+        {
+          "job_id": "job_a60a4ee3ac",
+          "persona": "ai_ml",
+          "kind": "good",
+          "gold_ids": [
+            "cs-ai-p11",
+            "rv-ai-p11"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-017",
+            "pp-ai_ml-002",
+            "pp-ai_ml-008",
+            "pp-ai_ml-043",
+            "pp-ai_ml-059"
+          ]
+        },
+        {
+          "job_id": "job_6aab5ec6b4",
+          "persona": "ai_ml",
+          "kind": "good",
+          "gold_ids": [
+            "cs-ai-p03",
+            "repo-churn-scoring",
+            "rv-ai-p03"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-072",
+            "pp-ai_ml-052",
+            "pp-ai_ml-126",
+            "pp-ai_ml-147",
+            "pp-ai_ml-043"
+          ]
+        },
+        {
+          "job_id": "job_c949fc4707",
+          "persona": "ai_ml",
+          "kind": "good",
+          "gold_ids": [
+            "cs-ai-p02",
+            "rv-ai-p02"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-052",
+            "pp-ai_ml-072",
+            "pp-ai_ml-126",
+            "pp-ai_ml-147",
+            "pp-ai_ml-043"
+          ]
+        },
+        {
+          "job_id": "job_52c6d8f691",
+          "persona": "ai_ml",
+          "kind": "injection",
+          "gold_ids": [
+            "cs-ai-p09",
+            "rv-ai-p09"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-053",
+            "repo-churn-scoring",
+            "cs-ai-p03",
+            "pp-ai_ml-141",
+            "cv-ai_ml"
+          ]
+        },
+        {
+          "job_id": "job_4f319a357f",
+          "persona": "ai_ml",
+          "kind": "good_vague",
+          "gold_ids": [
+            "cs-ai-p09",
+            "rv-ai-p09"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-053",
+            "pp-ai_ml-141",
+            "repo-defect-detector",
+            "pp-ai_ml-078",
+            "pp-ai_ml-147"
+          ]
+        }
+      ]
+    },
+    "v2": {
+      "metrics": {
+        "all": {
+          "jobs": 374,
+          "recall_at_5": 0.5099,
+          "mrr": 0.6135,
+          "ndcg_at_10": 0.5294,
+          "p95_ms_measured": 0.846
+        },
+        "kind/duplicate": {
+          "jobs": 28,
+          "recall_at_5": 0.4036,
+          "mrr": 0.5661,
+          "ndcg_at_10": 0.4592
+        },
+        "kind/good": {
+          "jobs": 240,
+          "recall_at_5": 0.4997,
+          "mrr": 0.5859,
+          "ndcg_at_10": 0.5685
+        },
+        "kind/good_vague": {
+          "jobs": 60,
+          "recall_at_5": 0.4667,
+          "mrr": 0.7384,
+          "ndcg_at_10": 0.3063
+        },
+        "kind/injection": {
+          "jobs": 34,
+          "recall_at_5": 0.6814,
+          "mrr": 0.6442,
+          "ndcg_at_10": 0.6822
+        },
+        "kind/read_check": {
+          "jobs": 12,
+          "recall_at_5": 0.6944,
+          "mrr": 0.5653,
+          "ndcg_at_10": 0.5939
+        },
+        "persona/ai_ml": {
+          "jobs": 124,
+          "recall_at_5": 0.5465,
+          "mrr": 0.6805,
+          "ndcg_at_10": 0.565
+        },
+        "persona/data_analyst": {
+          "jobs": 125,
+          "recall_at_5": 0.4472,
+          "mrr": 0.6139,
+          "ndcg_at_10": 0.5358
+        },
+        "persona/fullstack": {
+          "jobs": 125,
+          "recall_at_5": 0.5364,
+          "mrr": 0.5467,
+          "ndcg_at_10": 0.4878
+        },
+        "scope/four_or_more_requirements": {
+          "jobs": 110,
+          "recall_at_5": 0.3635,
+          "mrr": 0.5874,
+          "ndcg_at_10": 0.437
+        },
+        "scope/one_to_three_requirements": {
+          "jobs": 264,
+          "recall_at_5": 0.571,
+          "mrr": 0.6244,
+          "ndcg_at_10": 0.5679
+        }
+      },
+      "recall_at_5_zero_examples": [
+        {
+          "job_id": "job_b901c22833",
+          "persona": "ai_ml",
+          "kind": "good_vague",
+          "gold_ids": [
+            "cs-ai-p07",
+            "repo-evalkit"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-031",
+            "pp-ai_ml-074",
+            "pp-ai_ml-113",
+            "pp-ai_ml-111",
+            "pp-ai_ml-090"
+          ]
+        },
+        {
+          "job_id": "job_f59b88d9db",
+          "persona": "ai_ml",
+          "kind": "good",
+          "gold_ids": [
+            "cs-ai-p05",
+            "cs-ai-p12",
+            "repo-inbox-agent",
+            "rv-ai-p05",
+            "rv-ai-p12"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-124",
+            "pp-ai_ml-104",
+            "pp-ai_ml-079",
+            "pp-ai_ml-139",
+            "pp-ai_ml-027"
+          ]
+        },
+        {
+          "job_id": "job_a21affb285",
+          "persona": "ai_ml",
+          "kind": "good",
+          "gold_ids": [
+            "cs-ai-p03",
+            "repo-churn-scoring",
+            "rv-ai-p03"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-055",
+            "pp-ai_ml-009",
+            "pp-ai_ml-081",
+            "pp-ai_ml-018",
+            "pp-ai_ml-099"
+          ]
+        },
+        {
+          "job_id": "job_867b90fbbf",
+          "persona": "ai_ml",
+          "kind": "good",
+          "gold_ids": [
+            "cs-ai-p02",
+            "cs-ai-p06",
+            "rv-ai-p02",
+            "rv-ai-p06"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-066",
+            "pp-ai_ml-121",
+            "pp-ai_ml-096",
+            "pp-ai_ml-005",
+            "pp-ai_ml-136"
+          ]
+        },
+        {
+          "job_id": "job_f4abd7ec5f",
+          "persona": "data_analyst",
+          "kind": "good",
+          "gold_ids": [
+            "cs-da-p07",
+            "cs-da-p13",
+            "rv-da-p07",
+            "rv-da-p13"
+          ],
+          "retrieved_ids": [
+            "pp-data_analyst-013",
+            "pp-data_analyst-093",
+            "pp-data_analyst-042",
+            "pp-data_analyst-020",
+            "cv-data_analyst"
+          ]
+        },
+        {
+          "job_id": "job_0f4cea58e9",
+          "persona": "data_analyst",
+          "kind": "good",
+          "gold_ids": [
+            "cs-da-p08",
+            "repo-member-segments",
+            "rv-da-p08"
+          ],
+          "retrieved_ids": [
+            "pp-data_analyst-062",
+            "pp-data_analyst-028",
+            "pp-data_analyst-100",
+            "pp-data_analyst-024",
+            "pp-data_analyst-019"
+          ]
+        },
+        {
+          "job_id": "job_6faed9b456",
+          "persona": "data_analyst",
+          "kind": "good_vague",
+          "gold_ids": [
+            "cs-da-p14"
+          ],
+          "retrieved_ids": [
+            "pp-data_analyst-116",
+            "pp-data_analyst-115",
+            "pp-data_analyst-018",
+            "pp-data_analyst-073",
+            "pp-data_analyst-040"
+          ]
+        },
+        {
+          "job_id": "job_36961288a7",
+          "persona": "data_analyst",
+          "kind": "good_vague",
+          "gold_ids": [
+            "cs-da-p08",
+            "repo-member-segments",
+            "rv-da-p08"
+          ],
+          "retrieved_ids": [
+            "pp-data_analyst-019",
+            "pp-data_analyst-098",
+            "pp-data_analyst-100",
+            "pp-data_analyst-043",
+            "pp-data_analyst-062"
+          ]
+        },
+        {
+          "job_id": "job_0d346b1458",
+          "persona": "data_analyst",
+          "kind": "good",
+          "gold_ids": [
+            "cs-da-p08",
+            "cs-da-p15",
+            "repo-member-segments",
+            "rv-da-p08",
+            "rv-da-p15"
+          ],
+          "retrieved_ids": [
+            "pp-data_analyst-062",
+            "pp-data_analyst-028",
+            "pp-data_analyst-024",
+            "pp-data_analyst-100",
+            "pp-data_analyst-136"
+          ]
+        },
+        {
+          "job_id": "job_0504a3df57",
+          "persona": "data_analyst",
+          "kind": "injection",
+          "gold_ids": [
+            "cs-da-p10",
+            "rv-da-p10"
+          ],
+          "retrieved_ids": [
+            "pp-data_analyst-139",
+            "pp-data_analyst-134",
+            "pp-data_analyst-104",
+            "pp-data_analyst-114",
+            "pp-data_analyst-103"
+          ]
+        },
+        {
+          "job_id": "job_7febe20d4b",
+          "persona": "data_analyst",
+          "kind": "good",
+          "gold_ids": [
+            "cs-da-p04",
+            "cs-da-p09",
+            "repo-nightly-loads",
+            "repo-sheets-inventory",
+            "rv-da-p04",
+            "rv-da-p09"
+          ],
+          "retrieved_ids": [
+            "pp-data_analyst-124",
+            "pp-data_analyst-111",
+            "pp-data_analyst-035",
+            "pp-data_analyst-007",
+            "pp-data_analyst-004"
+          ]
+        },
+        {
+          "job_id": "job_e718a29b47",
+          "persona": "data_analyst",
+          "kind": "good",
+          "gold_ids": [
+            "cs-da-p05",
+            "cs-da-p09",
+            "repo-ab-test-report",
+            "repo-sheets-inventory",
+            "rv-da-p05",
+            "rv-da-p09"
+          ],
+          "retrieved_ids": [
+            "pp-data_analyst-021",
+            "pp-data_analyst-148",
+            "pp-data_analyst-142",
+            "pp-data_analyst-057",
+            "pp-data_analyst-014"
+          ]
+        },
+        {
+          "job_id": "job_3d5713ce25",
+          "persona": "fullstack",
+          "kind": "good",
+          "gold_ids": [
+            "cs-fs-p04",
+            "repo-live-chat",
+            "rv-fs-p04"
+          ],
+          "retrieved_ids": [
+            "pp-fullstack-101",
+            "pp-fullstack-013",
+            "pp-fullstack-141",
+            "pp-fullstack-072",
+            "pp-fullstack-137"
+          ]
+        },
+        {
+          "job_id": "job_9d8368470f",
+          "persona": "fullstack",
+          "kind": "good",
+          "gold_ids": [
+            "cs-fs-p10",
+            "cs-fs-p11",
+            "repo-e2e-suite",
+            "repo-ops-console",
+            "rv-fs-p10",
+            "rv-fs-p11"
+          ],
+          "retrieved_ids": [
+            "pp-fullstack-017",
+            "pp-fullstack-123",
+            "pp-fullstack-001",
+            "pp-fullstack-137",
+            "pp-fullstack-007"
+          ]
+        },
+        {
+          "job_id": "job_ba2c87f32c",
+          "persona": "fullstack",
+          "kind": "good",
+          "gold_ids": [
+            "cs-fs-p07",
+            "rv-fs-p07"
+          ],
+          "retrieved_ids": [
+            "pp-fullstack-142",
+            "pp-fullstack-038",
+            "pp-fullstack-021",
+            "pp-fullstack-085",
+            "pp-fullstack-106"
+          ]
+        },
+        {
+          "job_id": "job_fcf0ab12da",
+          "persona": "fullstack",
+          "kind": "good",
+          "gold_ids": [
+            "cs-fs-p09",
+            "cs-fs-p10",
+            "repo-ops-console",
+            "rv-fs-p09",
+            "rv-fs-p10"
+          ],
+          "retrieved_ids": [
+            "pp-fullstack-017",
+            "pp-fullstack-123",
+            "pp-fullstack-001",
+            "pp-fullstack-137",
+            "pp-fullstack-026"
+          ]
+        },
+        {
+          "job_id": "job_fd4d7680cd",
+          "persona": "fullstack",
+          "kind": "injection",
+          "gold_ids": [
+            "cs-fs-p10",
+            "repo-ops-console",
+            "rv-fs-p10"
+          ],
+          "retrieved_ids": [
+            "pp-fullstack-017",
+            "pp-fullstack-123",
+            "pp-fullstack-001",
+            "pp-fullstack-137",
+            "pp-fullstack-007"
+          ]
+        },
+        {
+          "job_id": "job_272a5d4d65",
+          "persona": "fullstack",
+          "kind": "good",
+          "gold_ids": [
+            "cs-fs-p14",
+            "rv-fs-p14"
+          ],
+          "retrieved_ids": [
+            "pp-fullstack-112",
+            "pp-fullstack-061",
+            "pp-fullstack-113",
+            "pp-fullstack-104",
+            "pp-fullstack-082"
+          ]
+        },
+        {
+          "job_id": "job_828907c695",
+          "persona": "fullstack",
+          "kind": "good",
+          "gold_ids": [
+            "cs-fs-p04",
+            "cs-fs-p10",
+            "repo-live-chat",
+            "repo-ops-console",
+            "rv-fs-p04",
+            "rv-fs-p10"
+          ],
+          "retrieved_ids": [
+            "pp-fullstack-017",
+            "pp-fullstack-123",
+            "pp-fullstack-001",
+            "pp-fullstack-044",
+            "pp-fullstack-137"
+          ]
+        },
+        {
+          "job_id": "job_c32d7d50e1",
+          "persona": "fullstack",
+          "kind": "good",
+          "gold_ids": [
+            "cs-fs-p09",
+            "cs-fs-p12",
+            "rv-fs-p09",
+            "rv-fs-p12"
+          ],
+          "retrieved_ids": [
+            "pp-fullstack-071",
+            "pp-fullstack-031",
+            "pp-fullstack-089",
+            "pp-fullstack-075",
+            "pp-fullstack-140"
+          ]
+        }
+      ]
+    },
+    "v3": {
+      "metrics": {
+        "all": {
+          "jobs": 374,
+          "recall_at_5": 0.4065,
+          "mrr": 0.4126,
+          "ndcg_at_10": 0.3967,
+          "p95_ms_measured": 3.093
+        },
+        "kind/duplicate": {
+          "jobs": 28,
+          "recall_at_5": 0.3595,
+          "mrr": 0.3855,
+          "ndcg_at_10": 0.3463
+        },
+        "kind/good": {
+          "jobs": 240,
+          "recall_at_5": 0.4464,
+          "mrr": 0.451,
+          "ndcg_at_10": 0.4464
+        },
+        "kind/good_vague": {
+          "jobs": 60,
+          "recall_at_5": 0.1972,
+          "mrr": 0.2202,
+          "ndcg_at_10": 0.1356
+        },
+        "kind/injection": {
+          "jobs": 34,
+          "recall_at_5": 0.5,
+          "mrr": 0.4544,
+          "ndcg_at_10": 0.5014
+        },
+        "kind/read_check": {
+          "jobs": 12,
+          "recall_at_5": 0.5,
+          "mrr": 0.5514,
+          "ndcg_at_10": 0.5282
+        },
+        "persona/ai_ml": {
+          "jobs": 124,
+          "recall_at_5": 0.4371,
+          "mrr": 0.4497,
+          "ndcg_at_10": 0.4188
+        },
+        "persona/data_analyst": {
+          "jobs": 125,
+          "recall_at_5": 0.3705,
+          "mrr": 0.361,
+          "ndcg_at_10": 0.3724
+        },
+        "persona/fullstack": {
+          "jobs": 125,
+          "recall_at_5": 0.4121,
+          "mrr": 0.4274,
+          "ndcg_at_10": 0.399
+        },
+        "scope/four_or_more_requirements": {
+          "jobs": 110,
+          "recall_at_5": 0.3017,
+          "mrr": 0.4352,
+          "ndcg_at_10": 0.3437
+        },
+        "scope/one_to_three_requirements": {
+          "jobs": 264,
+          "recall_at_5": 0.4502,
+          "mrr": 0.4032,
+          "ndcg_at_10": 0.4188
+        }
+      },
+      "recall_at_5_zero_examples": [
+        {
+          "job_id": "job_b901c22833",
+          "persona": "ai_ml",
+          "kind": "good_vague",
+          "gold_ids": [
+            "cs-ai-p07",
+            "repo-evalkit"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-090",
+            "pp-ai_ml-031",
+            "pp-ai_ml-048",
+            "cv-ai_ml",
+            "pp-ai_ml-097"
+          ]
+        },
+        {
+          "job_id": "job_87da770ca8",
+          "persona": "ai_ml",
+          "kind": "good_vague",
+          "gold_ids": [
+            "cs-ai-p03",
+            "repo-churn-scoring",
+            "rv-ai-p03"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-055",
+            "pp-ai_ml-081",
+            "cv-ai_ml",
+            "pp-ai_ml-077",
+            "pp-ai_ml-118"
+          ]
+        },
+        {
+          "job_id": "job_d56e7ea1f7",
+          "persona": "ai_ml",
+          "kind": "good_vague",
+          "gold_ids": [
+            "cs-ai-p08",
+            "repo-defect-detector",
+            "rv-ai-p08"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-035",
+            "pp-ai_ml-145",
+            "pp-ai_ml-131",
+            "pp-ai_ml-022",
+            "pp-ai_ml-041"
+          ]
+        },
+        {
+          "job_id": "job_57354baa7f",
+          "persona": "ai_ml",
+          "kind": "good_vague",
+          "gold_ids": [
+            "cs-ai-p08",
+            "repo-defect-detector",
+            "rv-ai-p08"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-094",
+            "pp-ai_ml-022",
+            "pp-ai_ml-131",
+            "pp-ai_ml-145",
+            "pp-ai_ml-041"
+          ]
+        },
+        {
+          "job_id": "job_f81656b78e",
+          "persona": "ai_ml",
+          "kind": "good_vague",
+          "gold_ids": [
+            "cs-ai-p05",
+            "rv-ai-p05"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-109",
+            "pp-ai_ml-124",
+            "pp-ai_ml-079",
+            "pp-ai_ml-010",
+            "pp-ai_ml-139"
+          ]
+        },
+        {
+          "job_id": "job_6195af6faa",
+          "persona": "ai_ml",
+          "kind": "good_vague",
+          "gold_ids": [
+            "cs-ai-p17",
+            "rv-ai-p17"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-119",
+            "pp-ai_ml-077",
+            "pp-ai_ml-140",
+            "pp-ai_ml-146",
+            "pp-ai_ml-128"
+          ]
+        },
+        {
+          "job_id": "job_f16d5c5fe9",
+          "persona": "ai_ml",
+          "kind": "good_vague",
+          "gold_ids": [
+            "cs-ai-p13",
+            "rv-ai-p13"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-077",
+            "pp-ai_ml-118",
+            "pp-ai_ml-102",
+            "pp-ai_ml-105",
+            "pp-ai_ml-025"
+          ]
+        },
+        {
+          "job_id": "job_96dcfadec9",
+          "persona": "ai_ml",
+          "kind": "good_vague",
+          "gold_ids": [
+            "cs-ai-p14",
+            "rv-ai-p14"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-082",
+            "pp-ai_ml-077",
+            "pp-ai_ml-016",
+            "pp-ai_ml-129",
+            "pp-ai_ml-024"
+          ]
+        },
+        {
+          "job_id": "job_fa2f3e9a5d",
+          "persona": "ai_ml",
+          "kind": "good_vague",
+          "gold_ids": [
+            "cs-ai-p14",
+            "rv-ai-p14"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-016",
+            "pp-ai_ml-129",
+            "pp-ai_ml-082",
+            "pp-ai_ml-024",
+            "pp-ai_ml-138"
+          ]
+        },
+        {
+          "job_id": "job_28379ce83d",
+          "persona": "ai_ml",
+          "kind": "good_vague",
+          "gold_ids": [
+            "cs-ai-p06",
+            "rv-ai-p06"
+          ],
+          "retrieved_ids": [
+            "pp-ai_ml-005",
+            "pp-ai_ml-096",
+            "cv-ai_ml",
+            "pp-ai_ml-117",
+            "pp-ai_ml-073"
+          ]
+        },
+        {
+          "job_id": "job_6c8b521c2d",
+          "persona": "data_analyst",
+          "kind": "good_vague",
+          "gold_ids": [
+            "cs-da-p12",
+            "rv-da-p12"
+          ],
+          "retrieved_ids": [
+            "pp-data_analyst-081",
+            "pp-data_analyst-006",
+            "pp-data_analyst-084",
+            "pp-data_analyst-022",
+            "pp-data_analyst-105"
+          ]
+        },
+        {
+          "job_id": "job_6b84130fad",
+          "persona": "data_analyst",
+          "kind": "good_vague",
+          "gold_ids": [
+            "cs-da-p09",
+            "repo-sheets-inventory",
+            "rv-da-p09"
+          ],
+          "retrieved_ids": [
+            "pp-data_analyst-112",
+            "pp-data_analyst-014",
+            "pp-data_analyst-124",
+            "pp-data_analyst-007",
+            "pp-data_analyst-111"
+          ]
+        },
+        {
+          "job_id": "job_c490016428",
+          "persona": "data_analyst",
+          "kind": "good_vague",
+          "gold_ids": [
+            "cs-da-p07",
+            "rv-da-p07"
+          ],
+          "retrieved_ids": [
+            "pp-data_analyst-068",
+            "pp-data_analyst-054",
+            "pp-data_analyst-042",
+            "pp-data_analyst-020",
+            "pp-data_analyst-022"
+          ]
+        },
+        {
+          "job_id": "job_3f4a883099",
+          "persona": "data_analyst",
+          "kind": "good",
+          "gold_ids": [
+            "cs-da-p10",
+            "rv-da-p10"
+          ],
+          "retrieved_ids": [
+            "pp-data_analyst-139",
+            "pp-data_analyst-134",
+            "pp-data_analyst-114",
+            "pp-data_analyst-141",
+            "pp-data_analyst-104"
+          ]
+        },
+        {
+          "job_id": "job_11ed77fc0e",
+          "persona": "data_analyst",
+          "kind": "good_vague",
+          "gold_ids": [
+            "cs-da-p01",
+            "rv-da-p01"
+          ],
+          "retrieved_ids": [
+            "pp-data_analyst-026",
+            "pp-data_analyst-125",
+            "pp-data_analyst-087",
+            "pp-data_analyst-113",
+            "pp-data_analyst-036"
+          ]
+        },
+        {
+          "job_id": "job_f4abd7ec5f",
+          "persona": "data_analyst",
+          "kind": "good",
+          "gold_ids": [
+            "cs-da-p07",
+            "cs-da-p13",
+            "rv-da-p07",
+            "rv-da-p13"
+          ],
+          "retrieved_ids": [
+            "pp-data_analyst-013",
+            "pp-data_analyst-093",
+            "pp-data_analyst-042",
+            "pp-data_analyst-020",
+            "pp-data_analyst-001"
+          ]
+        },
+        {
+          "job_id": "job_3bf89f314f",
+          "persona": "data_analyst",
+          "kind": "good_vague",
+          "gold_ids": [
+            "cs-da-p02",
+            "rv-da-p02"
+          ],
+          "retrieved_ids": [
+            "pp-data_analyst-108",
+            "pp-data_analyst-062",
+            "pp-data_analyst-022",
+            "pp-data_analyst-084",
+            "pp-data_analyst-115"
+          ]
+        },
+        {
+          "job_id": "job_a2cbcb9d73",
+          "persona": "data_analyst",
+          "kind": "good_vague",
+          "gold_ids": [
+            "cs-da-p04",
+            "repo-nightly-loads",
+            "rv-da-p04"
+          ],
+          "retrieved_ids": [
+            "cv-data_analyst",
+            "pp-data_analyst-010",
+            "pp-data_analyst-004",
+            "pp-data_analyst-145",
+            "pp-data_analyst-049"
+          ]
+        },
+        {
+          "job_id": "job_a602f06ed2",
+          "persona": "data_analyst",
+          "kind": "good",
+          "gold_ids": [
+            "cs-da-p10",
+            "rv-da-p10"
+          ],
+          "retrieved_ids": [
+            "pp-data_analyst-139",
+            "pp-data_analyst-114",
+            "pp-data_analyst-134",
+            "pp-data_analyst-104",
+            "pp-data_analyst-056"
+          ]
+        },
+        {
+          "job_id": "job_b3593e20db",
+          "persona": "data_analyst",
+          "kind": "good_vague",
+          "gold_ids": [
+            "cs-da-p09",
+            "repo-sheets-inventory",
+            "rv-da-p09"
+          ],
+          "retrieved_ids": [
+            "pp-data_analyst-113",
+            "pp-data_analyst-124",
+            "pp-data_analyst-014",
+            "pp-data_analyst-111",
+            "pp-data_analyst-007"
+          ]
+        }
+      ]
+    },
+    "v8": {
+      "metrics": {
+        "all": {
+          "jobs": 374,
+          "recall_at_5": 0.6417,
+          "mrr": 0.9492,
+          "ndcg_at_10": 0.731,
+          "p95_ms_measured": 8.597
+        },
+        "kind/duplicate": {
+          "jobs": 28,
+          "recall_at_5": 0.5202,
+          "mrr": 0.9643,
+          "ndcg_at_10": 0.7005
+        },
+        "kind/good": {
+          "jobs": 240,
+          "recall_at_5": 0.6545,
+          "mrr": 0.9833,
+          "ndcg_at_10": 0.8043
+        },
+        "kind/good_vague": {
+          "jobs": 60,
+          "recall_at_5": 0.6028,
+          "mrr": 0.7667,
+          "ndcg_at_10": 0.3459
+        },
+        "kind/injection": {
+          "jobs": 34,
+          "recall_at_5": 0.7255,
+          "mrr": 1.0,
+          "ndcg_at_10": 0.8843
+        },
+        "kind/read_check": {
+          "jobs": 12,
+          "recall_at_5": 0.625,
+          "mrr": 1.0,
+          "ndcg_at_10": 0.8272
+        },
+        "persona/ai_ml": {
+          "jobs": 124,
+          "recall_at_5": 0.6641,
+          "mrr": 0.9597,
+          "ndcg_at_10": 0.747
+        },
+        "persona/data_analyst": {
+          "jobs": 125,
+          "recall_at_5": 0.6047,
+          "mrr": 0.952,
+          "ndcg_at_10": 0.7276
+        },
+        "persona/fullstack": {
+          "jobs": 125,
+          "recall_at_5": 0.6564,
+          "mrr": 0.936,
+          "ndcg_at_10": 0.7184
+        },
+        "scope/four_or_more_requirements": {
+          "jobs": 110,
+          "recall_at_5": 0.5209,
+          "mrr": 0.9409,
+          "ndcg_at_10": 0.6586
+        },
+        "scope/one_to_three_requirements": {
+          "jobs": 264,
+          "recall_at_5": 0.692,
+          "mrr": 0.9527,
+          "ndcg_at_10": 0.7612
+        }
+      },
+      "recall_at_5_zero_examples": []
+    }
+  },
+  "corrective_ablations": {
+    "without_bm25": {
+      "metrics": {
+        "all": {
+          "jobs": 374,
+          "recall_at_5": 0.6815,
+          "mrr": 0.9479,
+          "ndcg_at_10": 0.7382,
+          "p95_ms_measured": 7.344
+        },
+        "kind/duplicate": {
+          "jobs": 28,
+          "recall_at_5": 0.5423,
+          "mrr": 0.9643,
+          "ndcg_at_10": 0.691
+        },
+        "kind/good": {
+          "jobs": 240,
+          "recall_at_5": 0.6917,
+          "mrr": 0.975,
+          "ndcg_at_10": 0.8033
+        },
+        "kind/good_vague": {
+          "jobs": 60,
+          "recall_at_5": 0.6583,
+          "mrr": 0.7917,
+          "ndcg_at_10": 0.3916
+        },
+        "kind/injection": {
+          "jobs": 34,
+          "recall_at_5": 0.7745,
+          "mrr": 1.0,
+          "ndcg_at_10": 0.8996
+        },
+        "kind/read_check": {
+          "jobs": 12,
+          "recall_at_5": 0.6528,
+          "mrr": 1.0,
+          "ndcg_at_10": 0.8234
+        },
+        "persona/ai_ml": {
+          "jobs": 124,
+          "recall_at_5": 0.6935,
+          "mrr": 0.9435,
+          "ndcg_at_10": 0.7476
+        },
+        "persona/data_analyst": {
+          "jobs": 125,
+          "recall_at_5": 0.6728,
+          "mrr": 0.956,
+          "ndcg_at_10": 0.7467
+        },
+        "persona/fullstack": {
+          "jobs": 125,
+          "recall_at_5": 0.6781,
+          "mrr": 0.944,
+          "ndcg_at_10": 0.7205
+        },
+        "scope/four_or_more_requirements": {
+          "jobs": 110,
+          "recall_at_5": 0.5498,
+          "mrr": 0.9364,
+          "ndcg_at_10": 0.6574
+        },
+        "scope/one_to_three_requirements": {
+          "jobs": 264,
+          "recall_at_5": 0.7363,
+          "mrr": 0.9527,
+          "ndcg_at_10": 0.7719
+        }
+      },
+      "recall_at_5_zero_examples": [
+        {
+          "job_id": "job_a21affb285",
+          "persona": "ai_ml",
+          "kind": "good",
+          "gold_ids": [
+            "cs-ai-p03",
+            "repo-churn-scoring",
+            "rv-ai-p03"
+          ],
+          "retrieved_ids": []
+        },
+        {
+          "job_id": "job_867b90fbbf",
+          "persona": "ai_ml",
+          "kind": "good",
+          "gold_ids": [
+            "cs-ai-p02",
+            "cs-ai-p06",
+            "rv-ai-p02",
+            "rv-ai-p06"
+          ],
+          "retrieved_ids": [
+            "cv-ai_ml"
+          ]
+        }
+      ]
+    },
+    "without_reranker": {
+      "metrics": {
+        "all": {
+          "jobs": 374,
+          "recall_at_5": 0.8246,
+          "mrr": 0.9635,
+          "ndcg_at_10": 0.792,
+          "p95_ms_measured": 4.364
+        },
+        "kind/duplicate": {
+          "jobs": 28,
+          "recall_at_5": 0.7185,
+          "mrr": 0.9464,
+          "ndcg_at_10": 0.7471
+        },
+        "kind/good": {
+          "jobs": 240,
+          "recall_at_5": 0.8442,
+          "mrr": 0.9604,
+          "ndcg_at_10": 0.8445
+        },
+        "kind/good_vague": {
+          "jobs": 60,
+          "recall_at_5": 0.7028,
+          "mrr": 0.9639,
+          "ndcg_at_10": 0.4931
+        },
+        "kind/injection": {
+          "jobs": 34,
+          "recall_at_5": 0.9706,
+          "mrr": 1.0,
+          "ndcg_at_10": 0.9633
+        },
+        "kind/read_check": {
+          "jobs": 12,
+          "recall_at_5": 0.875,
+          "mrr": 0.9583,
+          "ndcg_at_10": 0.8555
+        },
+        "persona/ai_ml": {
+          "jobs": 124,
+          "recall_at_5": 0.8261,
+          "mrr": 0.9758,
+          "ndcg_at_10": 0.8066
+        },
+        "persona/data_analyst": {
+          "jobs": 125,
+          "recall_at_5": 0.8412,
+          "mrr": 0.944,
+          "ndcg_at_10": 0.8039
+        },
+        "persona/fullstack": {
+          "jobs": 125,
+          "recall_at_5": 0.8065,
+          "mrr": 0.9707,
+          "ndcg_at_10": 0.7656
+        },
+        "scope/four_or_more_requirements": {
+          "jobs": 110,
+          "recall_at_5": 0.7041,
+          "mrr": 0.9136,
+          "ndcg_at_10": 0.69
+        },
+        "scope/one_to_three_requirements": {
+          "jobs": 264,
+          "recall_at_5": 0.8748,
+          "mrr": 0.9842,
+          "ndcg_at_10": 0.8345
+        }
+      },
+      "recall_at_5_zero_examples": []
+    },
+    "without_retry": {
+      "metrics": {
+        "all": {
+          "jobs": 374,
+          "recall_at_5": 0.6136,
+          "mrr": 0.9479,
+          "ndcg_at_10": 0.709,
+          "p95_ms_measured": 4.235
+        },
+        "kind/duplicate": {
+          "jobs": 28,
+          "recall_at_5": 0.4833,
+          "mrr": 0.9643,
+          "ndcg_at_10": 0.6668
+        },
+        "kind/good": {
+          "jobs": 240,
+          "recall_at_5": 0.6276,
+          "mrr": 0.9833,
+          "ndcg_at_10": 0.782
+        },
+        "kind/good_vague": {
+          "jobs": 60,
+          "recall_at_5": 0.5583,
+          "mrr": 0.7583,
+          "ndcg_at_10": 0.3185
+        },
+        "kind/injection": {
+          "jobs": 34,
+          "recall_at_5": 0.7157,
+          "mrr": 1.0,
+          "ndcg_at_10": 0.8762
+        },
+        "kind/read_check": {
+          "jobs": 12,
+          "recall_at_5": 0.625,
+          "mrr": 1.0,
+          "ndcg_at_10": 0.8272
+        },
+        "persona/ai_ml": {
+          "jobs": 124,
+          "recall_at_5": 0.6332,
+          "mrr": 0.9476,
+          "ndcg_at_10": 0.7191
+        },
+        "persona/data_analyst": {
+          "jobs": 125,
+          "recall_at_5": 0.5757,
+          "mrr": 0.96,
+          "ndcg_at_10": 0.7095
+        },
+        "persona/fullstack": {
+          "jobs": 125,
+          "recall_at_5": 0.632,
+          "mrr": 0.936,
+          "ndcg_at_10": 0.6985
+        },
+        "scope/four_or_more_requirements": {
+          "jobs": 110,
+          "recall_at_5": 0.4653,
+          "mrr": 0.95,
+          "ndcg_at_10": 0.6123
+        },
+        "scope/one_to_three_requirements": {
+          "jobs": 264,
+          "recall_at_5": 0.6754,
+          "mrr": 0.947,
+          "ndcg_at_10": 0.7493
+        }
+      },
+      "recall_at_5_zero_examples": [
+        {
+          "job_id": "job_b901c22833",
+          "persona": "ai_ml",
+          "kind": "good_vague",
+          "gold_ids": [
+            "cs-ai-p07",
+            "repo-evalkit"
+          ],
+          "retrieved_ids": [
+            "cv-ai_ml"
+          ]
+        },
+        {
+          "job_id": "job_fa2f3e9a5d",
+          "persona": "ai_ml",
+          "kind": "good_vague",
+          "gold_ids": [
+            "cs-ai-p14",
+            "rv-ai-p14"
+          ],
+          "retrieved_ids": []
+        },
+        {
+          "job_id": "job_6faed9b456",
+          "persona": "data_analyst",
+          "kind": "good_vague",
+          "gold_ids": [
+            "cs-da-p14"
+          ],
+          "retrieved_ids": [
+            "cv-data_analyst"
+          ]
+        },
+        {
+          "job_id": "job_9d7556a486",
+          "persona": "data_analyst",
+          "kind": "good",
+          "gold_ids": [
+            "cs-da-p08",
+            "cs-da-p13",
+            "repo-member-segments",
+            "rv-da-p08",
+            "rv-da-p13"
+          ],
+          "retrieved_ids": [
+            "cv-data_analyst"
+          ]
+        }
+      ]
+    }
+  },
+  "verified_claims": {
+    "faithful_supported": 10,
+    "faithful_total": 10,
+    "unsupported_identified": 20,
+    "unsupported_before": 20,
+    "unsupported_after": 0
+  },
+  "highest_ndcg_mode": "v8_without_reranker"
+}

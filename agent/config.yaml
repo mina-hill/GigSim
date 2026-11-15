@@ -106,9 +106,10 @@ models:
     gigsim_client: v1
 
 retrieval:
-  embeddings: {model: BAAI/bge-m3, device: cpu}
-  reranker: {model: BAAI/bge-reranker-v2-m3, device: cpu}
-  pipeline: [dense]               # replaced by the variant your evaluation picks (R6)
+  embeddings: {backend: offline, model: BAAI/bge-m3, device: cpu}
+  reranker: {backend: offline, model: BAAI/bge-reranker-v2-m3, device: cpu}
+  variant: v8
+  corrective_rerank: false
   k: 5
 
 budgets:
