@@ -3,6 +3,7 @@
 The Portfolio, Marketplace and Workspace processes expose typed tools through the official
 Python MCP SDK. Each Streamable HTTP endpoint is `/mcp` and requires its own bearer token.
 Stdio is available for a trusted local client that launches the process directly.
+The [Portfolio MCP README](../mcp_servers/portfolio/README.md) has Docker and stdio install commands.
 
 | Server | Default port | HTTP credential | Scope |
 | --- | ---: | --- | --- |
