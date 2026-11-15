@@ -63,6 +63,7 @@ eval: ## Regenerate offline decision, retrieval, and simulator reply results
 	uv run --extra rag python -m evals.runners.retrieval
 	uv run --extra rag python -m evals.runners.x2
 	uv run --extra eval python -m evals.runners.architectures
+	$(PY) -m evals.runners.injection
 	$(PY) -m scripts.make_tables
 
 demo: ## Review a synthetic job against the local GigSim instance (JOB_ID required)
