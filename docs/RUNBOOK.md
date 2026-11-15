@@ -111,10 +111,12 @@ make seed       # loads it into GigSim
 
 ## Live (Upwork) mode schedule
 
-The [Upwork MCP discovery command](UPWORK_MCP.md) supports a local OAuth callback. A real
-account must authorize it before we can verify the tool schemas and map the live adapter.
-The planned Upwork adapter uses a 180-minute polling interval with jitter and rate-limit
-backoff to conserve shared limits. This demo uses synthetic accounts and GigSim.
+Connect an account once with the [Upwork connect command](UPWORK_MCP.md#connect-your-account),
+then run the Marketplace MCP server with `MARKETPLACE_MODE=upwork`. The live adapter makes one
+Upwork call at a time, at least one second apart. Scheduled scouting in live mode should read
+at most every 180 minutes, with jitter and rate-limit backoff, to conserve shared limits.
+Proposals stop at Upwork's preview until the person confirms them. The hosted and local demos
+use synthetic accounts and GigSim.
 
 ## Degraded mode
 

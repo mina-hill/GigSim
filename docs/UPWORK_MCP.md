@@ -56,8 +56,47 @@ few small read-only samples in `.cache/upwork/reference.json`. The marketplace a
 mapping is checked against that file. The command only reads; it creates, submits and sends
 nothing.
 
+## Live mode
+
+`mcp_servers/marketplace/adapters/upwork_live.py` implements the same marketplace port as the
+GigSim adapter, so the graph cannot tell which marketplace it uses. Set
+`MARKETPLACE_MODE=upwork` and the Marketplace MCP server serves its tools from the saved
+sign-in (`--upwork-user`, default `local`).
+
+| Port method | Upwork tool and action |
+| --- | --- |
+| `search_jobs` | `find_jobs search` with a query, or `smart_search` (`most_recent`) without one |
+| `get_job`, `quote_connects` | `find_jobs get`: description, contract terms, client record, `connects_cost` |
+| `get_client_history` | `find_jobs get` on one of the client's jobs (search rows carry no client id) |
+| `get_connects_balance` | `get_profile connects_balance` |
+| `list_proposals`, `get_proposal` | `list_freelancer_proposals list` and `get` |
+| `list_threads`, `list_messages` | `get_messages list_rooms` and `list_messages` |
+| `create_proposal_draft` | `list_freelancer_proposals invitations`, then `manage_proposals create` |
+| `get_market_stats`, `list_events` | none: Upwork publishes neither, so both return empty lists |
+
+Writes stop at Upwork's preview. `create_proposal_draft` asks Upwork to prepare a proposal
+preview, with the screening answers when the job has questions; Upwork stores it and nothing is
+submitted or spent. `submit_proposal` never calls `confirm_preview`: it returns the preview id
+and the command that confirms it. `send_message` is refused; the person sends approved replies
+on Upwork. Upwork refuses cover letters over 5,000 characters, and an existing invitation for
+the job stops the draft. The adapter makes one call at a time with at least one second between
+calls. Job and message text arrives inside Upwork's `untrusted_participant_content` tags; the
+adapter removes the tags, and GigBid's own prompts fence the text as untrusted.
+
+```bash
+uv run python -m mcp_servers.marketplace.adapters.upwork_connect check
+uv run python -m mcp_servers.marketplace.adapters.upwork_connect confirm <preview_id>
+```
+
+`check` reads the account through the adapter and prints the Connects balance, the newest
+matching jobs and one job's Connects cost. `confirm` shows Upwork's stored preview, including
+the Connects it will spend, and calls `confirm_preview` only after the person types `SUBMIT`.
+
+The local web app's workflow still runs on GigSim. Live mode is available through the
+Marketplace MCP server and these commands.
+
 ```bash
 uv run pytest -q tests/integration/test_upwork_discovery.py \
   tests/integration/test_upwork_session.py tests/integration/test_upwork_connect.py \
-  tests/unit/test_upwork_token_storage.py
+  tests/integration/test_upwork_adapter.py tests/unit/test_upwork_token_storage.py
 ```

@@ -83,7 +83,9 @@ requirement and drafting an opening. The resource IDs resolve within the selecte
 ## External provider boundaries
 
 The local servers use the simulated GigSim marketplace and local portfolio and workspace
-data. Live Upwork access would require its sanctioned OAuth and MCP integration. GitHub imports
+data. In live mode the Marketplace server uses the official Upwork MCP server through its OAuth
+sign-in (trusted as Upwork's own sanctioned integration; every write stays a preview the person
+confirms). See [Upwork MCP](UPWORK_MCP.md). GitHub imports
 would require a scoped read-only repository token. Neither external provider is required to run
 the local servers, and the Workspace server calls no calendar or email provider.
 
