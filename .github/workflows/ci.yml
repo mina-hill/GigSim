@@ -64,7 +64,6 @@ jobs:
           GIGSIM_LATENCY_MS_MAX: "0"
           GIGSIM_ADMIN_TOKEN: gigbid-ci-admin
         run: |
-          (cd ../.. && uv run python -m gigsim.seed --world gigsim/fixtures/mini_world)
           mkdir -p .next/standalone/.next/static
           cp -r .next/static/. .next/standalone/.next/static/
           if [ -d public ]; then
@@ -72,18 +71,27 @@ jobs:
             cp -r public/. .next/standalone/public/
           fi
 
-          (cd ../.. && exec uv run uvicorn gigsim.app:app --port 8081) > "$RUNNER_TEMP/gigsim.log" 2>&1 &
-          simulator=$!
-          (cd ../.. && exec uv run uvicorn apps.api.main:app --port 8000) > "$RUNNER_TEMP/gigbid-api.log" 2>&1 &
-          api=$!
-          HOSTNAME=127.0.0.1 PORT=3000 node .next/standalone/server.js > "$RUNNER_TEMP/gigbid-web.log" 2>&1 &
-          web=$!
-          trap 'kill "$web" "$api" "$simulator" 2>/dev/null || true' EXIT
+          browser_suite() (
+            (cd ../.. && uv run python -m gigsim.seed --world gigsim/fixtures/mini_world)
+            (cd ../.. && exec uv run uvicorn gigsim.app:app --port 8081) > "$RUNNER_TEMP/gigsim-$GIGBID_AUTH_MODE.log" 2>&1 &
+            simulator=$!
+            (cd ../.. && exec uv run uvicorn apps.api.main:app --port 8000) > "$RUNNER_TEMP/gigbid-api-$GIGBID_AUTH_MODE.log" 2>&1 &
+            api=$!
+            HOSTNAME=127.0.0.1 PORT=3000 node .next/standalone/server.js > "$RUNNER_TEMP/gigbid-web-$GIGBID_AUTH_MODE.log" 2>&1 &
+            web=$!
+            trap 'kill "$web" "$api" "$simulator" 2>/dev/null || true; wait "$web" "$api" "$simulator" 2>/dev/null || true' EXIT
 
-          curl --retry 25 --retry-connrefused --retry-delay 1 --fail --silent --show-error http://127.0.0.1:8081/health
-          curl --retry 25 --retry-connrefused --retry-delay 1 --fail --silent --show-error http://127.0.0.1:8000/health
-          curl --retry 25 --retry-connrefused --retry-delay 1 --fail --silent --show-error http://127.0.0.1:3000/health/deps
-          npm run test:e2e
+            curl --retry 25 --retry-connrefused --retry-delay 1 --fail --silent --show-error http://127.0.0.1:8081/health
+            curl --retry 25 --retry-connrefused --retry-delay 1 --fail --silent --show-error http://127.0.0.1:8000/health
+            curl --retry 25 --retry-connrefused --retry-delay 1 --fail --silent --show-error http://127.0.0.1:3000/health/deps
+            npm run test:e2e -- "$@"
+          )
+          GIGBID_AUTH_MODE=demo browser_suite
+          GIGBID_AUTH_MODE=local GIGBID_AUTH_WEB_ORIGIN=http://127.0.0.1:3000 \
+            GIGBID_AUTH_DB="$RUNNER_TEMP/gigbid-accounts.sqlite" \
+            GIGSIM_DB_URL="sqlite:///$RUNNER_TEMP/gigsim-auth.sqlite" \
+            GIGBID_WEB_CHECKPOINT="$RUNNER_TEMP/gigbid-auth.sqlite" \
+            browser_suite --config=playwright.auth.config.ts
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

@@ -55,7 +55,7 @@ class OfflineBidNodes:
     def from_sample(cls, config: GigBidConfig | None = None) -> Self:
         """Load the single synthetic freelancer and evidence item from the starter kit."""
         sample = REPO_ROOT / "data" / "sample"
-        freelancer, = json.loads((sample / "freelancers.json").read_text(encoding="utf-8"))
+        (freelancer,) = json.loads((sample / "freelancers.json").read_text(encoding="utf-8"))
         items = json.loads((sample / "portfolio_items.json").read_text(encoding="utf-8"))
         evidence = [
             PortfolioEvidence(
@@ -64,7 +64,8 @@ class OfflineBidNodes:
                 summary=item["summary"],
                 skills=tuple(item["skills"]),
             )
-            for item in items if item["freelancer_id"] == freelancer["freelancer_id"]
+            for item in items
+            if item["freelancer_id"] == freelancer["freelancer_id"]
         ]
         return cls(
             evidence,
@@ -76,7 +77,8 @@ class OfflineBidNodes:
 
     @classmethod
     def from_persona(
-        cls, persona: Literal["ai_ml", "data_analyst", "fullstack"],
+        cls,
+        persona: Literal["ai_ml", "data_analyst", "fullstack"],
         config: GigBidConfig | None = None,
     ) -> Self:
         """Load a named synthetic persona for a GigSim fixture run."""
@@ -106,8 +108,11 @@ class OfflineBidNodes:
     async def assess_risk(self, job: dict[str, Any]) -> RiskReport:
         return assess_job_risk(job)
 
-    async def match_fit(self, job: dict[str, Any]) -> FitReport:
-        return match_job_fit(job, self.evidence)
+    async def match_fit(
+        self, job: dict[str, Any], *, portfolio_items: list[dict[str, Any]] | None = None
+    ) -> FitReport:
+        additions = tuple(PortfolioEvidence(**item) for item in portfolio_items or [])
+        return match_job_fit(job, self.evidence + additions)
 
     async def price(self, state: GigBidState) -> PriceQuote:
         floor = state.get("price_floor", 0)
@@ -116,19 +121,24 @@ class OfflineBidNodes:
             state["job"],
             minimum_project_budget=max(floor, self.minimum_project_budget),
             minimum_hourly_rate=max(floor, self.minimum_hourly_rate),
-            preferred_hourly_rate=self.preferred_hourly_rate,
-            connects_budget=min(remaining, self.connects_budget),
+            preferred_hourly_rate=state.get("preferred_hourly_rate") or self.preferred_hourly_rate,
+            connects_budget=remaining,
         )
 
     def _selected_evidence(self, state: GigBidState) -> list[PortfolioEvidence]:
         ids = state["fit_report"]["evidence_ids"][:2]
-        return [self.evidence_by_id[evidence_id] for evidence_id in ids]
+        uploaded = {
+            item["evidence_id"]: PortfolioEvidence(**item)
+            for item in state.get("portfolio_items", [])
+        }
+        return [(self.evidence_by_id | uploaded)[evidence_id] for evidence_id in ids]
 
     async def write(self, state: GigBidState) -> ProposalDraft:
         return write_proposal(
             state["job"]["job_id"],
             state["job"].get("screening_questions", []),
             self._selected_evidence(state),
+            style_rules=state.get("style_rules", []),
         )
 
     async def verify(self, state: GigBidState) -> list[ClaimVerification]:

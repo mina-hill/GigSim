@@ -36,7 +36,9 @@ class BidNodeServices(Protocol):
 
     async def analyze(self, job: dict[str, Any]) -> JobSpec: ...
     async def assess_risk(self, job: dict[str, Any]) -> RiskReport: ...
-    async def match_fit(self, job: dict[str, Any]) -> FitReport: ...
+    async def match_fit(
+        self, job: dict[str, Any], *, portfolio_items: list[dict[str, Any]] | None = None
+    ) -> FitReport: ...
     async def price(self, state: GigBidState) -> PriceQuote: ...
     async def write(self, state: GigBidState) -> ProposalDraft: ...
     async def verify(self, state: GigBidState) -> list[ClaimVerification]: ...
@@ -109,9 +111,11 @@ def build_bid_graph(
     def fan_out(state: GigBidState) -> str | list[Send]:
         if state.get("duplicate") or state["job"].get("duplicate_of"):
             return "reject_duplicate"
+        job = {"job": state["job"]}
         return [
-            Send(name, {"job": state["job"]})
-            for name in ("job_analyst", "risk_assessor", "fit_matcher")
+            Send("job_analyst", job),
+            Send("risk_assessor", job),
+            Send("fit_matcher", {**job, "portfolio_items": state.get("portfolio_items", [])}),
         ]
 
     async def job_analyst(state: GigBidState) -> GigBidState:
@@ -123,7 +127,12 @@ def build_bid_graph(
         return {"risk_report": result.model_dump(mode="json"), "steps": 1}
 
     async def fit_matcher(state: GigBidState) -> GigBidState:
-        result = await nodes.match_fit(state["job"])
+        items = state.get("portfolio_items")
+        result = (
+            await nodes.match_fit(state["job"], portfolio_items=items)
+            if items
+            else await nodes.match_fit(state["job"])
+        )
         return {"fit_report": result.model_dump(mode="json"), "steps": 1}
 
     async def decide(state: GigBidState) -> GigBidState:
@@ -141,7 +150,7 @@ def build_bid_graph(
         elif (
             fit < minimum_fit
             and watch_minimum <= fit <= watch_maximum
-            and not settings.autonomy.auto_skip_low_fit
+            and not state.get("auto_skip_low_fit", settings.autonomy.auto_skip_low_fit)
         ):
             decision = BidDecision(action="watch", rule_ids=["watch_fit_band"])
         elif fit < minimum_fit:

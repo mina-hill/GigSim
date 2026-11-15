@@ -3,6 +3,14 @@ import createClient from "openapi-fetch";
 import type { components, paths } from "./schema";
 
 export const api = createClient<paths>({ cache: "no-store" });
+api.use({
+  onResponse({ response, schemaPath }) {
+    if (response.status === 401 && !schemaPath.startsWith("/api/v1/auth/")
+        && typeof window !== "undefined") {
+      window.dispatchEvent(new Event("gigbid:session-expired"));
+    }
+  },
+});
 
 export type Persona = components["schemas"]["PersonaView"];
 export type PersonaId = Persona["id"];

@@ -3,6 +3,7 @@
 from asyncio import Lock
 from dataclasses import dataclass
 from hashlib import sha256
+from time import perf_counter
 from weakref import WeakValueDictionary
 
 import httpx
@@ -21,10 +22,13 @@ from agent.graphs.conversation_graph import build_conversation_graph
 from agent.handoffs import ApprovalDecision
 from agent.marketplace_gateway import LocalBidMarketplace
 from agent.nodes.bid import OfflineBidNodes
+from agent.state import BidGraphInput
 from apps.api.schemas.conversation import ConversationRunView, StartConversation
 from apps.api.schemas.workflow import JobCard, JobRecord, PersonaId, PersonaView, RunStep, RunView
+from apps.api.streaming import BidProgress, BidProgressEvent
+from apps.api.workspace import WorkspaceState, weekly_connects
 from mcp_servers.marketplace.adapters.gigsim import GigSimAdapter
-from mcp_servers.marketplace.port import ConnectsBalance, Job
+from mcp_servers.marketplace.port import ConnectsBalance, Job, PaymentType
 from scripts.personas.render import load_bible
 
 PERSONAS: tuple[PersonaId, ...] = ("ai_ml", "fullstack", "data_analyst")
@@ -82,12 +86,15 @@ class WebWorkflow:
         client: httpx.AsyncClient,
         saver: BaseCheckpointSaver,
         account_tokens: dict[str, str],
+        workspace: WorkspaceState,
         *,
         redis: ArqRedis | None = None,
     ) -> None:
         self.settings = settings
         self.client = client
+        self.workspace = workspace
         self.redis = redis
+        self.progress = BidProgress(redis)
         self.realm = sha256(str(client.base_url).encode()).hexdigest()
         self.sessions: dict[str, PersonaSession] = {}
         self._locks: WeakValueDictionary[str, Lock] = WeakValueDictionary()
@@ -144,6 +151,9 @@ class WebWorkflow:
     def _thread_id(self, persona: PersonaSession, job_id: str) -> str:
         return f"{self.realm}:{persona.account_id}:{job_id}"
 
+    def tenant(self, persona: PersonaSession) -> str:
+        return f"{self.realm}:{persona.account_id}"
+
     def _config(self, persona: PersonaSession, job_id: str) -> RunnableConfig:
         return {"configurable": {"thread_id": self._thread_id(persona, job_id)}}
 
@@ -155,6 +165,30 @@ class WebWorkflow:
 
     def queue_id(self, persona: PersonaSession, job_id: str) -> str:
         return "bid:" + self._thread_id(persona, job_id)
+
+    def bid_event_key(self, persona: PersonaSession, job_id: str) -> str:
+        return "run:" + self._thread_id(persona, job_id)
+
+    async def _run_bid_graph(
+        self,
+        persona: PersonaSession,
+        job_id: str,
+        thread: RunnableConfig,
+        data: BidGraphInput | Command | None,
+    ) -> None:
+        key = self.bid_event_key(persona, job_id)
+        await self.progress.publish(key, BidProgressEvent(kind="run", status="started"))
+        try:
+            async for chunk in persona.graph.astream(
+                data, thread, stream_mode="tasks", version="v2", durability="sync"
+            ):
+                event = BidProgressEvent.for_task(chunk["data"])
+                if event is not None:
+                    await self.progress.publish(key, event)
+        except Exception:
+            await self.progress.publish(key, BidProgressEvent(kind="run", status="error"))
+            raise
+        await self.progress.publish(key, BidProgressEvent(kind="run", status="completed"))
 
     async def _active(self, persona: PersonaSession, job_id: str, snapshot: StateSnapshot) -> bool:
         if self._lock(persona, job_id).locked():
@@ -203,9 +237,22 @@ class WebWorkflow:
         return account
 
     async def list_jobs(
-        self, persona: PersonaSession, *, q: str | None, limit: int, cursor: int
+        self,
+        persona: PersonaSession,
+        *,
+        q: str | None,
+        limit: int,
+        cursor: int,
+        domain: str | None = None,
+        payment_type: PaymentType | None = None,
     ) -> list[JobCard]:
-        jobs = await persona.adapter.search_jobs(q=q, limit=limit, cursor=cursor)
+        jobs = await persona.adapter.search_jobs(
+            q=q,
+            domain=domain,
+            payment_type=payment_type,
+            limit=limit,
+            cursor=cursor,
+        )
         cards: list[JobCard] = []
         for job in jobs.items:
             thread = await self._read_run(persona, job.job_id)
@@ -249,9 +296,10 @@ class WebWorkflow:
                 return await self._detailed_run(persona, job_id, snapshot)
 
             account = await self.verified_account(persona)
+            started = perf_counter()
 
             if snapshot.next:
-                await persona.graph.ainvoke(None, thread, durability="sync")
+                await self._run_bid_graph(persona, job_id, thread, None)
             else:
                 job = await persona.adapter.get_job(job_id)
                 proposals = await persona.adapter.list_proposals()
@@ -259,25 +307,61 @@ class WebWorkflow:
                     proposal.job_id == job_id and proposal.status == "submitted"
                     for proposal in proposals
                 )
+                preferences = await self.workspace.preferences(self.tenant(persona))
+                budget = preferences.weekly_connects_budget
+                if budget is None:
+                    budget = self.settings.connects["default_weekly_budget"]
                 connects_remaining = min(
-                    account.balance, self.settings.connects["default_weekly_budget"]
+                    account.balance,
+                    max(0, budget - weekly_connects(proposals, account.next_refill_at)),
                 )
-                await persona.graph.ainvoke(
+                auto_skip = preferences.auto_skip_low_fit
+                if auto_skip is None:
+                    auto_skip = self.settings.autonomy.auto_skip_low_fit
+                style_rules = [
+                    item.subject
+                    for item in await self.workspace.memory(self.tenant(persona))
+                    if item.kind == "style"
+                ]
+                await self._run_bid_graph(
+                    persona,
+                    job_id,
+                    thread,
                     {
                         "job_id": job_id,
                         "job": job.model_dump(mode="json"),
                         "duplicate": already_submitted,
                         "connects_remaining": connects_remaining,
+                        "preferred_hourly_rate": preferences.preferred_hourly_rate,
+                        "auto_skip_low_fit": auto_skip,
+                        "style_rules": style_rules,
+                        "portfolio_items": [
+                            {
+                                "evidence_id": "portfolio-"
+                                + sha256(item.title.encode()).hexdigest()[:16],
+                                **item.model_dump(mode="json"),
+                            }
+                            for item in preferences.portfolio
+                        ],
                     },
-                    thread,
-                    durability="sync",
                 )
-            return await self._detailed_run(persona, job_id, await persona.graph.aget_state(thread))
+            updated = await persona.graph.aget_state(thread)
+            run = await self._detailed_run(persona, job_id, updated)
+            if updated.values.get("job"):
+                await self.workspace.record(
+                    self.tenant(persona),
+                    Job.model_validate(updated.values["job"]),
+                    run,
+                    preparation_ms=None
+                    if snapshot.next
+                    else round((perf_counter() - started) * 1000),
+                )
+            return run
 
     async def decide(
         self, persona: PersonaSession, job_id: str, decision: ApprovalDecision
     ) -> RunView:
-        async with self._lock(persona, job_id):
+        async with self._lock(persona, job_id), self._lock(persona, "weekly-connects"):
             thread = self._config(persona, job_id)
             snapshot = await persona.graph.aget_state(thread)
             if not snapshot.values:
@@ -287,13 +371,42 @@ class WebWorkflow:
             pending = snapshot.interrupts[0]
             if pending.value["proposal_digest"] != decision.proposal_digest:
                 raise HTTPException(409, "The draft changed. Review the current proposal.")
-            await self.verified_account(persona)
-            await persona.graph.ainvoke(
-                Command(resume={pending.id: decision.model_dump(mode="json")}),
+            account = await self.verified_account(persona)
+            original = None
+            if decision.action == "approve":
+                preferences = await self.workspace.preferences(self.tenant(persona))
+                budget = preferences.weekly_connects_budget
+                if budget is None:
+                    budget = self.settings.connects["default_weekly_budget"]
+                proposals = await persona.adapter.list_proposals()
+                remaining = budget - weekly_connects(proposals, account.next_refill_at)
+                if pending.value["preview"]["connects_cost"] > remaining:
+                    raise HTTPException(
+                        409, "The draft exceeds your remaining weekly Connects budget."
+                    )
+                original = pending.value["draft"]["cover_letter"]
+                if pending.value["draft_version"] > 1:
+                    async for history in persona.graph.aget_state_history(thread, limit=40):
+                        values = history.values
+                        if values.get("draft_version") == 1 and values.get("proposal_draft"):
+                            original = values["proposal_draft"]["cover_letter"]
+                            break
+            await self._run_bid_graph(
+                persona,
+                job_id,
                 thread,
-                durability="sync",
+                Command(resume={pending.id: decision.model_dump(mode="json")}),
             )
-            return await self._detailed_run(persona, job_id, await persona.graph.aget_state(thread))
+            updated = await persona.graph.aget_state(thread)
+            run = await self._detailed_run(persona, job_id, updated)
+            if updated.values.get("job"):
+                await self.workspace.record(
+                    self.tenant(persona),
+                    Job.model_validate(updated.values["job"]),
+                    run,
+                    initial_text=original,
+                )
+            return run
 
     async def conversation_run(
         self, persona: PersonaSession, thread_id: str

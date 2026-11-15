@@ -1,15 +1,22 @@
 import { ArrowLeft, BadgeCheck, BriefcaseBusiness, Coins, MapPin, ScanLine, Shield, Target } from "lucide-react";
 
-import type { ApprovalDecision, JobRecord, RunView } from "@/lib/api/client";
+import type { ApprovalDecision, JobRecord, PersonaId, RunView } from "@/lib/api/client";
 import { budget, domainLabel, friendly, shortDate } from "@/lib/format";
+import { useRunProgress } from "@/lib/use-run-progress";
 
 import { Approval, Evidence } from "./approval";
 import { Notice, Status } from "./ui";
 
 const percent = (value: number) => `${Math.round(value * 100)}%`;
 
-function Analysis({ run }: { run: RunView }) {
+function Analysis({
+  run, traceUrl,
+}: {
+  run: RunView;
+  traceUrl: string;
+}) {
   if (!run.fit_report && !run.risk_report && !run.decision) return null;
+  const requirements = Object.entries(run.fit_report?.requirement_evidence ?? {});
   return (
     <section className="detail-section">
       <h3>Bid analysis</h3>
@@ -32,6 +39,22 @@ function Analysis({ run }: { run: RunView }) {
         )}
       </div>
       {run.decision && <p className="decision-summary"><strong>{friendly(run.decision.action)}</strong> · {run.decision.rule_ids.map(friendly).join(", ")}</p>}
+      {requirements.length > 0 && (
+        <div className="feedback">
+          <h4 id="skill-evidence-heading">Skill evidence</h4>
+          <table className="skill-evidence" aria-labelledby="skill-evidence-heading">
+            <thead><tr><th scope="col">Requirement</th><th scope="col">Portfolio evidence</th></tr></thead>
+            <tbody>
+              {requirements.map(([skill, references]) => (
+                <tr key={skill}>
+                  <th scope="row">{skill}</th>
+                  <td>{references.length > 0 ? references.join(", ") : "No matching evidence"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
       {!!run.critique?.feedback?.length && <div className="feedback"><h4>Critic feedback</h4><ul>{run.critique.feedback.map((item, index) => <li key={`${item}-${index}`}>{item}</li>)}</ul></div>}
       {!run.pending && !!run.claim_verification?.length && <div className="feedback"><h4>Claim evidence</h4><Evidence reports={run.claim_verification} /></div>}
       {!!run.timeline?.length && (
@@ -40,6 +63,7 @@ function Analysis({ run }: { run: RunView }) {
           <ol className="timeline-list">
             {run.timeline.map((step) => <li key={step.step}><strong>{step.nodes.map(friendly).join(", ") || "Run"}</strong> · {friendly(step.status)}</li>)}
           </ol>
+          <a className="button ghost" href={traceUrl}>Download run trace</a>
         </details>
       )}
     </section>
@@ -47,9 +71,10 @@ function Analysis({ run }: { run: RunView }) {
 }
 
 export function JobDetail({
-  job, run, busy, unavailable, mutationError, onBack, onAnalyze, onDecision,
+  job, persona, run, busy, unavailable, mutationError, onBack, onAnalyze, onDecision,
 }: {
   job: JobRecord;
+  persona: PersonaId;
   run: RunView;
   busy: boolean;
   unavailable: boolean;
@@ -60,6 +85,8 @@ export function JobDetail({
 }) {
   const flags = [...(run.compliance_verdict?.reasons ?? []), ...(run.compliance_verdict?.warnings ?? [])];
   const errors = [...flags, ...(run.errors ?? [])];
+  const progress = useRunProgress(persona, job.job_id);
+  const traceUrl = `/api/v1/jobs/${encodeURIComponent(job.job_id)}/trace?persona=${encodeURIComponent(persona)}`;
   return (
     <article className="surface job-detail" aria-label="Job details">
       <div className="detail-header">
@@ -94,13 +121,25 @@ export function JobDetail({
             <ul>{errors.map((item, index) => <li key={`${item}-${index}`}>{item}</li>)}</ul>
           </Notice>
         )}
+        {progress.length > 0 && (
+          <section className="detail-section" aria-label="Live run progress">
+            <details className="timeline" open={busy || run.status === "running" ? true : undefined}>
+              <summary>Live run progress</summary>
+              <ol className="timeline-list" aria-live="polite" aria-relevant="additions text">
+                {progress.map((entry) => (
+                  <li key={entry.id}><strong>{friendly(entry.node)}</strong> · {entry.status === "started" ? "Running" : friendly(entry.status)}</li>
+                ))}
+              </ol>
+            </details>
+          </section>
+        )}
         <section className="detail-section">
           <h3>About the job</h3>
           <p className="description">{job.description}</p>
           <div className="tags">{job.skills.map((skill, index) => <span className="tag" key={`${skill}-${index}`}>{skill}</span>)}</div>
           {job.screening_questions.length > 0 && <div className="feedback"><h4>Screening questions</h4><ol>{job.screening_questions.map((question, index) => <li key={`${question}-${index}`}>{question}</li>)}</ol></div>}
         </section>
-        <Analysis run={run} />
+        <Analysis run={run} traceUrl={traceUrl} />
         <section className="detail-section">
           <h3>About the client</h3>
           <div className="client-facts">

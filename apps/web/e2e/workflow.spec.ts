@@ -23,6 +23,16 @@ test("resumes an approval after refresh and submits the proposal once", async ({
   await page.getByRole("button", { name: "Analyze job" }).click();
   await expect(page.getByRole("heading", { name: "Review proposal" })).toBeVisible();
   await expect(page.getByLabel("Submission quote")).toContainText("12");
+  const progress = page.getByRole("region", { name: "Live run progress" });
+  const summary = progress.getByText("Live run progress", { exact: true });
+  await expect(summary).toBeVisible();
+  if ((await progress.locator("details").getAttribute("open")) === null) await summary.click();
+  await expect(progress.getByText("Job analyst", { exact: true })).toBeVisible();
+  await expect(progress.getByText("Approval · Waiting for approval", { exact: true })).toBeVisible();
+  await page.getByText("Run timeline", { exact: true }).click();
+  const download = page.waitForEvent("download");
+  await page.getByRole("link", { name: "Download run trace" }).click();
+  expect((await download).suggestedFilename()).toMatch(/^gigbid-run-[0-9a-f]+\.json$/);
   await page.reload();
   await expect(page.getByRole("heading", { name: "Review proposal" })).toBeVisible();
   await page.getByRole("button", { name: "Approve and submit" }).click();
@@ -31,6 +41,9 @@ test("resumes an approval after refresh and submits the proposal once", async ({
   const pipeline = page.getByRole("region", { name: "Proposal pipeline" });
   await expect(pipeline.getByText("12 Connects spent")).toBeVisible();
   await expect(pipeline.getByRole("button", { name: "Open job" })).toHaveCount(1);
+  await page.getByRole("navigation", { name: "Workspace" }).getByRole("button", { name: "Analytics" }).click();
+  await expect(page.getByRole("row", { name: /Full-stack web 1 0% 0% 12/ })).toBeVisible();
+  await expect(page.getByRole("row", { name: /Add Stripe subscriptions to Next.js SaaS.*ms.*\$0.*12/ })).toBeVisible();
 });
 
 test("keeps an approval pending after an empty rejection and records a reason", async ({ page }) => {
@@ -50,6 +63,11 @@ test("edits and rechecks a draft before presenting it for approval again", async
   await page.getByRole("button", { name: "Analyze job" }).click();
   await page.getByRole("button", { name: "Edit draft" }).click();
   const editor = page.getByRole("textbox", { name: "Revised cover letter" });
+  const original = (await editor.inputValue()).split("\n\n");
+  await page.getByRole("button", { name: "Regenerate opening" }).click();
+  const regenerated = (await editor.inputValue()).split("\n\n");
+  expect(regenerated[0]).not.toBe(original[0]);
+  expect(regenerated.slice(1)).toEqual(original.slice(1));
   await editor.fill(`${await editor.inputValue()}\n\nThanks for your time.`);
   await page.getByRole("button", { name: "Recheck draft" }).click();
   await expect(page.getByText("Draft 2 · Waiting for your decision", { exact: true })).toBeVisible();
@@ -75,6 +93,31 @@ test("reports an injected marketplace outage and recovers after refresh", async 
   await page.getByRole("button", { name: "Refresh" }).click();
   await expect(page.getByText("Marketplace unavailable")).toHaveCount(0);
   await expect(page.getByRole("button", { name: /Add Stripe subscriptions/i })).toBeVisible();
+});
+
+test("persists a budget, saved search and uploaded portfolio evidence", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 840 });
+  await page.goto("/?persona=data_analyst&view=settings");
+  await page.getByRole("spinbutton", { name: "Weekly Connects budget" }).fill("38");
+  await page.getByRole("button", { name: "Add saved search" }).click();
+  await page.getByRole("textbox", { name: "Name", exact: true }).fill("Dashboard jobs");
+  await page.getByRole("textbox", { name: "Keywords" }).fill("Power BI");
+  await page.getByLabel("Import Markdown or text").setInputFiles({
+    name: "Dashboard project.md", mimeType: "text/markdown",
+    buffer: Buffer.from("I built a Power BI dashboard and validated sales measures against the source data."),
+  });
+  await page.getByRole("textbox", { name: "Skills, separated by commas" }).fill("Power BI, SQL");
+  await page.getByRole("button", { name: "Add portfolio evidence" }).click();
+  await page.getByRole("button", { name: "Save settings" }).click();
+  await expect(page.getByRole("status").getByText("Settings saved")).toBeVisible();
+  await page.reload();
+  await expect(page.getByRole("spinbutton", { name: "Weekly Connects budget" })).toHaveValue("38");
+  await expect(page.getByText("Dashboard project", { exact: true })).toBeVisible();
+  await page.getByRole("navigation", { name: "Workspace" }).getByRole("button", { name: "Job inbox" }).click();
+  await page.getByRole("combobox", { name: "Saved search" }).selectOption("Dashboard jobs");
+  await expect(page.getByRole("searchbox", { name: "Search jobs" })).toHaveValue("Power BI");
+  await expect(page.getByRole("button", { name: /Power BI sales dashboard/ })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
 });
 
 test("reviews, edits and sends a reply once, then rejects a new client turn", async ({ page, request }) => {

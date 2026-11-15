@@ -13,7 +13,11 @@ from pydantic import ValidationError
 from redis.exceptions import RedisError
 
 from agent.config import GigBidConfig
+from apps.api.auth.dependencies import store_from_env
+from apps.api.routers.auth import router as auth_router
 from apps.api.routers.marketplace import router
+from apps.api.routers.streaming import router as streaming_router
+from apps.api.routers.workspace import router as workspace_router
 from apps.api.runtime import open_workflow
 from apps.api.schemas.workflow import DependencyStatus, DependencyView, ErrorView, HealthView
 from apps.api.workflow import WebWorkflow
@@ -36,11 +40,15 @@ def create_app(
             simulator_transport=simulator_transport,
             checkpoint_path=checkpoint_path,
         ) as runtime:
+            app.state.auth_store = store_from_env()
             app.state.workflow = runtime
             yield
 
     app = FastAPI(title="GigBid API", version="0.1.0", lifespan=lifespan)
+    app.include_router(auth_router)
     app.include_router(router)
+    app.include_router(streaming_router)
+    app.include_router(workspace_router)
 
     @app.exception_handler(httpx.HTTPStatusError)
     async def simulator_status(request: Request, error: httpx.HTTPStatusError) -> JSONResponse:

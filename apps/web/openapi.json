@@ -1,6 +1,40 @@
 {
   "components": {
     "schemas": {
+      "AnalyticsView": {
+        "properties": {
+          "categories": {
+            "items": {
+              "$ref": "#/components/schemas/CategoryMetrics"
+            },
+            "title": "Categories",
+            "type": "array"
+          },
+          "event_history_complete": {
+            "title": "Event History Complete",
+            "type": "boolean"
+          },
+          "proposals": {
+            "items": {
+              "$ref": "#/components/schemas/ProposalMetric"
+            },
+            "title": "Proposals",
+            "type": "array"
+          },
+          "top_rejections": {
+            "items": {
+              "$ref": "#/components/schemas/RejectionCount"
+            },
+            "title": "Top Rejections",
+            "type": "array"
+          }
+        },
+        "required": [
+          "event_history_complete"
+        ],
+        "title": "AnalyticsView",
+        "type": "object"
+      },
       "ApprovalDecision": {
         "additionalProperties": false,
         "properties": {
@@ -48,6 +82,40 @@
           "proposal_digest"
         ],
         "title": "ApprovalDecision",
+        "type": "object"
+      },
+      "AuthSession": {
+        "properties": {
+          "available_personas": {
+            "items": {
+              "$ref": "#/components/schemas/PersonaView"
+            },
+            "title": "Available Personas",
+            "type": "array"
+          },
+          "mode": {
+            "enum": [
+              "demo",
+              "local"
+            ],
+            "title": "Mode",
+            "type": "string"
+          },
+          "user": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/LocalUser"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "mode"
+        ],
+        "title": "AuthSession",
         "type": "object"
       },
       "BidDecision": {
@@ -120,6 +188,94 @@
           "account_id"
         ],
         "title": "BidPreview",
+        "type": "object"
+      },
+      "BidTrace": {
+        "properties": {
+          "captured_at": {
+            "format": "date-time",
+            "title": "Captured At",
+            "type": "string"
+          },
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "persona": {
+            "enum": [
+              "ai_ml",
+              "fullstack",
+              "data_analyst"
+            ],
+            "title": "Persona",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "idle",
+              "running",
+              "awaiting_approval",
+              "needs_attention",
+              "skipped",
+              "done"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "timeline": {
+            "items": {
+              "$ref": "#/components/schemas/RunStep"
+            },
+            "title": "Timeline",
+            "type": "array"
+          },
+          "trace_id": {
+            "title": "Trace Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "trace_id",
+          "job_id",
+          "persona",
+          "captured_at",
+          "status",
+          "timeline"
+        ],
+        "title": "BidTrace",
+        "type": "object"
+      },
+      "CategoryMetrics": {
+        "properties": {
+          "connects_spent": {
+            "default": 0,
+            "title": "Connects Spent",
+            "type": "integer"
+          },
+          "domain": {
+            "title": "Domain",
+            "type": "string"
+          },
+          "hired": {
+            "default": 0,
+            "title": "Hired",
+            "type": "integer"
+          },
+          "replied": {
+            "default": 0,
+            "title": "Replied",
+            "type": "integer"
+          },
+          "submitted": {
+            "default": 0,
+            "title": "Submitted",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "domain"
+        ],
+        "title": "CategoryMetrics",
         "type": "object"
       },
       "ClaimVerification": {
@@ -445,6 +601,31 @@
         "title": "ConversationRunView",
         "type": "object"
       },
+      "Credentials": {
+        "properties": {
+          "password": {
+            "format": "password",
+            "maxLength": 256,
+            "minLength": 12,
+            "title": "Password",
+            "type": "string",
+            "writeOnly": true
+          },
+          "username": {
+            "maxLength": 32,
+            "minLength": 3,
+            "pattern": "^[A-Za-z0-9_.-]+$",
+            "title": "Username",
+            "type": "string"
+          }
+        },
+        "required": [
+          "username",
+          "password"
+        ],
+        "title": "Credentials",
+        "type": "object"
+      },
       "Critique": {
         "properties": {
           "feedback": {
@@ -544,6 +725,16 @@
             },
             "title": "Missing Skills",
             "type": "array"
+          },
+          "requirement_evidence": {
+            "additionalProperties": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "title": "Requirement Evidence",
+            "type": "object"
           },
           "score": {
             "maximum": 1.0,
@@ -1039,6 +1230,77 @@
         "title": "JobSpec",
         "type": "object"
       },
+      "LocalUser": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "persona": {
+            "enum": [
+              "ai_ml",
+              "fullstack",
+              "data_analyst"
+            ],
+            "title": "Persona",
+            "type": "string"
+          },
+          "username": {
+            "title": "Username",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "username",
+          "persona"
+        ],
+        "title": "LocalUser",
+        "type": "object"
+      },
+      "MemoryEntry": {
+        "properties": {
+          "category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category"
+          },
+          "kind": {
+            "enum": [
+              "style",
+              "outcome"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "observations": {
+            "title": "Observations",
+            "type": "integer"
+          },
+          "rule_id": {
+            "title": "Rule Id",
+            "type": "string"
+          },
+          "subject": {
+            "title": "Subject",
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "subject",
+          "rule_id",
+          "observations"
+        ],
+        "title": "MemoryEntry",
+        "type": "object"
+      },
       "Message": {
         "properties": {
           "body": {
@@ -1073,6 +1335,18 @@
       },
       "PendingApproval": {
         "properties": {
+          "alternate_opening": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "readOnly": true,
+            "title": "Alternate Opening"
+          },
           "claim_verification": {
             "items": {
               "$ref": "#/components/schemas/ClaimVerification"
@@ -1123,7 +1397,8 @@
           "price_quote",
           "submission",
           "preview",
-          "proposal_digest"
+          "proposal_digest",
+          "alternate_opening"
         ],
         "title": "PendingApproval",
         "type": "object"
@@ -1159,6 +1434,147 @@
           "rate"
         ],
         "title": "PersonaView",
+        "type": "object"
+      },
+      "PipelineCard": {
+        "properties": {
+          "bid_amount": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bid Amount"
+          },
+          "bid_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bid Type"
+          },
+          "connects_spent": {
+            "default": 0,
+            "title": "Connects Spent",
+            "type": "integer"
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At"
+          },
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "proposal_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Proposal Id"
+          },
+          "stage": {
+            "enum": [
+              "drafted",
+              "submitted",
+              "viewed",
+              "replied",
+              "interview",
+              "hired",
+              "lost"
+            ],
+            "title": "Stage",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "job_id",
+          "title",
+          "stage"
+        ],
+        "title": "PipelineCard",
+        "type": "object"
+      },
+      "Preferences": {
+        "additionalProperties": false,
+        "properties": {
+          "auto_skip_low_fit": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Auto Skip Low Fit"
+          },
+          "portfolio": {
+            "items": {
+              "$ref": "#/components/schemas/UploadedEvidence"
+            },
+            "maxItems": 5,
+            "title": "Portfolio",
+            "type": "array"
+          },
+          "preferred_hourly_rate": {
+            "anyOf": [
+              {
+                "maximum": 10000.0,
+                "minimum": 1.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Preferred Hourly Rate"
+          },
+          "saved_searches": {
+            "items": {
+              "$ref": "#/components/schemas/SavedSearch"
+            },
+            "maxItems": 5,
+            "title": "Saved Searches",
+            "type": "array"
+          },
+          "weekly_connects_budget": {
+            "anyOf": [
+              {
+                "maximum": 1000.0,
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Weekly Connects Budget"
+          }
+        },
+        "title": "Preferences",
         "type": "object"
       },
       "PriceQuote": {
@@ -1377,6 +1793,151 @@
           "bid_amount"
         ],
         "title": "ProposalInput",
+        "type": "object"
+      },
+      "ProposalMetric": {
+        "properties": {
+          "connects_spent": {
+            "default": 0,
+            "title": "Connects Spent",
+            "type": "integer"
+          },
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "preparation_ms": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Preparation Ms"
+          },
+          "proposal_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Proposal Id"
+          },
+          "provider_cost_usd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider Cost Usd"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "job_id",
+          "title"
+        ],
+        "title": "ProposalMetric",
+        "type": "object"
+      },
+      "Registration": {
+        "properties": {
+          "password": {
+            "format": "password",
+            "maxLength": 256,
+            "minLength": 12,
+            "title": "Password",
+            "type": "string",
+            "writeOnly": true
+          },
+          "persona": {
+            "enum": [
+              "ai_ml",
+              "fullstack",
+              "data_analyst"
+            ],
+            "title": "Persona",
+            "type": "string"
+          },
+          "username": {
+            "maxLength": 32,
+            "minLength": 3,
+            "pattern": "^[A-Za-z0-9_.-]+$",
+            "title": "Username",
+            "type": "string"
+          }
+        },
+        "required": [
+          "username",
+          "password",
+          "persona"
+        ],
+        "title": "Registration",
+        "type": "object"
+      },
+      "RejectionCount": {
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "reason": {
+            "title": "Reason",
+            "type": "string"
+          }
+        },
+        "required": [
+          "reason",
+          "count"
+        ],
+        "title": "RejectionCount",
+        "type": "object"
+      },
+      "RemoveMemory": {
+        "properties": {
+          "category": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category"
+          },
+          "kind": {
+            "enum": [
+              "style",
+              "outcome"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "subject": {
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Subject",
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "subject"
+        ],
+        "title": "RemoveMemory",
         "type": "object"
       },
       "ReplyDraft": {
@@ -1661,6 +2222,60 @@
         "title": "RunView",
         "type": "object"
       },
+      "SavedSearch": {
+        "additionalProperties": false,
+        "properties": {
+          "domain": {
+            "default": "",
+            "maxLength": 40,
+            "pattern": "^[a-z0-9_]*$",
+            "title": "Domain",
+            "type": "string"
+          },
+          "enabled": {
+            "default": false,
+            "title": "Enabled",
+            "type": "boolean"
+          },
+          "interval_minutes": {
+            "default": 60,
+            "enum": [
+              30,
+              60,
+              180
+            ],
+            "title": "Interval Minutes",
+            "type": "integer"
+          },
+          "name": {
+            "maxLength": 60,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          },
+          "payment_type": {
+            "default": "any",
+            "enum": [
+              "any",
+              "fixed",
+              "hourly"
+            ],
+            "title": "Payment Type",
+            "type": "string"
+          },
+          "query": {
+            "default": "",
+            "maxLength": 200,
+            "title": "Query",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "SavedSearch",
+        "type": "object"
+      },
       "StartConversation": {
         "properties": {
           "availability": {
@@ -1730,6 +2345,41 @@
         "title": "Thread",
         "type": "object"
       },
+      "UploadedEvidence": {
+        "additionalProperties": false,
+        "properties": {
+          "skills": {
+            "items": {
+              "maxLength": 40,
+              "minLength": 1,
+              "type": "string"
+            },
+            "maxItems": 12,
+            "minItems": 1,
+            "title": "Skills",
+            "type": "array"
+          },
+          "summary": {
+            "maxLength": 1200,
+            "minLength": 20,
+            "title": "Summary",
+            "type": "string"
+          },
+          "title": {
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "summary",
+          "skills"
+        ],
+        "title": "UploadedEvidence",
+        "type": "object"
+      },
       "ValidationError": {
         "properties": {
           "ctx": {
@@ -1769,6 +2419,54 @@
         ],
         "title": "ValidationError",
         "type": "object"
+      },
+      "WorkspaceSettings": {
+        "properties": {
+          "account_id": {
+            "title": "Account Id",
+            "type": "string"
+          },
+          "connects_balance": {
+            "title": "Connects Balance",
+            "type": "integer"
+          },
+          "default_auto_skip": {
+            "title": "Default Auto Skip",
+            "type": "boolean"
+          },
+          "default_hourly_rate": {
+            "title": "Default Hourly Rate",
+            "type": "number"
+          },
+          "default_weekly_budget": {
+            "title": "Default Weekly Budget",
+            "type": "integer"
+          },
+          "marketplace": {
+            "const": "gigsim",
+            "default": "gigsim",
+            "title": "Marketplace",
+            "type": "string"
+          },
+          "preferences": {
+            "$ref": "#/components/schemas/Preferences"
+          },
+          "weekly_connects_spent": {
+            "title": "Weekly Connects Spent",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "preferences",
+          "default_weekly_budget",
+          "default_hourly_rate",
+          "default_auto_skip",
+          "account_id",
+          "weekly_connects_spent",
+          "connects_balance"
+        ],
+        "title": "WorkspaceSettings",
+        "type": "object"
       }
     }
   },
@@ -1778,6 +2476,210 @@
   },
   "openapi": "3.1.0",
   "paths": {
+    "/api/v1/auth/login": {
+      "post": {
+        "operationId": "login_api_v1_auth_login_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Credentials"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthSession"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorView"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorView"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorView"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          }
+        },
+        "summary": "Login",
+        "tags": [
+          "Local account"
+        ]
+      }
+    },
+    "/api/v1/auth/logout": {
+      "post": {
+        "operationId": "logout_api_v1_auth_logout_post",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthSession"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorView"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorView"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          }
+        },
+        "summary": "Logout",
+        "tags": [
+          "Local account"
+        ]
+      }
+    },
+    "/api/v1/auth/register": {
+      "post": {
+        "operationId": "register_api_v1_auth_register_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Registration"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthSession"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorView"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorView"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorView"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          }
+        },
+        "summary": "Register",
+        "tags": [
+          "Local account"
+        ]
+      }
+    },
+    "/api/v1/auth/session": {
+      "get": {
+        "operationId": "session_api_v1_auth_session_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthSession"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorView"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorView"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          }
+        },
+        "summary": "Session",
+        "tags": [
+          "Local account"
+        ]
+      }
+    },
     "/api/v1/jobs": {
       "get": {
         "operationId": "list_jobs_api_v1_jobs_get",
@@ -1797,6 +2699,43 @@
                 }
               ],
               "title": "Q"
+            }
+          },
+          {
+            "in": "query",
+            "name": "domain",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 40,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Domain"
+            }
+          },
+          {
+            "in": "query",
+            "name": "payment_type",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "fixed",
+                    "hourly"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Payment Type"
             }
           },
           {
@@ -2058,6 +2997,89 @@
         ]
       }
     },
+    "/api/v1/jobs/{job_id}/events": {
+      "get": {
+        "operationId": "bid_progress_api_v1_jobs__job_id__events_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "job_id",
+            "required": true,
+            "schema": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[\\w~\\-][\\w.~\\-]*$",
+              "title": "Job Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "persona",
+            "required": true,
+            "schema": {
+              "maxLength": 32,
+              "minLength": 1,
+              "title": "Persona",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Last-Event-ID",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "pattern": "^[0-9]{1,19}-[0-9]{1,19}$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Last-Event-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "text/event-stream": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorView"
+                }
+              }
+            },
+            "description": "Persona or resource not found"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Bid Progress",
+        "tags": [
+          "Simulator workspace"
+        ]
+      }
+    },
     "/api/v1/jobs/{job_id}/run": {
       "get": {
         "operationId": "get_run_api_v1_jobs__job_id__run_get",
@@ -2213,6 +3235,73 @@
           }
         },
         "summary": "Start Run",
+        "tags": [
+          "Simulator workspace"
+        ]
+      }
+    },
+    "/api/v1/jobs/{job_id}/trace": {
+      "get": {
+        "description": "Export checkpoint timestamps and node statuses without workflow contents or credentials.",
+        "operationId": "download_bid_trace_api_v1_jobs__job_id__trace_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "job_id",
+            "required": true,
+            "schema": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[\\w~\\-][\\w.~\\-]*$",
+              "title": "Job Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "persona",
+            "required": true,
+            "schema": {
+              "maxLength": 32,
+              "minLength": 1,
+              "title": "Persona",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BidTrace"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorView"
+                }
+              }
+            },
+            "description": "Persona or resource not found"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Download Bid Trace",
         "tags": [
           "Simulator workspace"
         ]
@@ -2739,6 +3828,344 @@
         "summary": "List Proposals",
         "tags": [
           "Simulator workspace"
+        ]
+      }
+    },
+    "/api/v1/workspace/analytics": {
+      "get": {
+        "operationId": "get_analytics_api_v1_workspace_analytics_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "persona",
+            "required": true,
+            "schema": {
+              "maxLength": 32,
+              "minLength": 1,
+              "title": "Persona",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnalyticsView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Analytics",
+        "tags": [
+          "Workspace"
+        ]
+      }
+    },
+    "/api/v1/workspace/memory": {
+      "get": {
+        "operationId": "get_memory_api_v1_workspace_memory_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "persona",
+            "required": true,
+            "schema": {
+              "maxLength": 32,
+              "minLength": 1,
+              "title": "Persona",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MemoryEntry"
+                  },
+                  "title": "Response Get Memory Api V1 Workspace Memory Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Memory",
+        "tags": [
+          "Workspace"
+        ]
+      }
+    },
+    "/api/v1/workspace/memory/remove": {
+      "post": {
+        "operationId": "remove_memory_api_v1_workspace_memory_remove_post",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "persona",
+            "required": true,
+            "schema": {
+              "maxLength": 32,
+              "minLength": 1,
+              "title": "Persona",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveMemory"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MemoryEntry"
+                  },
+                  "title": "Response Remove Memory Api V1 Workspace Memory Remove Post",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Remove Memory",
+        "tags": [
+          "Workspace"
+        ]
+      }
+    },
+    "/api/v1/workspace/pipeline": {
+      "get": {
+        "operationId": "get_pipeline_api_v1_workspace_pipeline_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "persona",
+            "required": true,
+            "schema": {
+              "maxLength": 32,
+              "minLength": 1,
+              "title": "Persona",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PipelineCard"
+                  },
+                  "title": "Response Get Pipeline Api V1 Workspace Pipeline Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Pipeline",
+        "tags": [
+          "Workspace"
+        ]
+      }
+    },
+    "/api/v1/workspace/preferences": {
+      "get": {
+        "operationId": "get_preferences_api_v1_workspace_preferences_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "persona",
+            "required": true,
+            "schema": {
+              "maxLength": 32,
+              "minLength": 1,
+              "title": "Persona",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Preferences"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Preferences",
+        "tags": [
+          "Workspace"
+        ]
+      }
+    },
+    "/api/v1/workspace/settings": {
+      "get": {
+        "operationId": "get_settings_api_v1_workspace_settings_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "persona",
+            "required": true,
+            "schema": {
+              "maxLength": 32,
+              "minLength": 1,
+              "title": "Persona",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkspaceSettings"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Settings",
+        "tags": [
+          "Workspace"
+        ]
+      },
+      "put": {
+        "operationId": "put_settings_api_v1_workspace_settings_put",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "persona",
+            "required": true,
+            "schema": {
+              "maxLength": 32,
+              "minLength": 1,
+              "title": "Persona",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Preferences"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkspaceSettings"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Put Settings",
+        "tags": [
+          "Workspace"
         ]
       }
     },

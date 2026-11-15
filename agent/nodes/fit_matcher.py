@@ -20,11 +20,14 @@ def match_job_fit(job: dict[str, Any], evidence: tuple[PortfolioEvidence, ...]) 
     wanted = {skill.casefold() for skill in skills}
     ranked = []
     matched: set[str] = set()
+    witnesses: dict[str, list[str]] = {skill.casefold(): [] for skill in skills}
     for item in evidence:
         overlap = wanted.intersection(skill.casefold() for skill in item.skills)
         if overlap:
             matched.update(overlap)
             ranked.append((len(overlap), item.evidence_id))
+            for skill in overlap:
+                witnesses[skill].append(item.evidence_id)
 
     ranked.sort(key=lambda item: (-item[0], item[1]))
     return FitReport(
@@ -32,4 +35,5 @@ def match_job_fit(job: dict[str, Any], evidence: tuple[PortfolioEvidence, ...]) 
         matched_skills=[skill for skill in skills if skill.casefold() in matched],
         missing_skills=[skill for skill in skills if skill.casefold() not in matched],
         evidence_ids=[evidence_id for _, evidence_id in ranked],
+        requirement_evidence={skill: witnesses[skill.casefold()] for skill in skills},
     )

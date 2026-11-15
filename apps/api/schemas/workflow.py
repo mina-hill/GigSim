@@ -2,7 +2,7 @@
 
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, computed_field
 
 from agent.handoffs import (
     ApprovalDecision,
@@ -17,6 +17,7 @@ from agent.handoffs import (
     RiskReport,
 )
 from agent.marketplace_gateway import BidPreview
+from agent.nodes.writer import alternate_opening
 from mcp_servers.marketplace.port import Job, Proposal, ProposalInput
 
 PersonaId = Literal["ai_ml", "fullstack", "data_analyst"]
@@ -40,6 +41,11 @@ class PendingApproval(BaseModel):
     preview: BidPreview
     proposal_digest: str
     error: str | None = None
+
+    @computed_field
+    @property
+    def alternate_opening(self) -> str | None:
+        return alternate_opening(self.submission.cover_letter)
 
 
 class RunStep(BaseModel):

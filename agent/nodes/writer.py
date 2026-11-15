@@ -10,6 +10,8 @@ _OPENING = (
     "Hello, I would start by confirming what you want the first milestone to deliver "
     "and agreeing on how to evaluate the result."
 )
+_DIRECT_OPENING = _OPENING.removeprefix("Hello, ")
+_SHORT_OPENING = "I would confirm the first milestone and agree on how to evaluate it."
 _CLOSING = (
     "I can share a short plan here before we commit to the timeline, "
     "including the handover material and checks for the agreed deliverables."
@@ -26,8 +28,18 @@ _ESTIMATE = "I would estimate the first milestone after reviewing the scope and 
 _TOOLS = "I would confirm the existing tooling and inputs before choosing an implementation."
 _NO_ANSWER = "I can discuss the project requirements here before committing to scope."
 _SAFE_PARAGRAPHS = {
-    _OPENING, _CLOSING, _VALIDATION, _IMBALANCED_CLASSIFIER, _ESTIMATE, _TOOLS, _NO_ANSWER,
-    "Hello,", "Thank you for considering my proposal.", "Thanks for your time.",
+    _OPENING,
+    _CLOSING,
+    _VALIDATION,
+    _IMBALANCED_CLASSIFIER,
+    _ESTIMATE,
+    _TOOLS,
+    _NO_ANSWER,
+    _DIRECT_OPENING,
+    _SHORT_OPENING,
+    "Hello,",
+    "Thank you for considering my proposal.",
+    "Thanks for your time.",
 }
 
 
@@ -55,15 +67,34 @@ def _screening_answer(question: str, evidence: list[PortfolioEvidence]) -> str:
 
 
 def write_proposal(
-    job_id: str, questions: list[str], evidence: list[PortfolioEvidence]
+    job_id: str,
+    questions: list[str],
+    evidence: list[PortfolioEvidence],
+    *,
+    style_rules: list[str] | None = None,
 ) -> ProposalDraft:
-    paragraphs = [_OPENING, *(_evidence_paragraph(item) for item in evidence), _CLOSING]
+    rules = style_rules or []
+    opening = _OPENING
+    if "shorter_opening" in rules:
+        opening = _SHORT_OPENING
+    elif "omit_greeting" in rules:
+        opening = _DIRECT_OPENING
+    paragraphs = [opening, *(_evidence_paragraph(item) for item in evidence), _CLOSING]
     return ProposalDraft(
         job_id=job_id,
         cover_letter="\n\n".join(paragraphs),
         evidence_ids=[item.evidence_id for item in evidence],
         screening_answers=[_screening_answer(question, evidence) for question in questions],
     )
+
+
+def alternate_opening(cover_letter: str) -> str | None:
+    opening = cover_letter.split("\n\n", 1)[0].strip()
+    if opening == _SHORT_OPENING:
+        return _DIRECT_OPENING
+    if opening in {_OPENING, _DIRECT_OPENING}:
+        return _SHORT_OPENING
+    return None
 
 
 def verify_proposal(
@@ -78,9 +109,11 @@ def verify_proposal(
                 continue
             evidence_id = reference.get(paragraph)
             citations = [evidence_id] if evidence_id and evidence_id in draft.evidence_ids else []
-            reports.append(ClaimVerification(
-                supported=bool(citations),
-                claim=paragraph,
-                evidence_ids=citations,
-            ))
+            reports.append(
+                ClaimVerification(
+                    supported=bool(citations),
+                    claim=paragraph,
+                    evidence_ids=citations,
+                )
+            )
     return reports

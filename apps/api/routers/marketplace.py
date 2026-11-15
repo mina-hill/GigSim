@@ -2,13 +2,14 @@
 
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, Path, Query, Request
+from fastapi import APIRouter, Depends, HTTPException, Path, Query, Request
 
 from agent.handoffs import ApprovalDecision
+from apps.api.auth.dependencies import WorkspaceAccess
 from apps.api.schemas.conversation import ConversationRunView, StartConversation
 from apps.api.schemas.workflow import ErrorView, JobCard, JobRecord, PersonaView, RunView
 from apps.api.workflow import PersonaSession, WebWorkflow
-from mcp_servers.marketplace.port import Message, Proposal, Thread
+from mcp_servers.marketplace.port import Message, PaymentType, Proposal, Thread
 
 router = APIRouter(
     prefix="/api/v1",
@@ -29,8 +30,12 @@ WorkflowDep = Annotated[WebWorkflow, Depends(workflow)]
 
 
 async def selected_persona(
-    runtime: WorkflowDep, persona: Annotated[str, Query(min_length=1, max_length=32)]
+    runtime: WorkflowDep,
+    persona: Annotated[str, Query(min_length=1, max_length=32)],
+    access: WorkspaceAccess,
 ) -> PersonaSession:
+    if access is not None and persona != access.persona:
+        raise HTTPException(403, "That persona does not belong to your workspace.")
     return runtime.persona(persona)
 
 
@@ -38,7 +43,9 @@ PersonaDep = Annotated[PersonaSession, Depends(selected_persona)]
 
 
 @router.get("/personas")
-async def list_personas(runtime: WorkflowDep) -> list[PersonaView]:
+async def list_personas(runtime: WorkflowDep, access: WorkspaceAccess) -> list[PersonaView]:
+    if access is not None:
+        return [runtime.persona(access.persona).view]
     return runtime.list_personas()
 
 
@@ -47,10 +54,14 @@ async def list_jobs(
     runtime: WorkflowDep,
     persona: PersonaDep,
     q: Annotated[str | None, Query(max_length=200)] = None,
+    domain: Annotated[str | None, Query(max_length=40)] = None,
+    payment_type: PaymentType | None = None,
     limit: Annotated[int, Query(ge=1, le=50)] = 50,
     cursor: Annotated[int, Query(ge=0)] = 0,
 ) -> list[JobCard]:
-    return await runtime.list_jobs(persona, q=q, limit=limit, cursor=cursor)
+    return await runtime.list_jobs(
+        persona, q=q, domain=domain, payment_type=payment_type, limit=limit, cursor=cursor,
+    )
 
 
 @router.get("/jobs/{job_id}", responses=NOT_FOUND)

@@ -2,6 +2,7 @@
 
 import argparse
 import os
+import secrets
 import shutil
 import socket
 import sqlite3
@@ -90,6 +91,9 @@ def serve(args: argparse.Namespace, database: Path) -> None:
     simulator_url = f"http://127.0.0.1:{args.simulator_port}"
     api_url = f"http://127.0.0.1:{args.api_port}"
     web_url = f"http://127.0.0.1:{args.web_port}"
+    accounts = load_simulator_account_tokens()
+    if args.auth:
+        accounts = {account: secrets.token_urlsafe(32) for account in accounts}
     env = {
         **os.environ,
         "MARKETPLACE_MODE": "gigsim",
@@ -99,15 +103,19 @@ def serve(args: argparse.Namespace, database: Path) -> None:
         "GIGSIM_LATENCY_MS_MAX": "0",
         "GIGSIM_DB_URL": sqlite_url(database),
         "GIGSIM_BASE_URL": simulator_url,
-        "GIGSIM_API_TOKENS": ",".join(
-            f"{token}:{account}" for account, token in load_simulator_account_tokens().items()
-        ),
+        "GIGSIM_API_TOKENS": ",".join(f"{token}:{account}" for account, token in accounts.items()),
         "GIGBID_API_URL": api_url,
         "GIGBID_WEB_CHECKPOINT": str(database.with_name("approvals.sqlite")),
         "GIGBID_CHECKPOINT_DSN": "",
         "GIGBID_QUEUE_URL": "",
+        "GIGBID_AUTH_MODE": "local" if args.auth else "demo",
+        "GIGBID_AUTH_DB": str(database.with_name("accounts.sqlite")),
+        "GIGBID_AUTH_WEB_ORIGIN": web_url,
+        "GIGBID_NEXT_AUTH": "1" if args.auth else "",
         "NEXT_TELEMETRY_DISABLED": "1",
     }
+    if args.auth:
+        env["GIGSIM_ADMIN_TOKEN"] = secrets.token_urlsafe(32)
     processes: list[subprocess.Popen] = []
     try:
         for module, port, url in (
@@ -160,14 +168,23 @@ def serve(args: argparse.Namespace, database: Path) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--database", type=Path, default=ROOT / ".cache/local-demo/gigsim.sqlite")
+    parser.add_argument("--database", type=Path)
     parser.add_argument("--world", type=Path, default=WORLD)
-    parser.add_argument("--web-port", type=int, default=3010)
-    parser.add_argument("--api-port", type=int, default=18380)
-    parser.add_argument("--simulator-port", type=int, default=18381)
+    parser.add_argument("--web-port", type=int)
+    parser.add_argument("--api-port", type=int)
+    parser.add_argument("--simulator-port", type=int)
+    parser.add_argument(
+        "--auth", action="store_true", help="Run with separate, sign-in-only workspaces."
+    )
     parser.add_argument("--seed-only", action="store_true")
     args = parser.parse_args()
-    database = args.database.resolve()
+    folder = "local-auth" if args.auth else "local-demo"
+    database = (args.database or ROOT / ".cache" / folder / "gigsim.sqlite").resolve()
+    args.web_port = args.web_port if args.web_port is not None else (3011 if args.auth else 3010)
+    args.api_port = args.api_port if args.api_port is not None else (18390 if args.auth else 18380)
+    args.simulator_port = (
+        args.simulator_port if args.simulator_port is not None else (18391 if args.auth else 18381)
+    )
     seed_if_missing(database, args.world.resolve())
     if not args.seed_only:
         serve(args, database)

@@ -12,6 +12,10 @@ class BidGraphInput(TypedDict, total=False):
     duplicate: bool
     connects_remaining: int
     price_floor: float
+    preferred_hourly_rate: float | None
+    auto_skip_low_fit: bool
+    style_rules: list[str]
+    portfolio_items: list[dict[str, Any]]
 
 
 class GigBidState(BidGraphInput, total=False):

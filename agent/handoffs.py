@@ -23,6 +23,7 @@ class FitReport(BaseModel):
     matched_skills: list[str] = Field(default_factory=list)
     missing_skills: list[str] = Field(default_factory=list)
     evidence_ids: list[str] = Field(default_factory=list)
+    requirement_evidence: dict[str, list[str]] = Field(default_factory=dict)
 
 
 class ProposalDraft(BaseModel):

@@ -1,4 +1,4 @@
-import { Check, ClipboardCheck, Coins, FileText, Pencil, ShieldCheck, X } from "lucide-react";
+import { Check, ClipboardCheck, Coins, FileText, Pencil, RefreshCw, ShieldCheck, X } from "lucide-react";
 import { useState } from "react";
 
 import type { ApprovalDecision, PendingApproval, RunView } from "@/lib/api/client";
@@ -73,6 +73,10 @@ export function Approval({
           <textarea id="draft-edit" maxLength={5000} value={text} onChange={(event) => setText(event.target.value)} rows={10} />
           <div className="actions">
             <button type="submit" className="button primary" disabled={blocked}>Recheck draft</button>
+            {pending.alternate_opening && <button type="button" className="button secondary" disabled={blocked} onClick={() => {
+              const end = text.indexOf("\n\n");
+              setText(pending.alternate_opening + (end === -1 ? "" : text.slice(end)));
+            }}><RefreshCw size={14} /> Regenerate opening</button>}
             <button type="button" className="button secondary" onClick={() => setMode("review")} disabled={busy}>Cancel</button>
           </div>
         </form>

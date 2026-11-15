@@ -1,8 +1,8 @@
 "use client";
 
 import {
-  Activity, ArrowLeft, ArrowRight, ArrowUpRight, BriefcaseBusiness, ChevronDown,
-  ChevronRight, CircleCheck, Columns3, FlaskConical, Inbox, MessageSquare, RefreshCw, Search,
+  Activity, ArrowLeft, ArrowRight, ArrowUpRight, BarChart3, BriefcaseBusiness, ChevronDown,
+  ChevronRight, CircleCheck, Columns3, FlaskConical, Inbox, LogOut, MessageSquare, RefreshCw, Search, Settings,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -10,17 +10,22 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { api, ApiError, unwrap } from "@/lib/api/client";
 import type { ApprovalDecision, JobCard, PersonaId, RunView } from "@/lib/api/client";
-import { budget, domainLabel, friendly, money, shortDate } from "@/lib/format";
+import { budget, domainLabel, friendly, shortDate } from "@/lib/format";
 import { useDebouncedSearch, useResource } from "@/lib/use-resource";
 
 import { ConversationReview } from "./conversation-review";
 import { JobDetail } from "./job-detail";
 import { Loading, Notice, Status } from "./ui";
+import { Analytics, PipelineBoard, WorkspaceSettingsPanel } from "./workspace-tools";
+
+import accessStyles from "./workspace-access.module.css";
 
 const VIEWS = [
   { id: "inbox", label: "Job inbox", icon: Inbox, description: "Find opportunities and review how well they match your portfolio." },
   { id: "pipeline", label: "Pipeline", icon: Columns3, description: "Track your simulated proposals and the Connects you spent." },
   { id: "messages", label: "Messages", icon: MessageSquare, description: "" },
+  { id: "analytics", label: "Analytics", icon: BarChart3, description: "" },
+  { id: "settings", label: "Settings", icon: Settings, description: "" },
 ] as const;
 const PREFERRED_DOMAIN: Record<PersonaId, string> = {
   fullstack: "fullstack_web", ai_ml: "ai_ml", data_analyst: "data_analysis",
@@ -48,6 +53,8 @@ function JobListItem({ job, active, onSelect }: { job: JobCard; active: boolean;
       <strong>{job.title}</strong>
       <div className="job-card-budget"><span>{budget(job)}</span><span>{friendly(job.payment_type)}</span></div>
       <div className="job-card-bottom"><Status value={job.run_status} />{job.fit_score != null && <span>{Math.round(job.fit_score * 100)}% fit</span>}</div>
+      <div className="job-card-meta"><span>{job.connects_cost} Connects{job.action ? ` · ${friendly(job.action)}` : ""}</span>
+        {job.risk_score != null && <span className={job.risk_score >= .7 ? "risk-elevated" : ""}>{Math.round(job.risk_score * 100)}% risk</span>}</div>
     </button>
   );
 }
@@ -73,12 +80,21 @@ function MessagesEmpty({ persona }: { persona: PersonaId }) {
   );
 }
 
-export function Dashboard() {
+export function Dashboard({
+  workspacePersona, username, onSignOut, signingOut, accountError,
+}: {
+  workspacePersona?: PersonaId;
+  username?: string;
+  onSignOut?: () => void;
+  signingOut?: boolean;
+  accountError?: string;
+}) {
   const router = useRouter();
   const params = useSearchParams();
   const [refresh, setRefresh] = useState(0);
   const [healthRevision, setHealthRevision] = useState(0);
   const [search, setSearch] = useState("");
+  const [searchFilter, setSearchFilter] = useState<{ persona: PersonaId; name: string }>();
   const [cursor, setCursor] = useState(0);
   const [filter, setFilter] = useState<Filter>("all");
   const [result, setResult] = useState<{ key: string; run?: RunView; error?: string; errorStatus?: number; revision: number }>();
@@ -86,7 +102,9 @@ export function Dashboard() {
   const inFlight = useRef(false);
   const query = useDebouncedSearch(search);
   const requestedPersona = params.get("persona");
-  const preferredPersona: PersonaId = requestedPersona === "ai_ml" || requestedPersona === "data_analyst" ? requestedPersona : "fullstack";
+  const preferredPersona: PersonaId = workspacePersona ?? (
+    requestedPersona === "ai_ml" || requestedPersona === "data_analyst" ? requestedPersona : "fullstack"
+  );
   const view = VIEWS.find((item) => item.id === params.get("view")) ?? VIEWS[0];
   const selectedJob = params.get("job");
   const selectedThread = params.get("thread");
@@ -102,14 +120,24 @@ export function Dashboard() {
   const personaOptions = personas.data ?? [];
   const health = useResource("health", healthRevision, loadHealth);
 
+  const fetchPreferences = useCallback((signal: AbortSignal) => api.GET("/api/v1/workspace/preferences", {
+    signal, params: { query: { persona } },
+  }).then(unwrap), [persona]);
+  const inboxPreferences = useResource(view.id === "inbox" ? persona : null, refresh, fetchPreferences);
+  const savedSearches = inboxPreferences.data?.saved_searches ?? [];
+  const searchChoice = searchFilter?.persona === persona ? savedSearches.find((item) => item.name === searchFilter.name) : undefined;
+  const domain = searchChoice?.domain || undefined;
+  const payment = searchChoice?.payment_type === "fixed" || searchChoice?.payment_type === "hourly" ? searchChoice.payment_type : undefined;
   const fetchJobs = useCallback((signal: AbortSignal) => api.GET("/api/v1/jobs", {
-    signal, params: { query: { persona, q: query || undefined, limit: PAGE_SIZE, cursor } },
-  }).then(unwrap), [persona, query, cursor]);
-  const jobs = useResource(view.id === "inbox" ? `${persona}:${query}:${cursor}` : null, refresh, fetchJobs);
+    signal, params: { query: { persona, q: query || undefined, domain, payment_type: payment, limit: PAGE_SIZE, cursor } },
+  }).then(unwrap), [persona, query, domain, payment, cursor]);
+  const jobs = useResource(view.id === "inbox" ? `${persona}:${query}:${domain}:${payment}:${cursor}` : null, refresh, fetchJobs);
   const rows = jobs.data ?? [];
-  const visibleJobs = filter === "all" ? rows : rows.filter((job) => job.run_status === filter);
+  const ranked = rows.toSorted((left, right) => (right.fit_score ?? -1) - (left.fit_score ?? -1));
+  const visibleJobs = filter === "all" ? ranked : ranked.filter((job) => job.run_status === filter);
   const defaultJob = visibleJobs.find((job) => job.domain === PREFERRED_DOMAIN[persona]) ?? visibleJobs[0];
-  const jobId = view.id === "inbox" ? selectedJob ?? defaultJob?.job_id ?? null : null;
+  const candidateJobId = selectedJob ?? defaultJob?.job_id;
+  const jobId = view.id === "inbox" && candidateJobId ? String(candidateJobId) : null;
   const jobKey = jobId ? `${persona}:${jobId}` : null;
 
   const fetchJob = useCallback((signal: AbortSignal) => api.GET("/api/v1/jobs/{job_id}", {
@@ -125,10 +153,10 @@ export function Dashboard() {
     return () => window.clearTimeout(poll);
   }, [run?.status, detail.loading, detail.revision, busyKey]);
 
-  const fetchPipeline = useCallback((signal: AbortSignal) => api.GET("/api/v1/pipeline", {
+  const fetchPipeline = useCallback((signal: AbortSignal) => api.GET("/api/v1/workspace/pipeline", {
     signal, params: { query: { persona } },
   }).then(unwrap), [persona]);
-  const pipeline = useResource(view.id === "pipeline" ? persona : null, refresh, fetchPipeline);
+  const pipeline = useResource(view.id === "pipeline" ? persona : null, refresh + healthRevision, fetchPipeline);
 
   const fetchThreads = useCallback((signal: AbortSignal) => api.GET("/api/v1/messages", {
     signal, params: { query: { persona } },
@@ -213,21 +241,32 @@ export function Dashboard() {
       <div className="workspace">
         <header className="topbar">
           <div className="breadcrumb"><BriefcaseBusiness size={17} /><span>Workspace</span><ChevronRight size={14} /><strong>{view.label}</strong></div>
-          <div className="persona-control">
-            <PersonaInitial name={selectedPersona?.name ?? "GigBid"} />
-            <div><label htmlFor="persona">Active persona</label>
-              <div className="select-control">
-                <select id="persona" value={persona} disabled={personaOptions.length === 0} onChange={(event) => {
-                  setCursor(0);
-                  setSearch("");
-                  setFilter("all");
-                  go(view.id, { persona: event.target.value as PersonaId });
-                }}>
-                  {personaOptions.length === 0 ? <option value={persona}>Loading personas…</option> : personaOptions.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
-                </select>
-                <ChevronDown size={15} aria-hidden="true" />
+          <div className={onSignOut ? accessStyles.controls : accessStyles.passthrough}>
+            <div className="persona-control">
+              <PersonaInitial name={selectedPersona?.name ?? "GigBid"} />
+              <div><label htmlFor="persona">Active persona</label>
+                <div className="select-control">
+                  <select id="persona" value={persona} disabled={personaOptions.length === 0} onChange={(event) => {
+                    setCursor(0);
+                    setSearch("");
+                  setSearchFilter(undefined);
+                    setFilter("all");
+                    go(view.id, { persona: event.target.value as PersonaId });
+                  }}>
+                    {personaOptions.length === 0 ? <option value={persona}>Loading personas…</option> : personaOptions.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
+                  </select>
+                  <ChevronDown size={15} aria-hidden="true" />
+                </div>
               </div>
             </div>
+            {onSignOut && (
+              <button
+                className={`button secondary ${accessStyles.signout}`} onClick={onSignOut}
+                disabled={signingOut} aria-label="Sign out" title={username ? `Sign out of ${username}` : "Sign out"}
+              >
+                <LogOut size={16} aria-hidden="true" /><span>Sign out</span>
+              </button>
+            )}
           </div>
         </header>
 
@@ -237,6 +276,7 @@ export function Dashboard() {
             <button className="button secondary refresh" onClick={refreshData}><RefreshCw size={16} /> Refresh</button>
           </div>
           {unavailable && <Notice title="Marketplace unavailable"><p>GigSim is offline. New analysis and marketplace actions are paused.</p></Notice>}
+          {accountError && <Notice title="Could not sign out">{accountError}</Notice>}
           {personas.error && !unavailable && <Notice title="Could not load personas">{personas.error}</Notice>}
 
           {view.id === "inbox" && (
@@ -245,6 +285,16 @@ export function Dashboard() {
                 <div className="inbox-tools">
                   <div className="list-title"><h2>Opportunities</h2>{jobs.data && <span>{rows.length} {rows.length === 1 ? "job" : "jobs"}</span>}</div>
                   <label className="search"><Search size={16} aria-hidden="true" /><input type="search" placeholder="Search jobs" aria-label="Search jobs" value={search} onChange={(event) => { setSearch(event.target.value); setCursor(0); }} /></label>
+                  {savedSearches.length > 0 && <label className="saved-search-control">Saved search
+                    <select value={searchChoice?.name ?? ""} onChange={(event) => {
+                      const selected = savedSearches.find((item) => item.name === event.target.value);
+                      setSearchFilter(selected ? { persona, name: selected.name } : undefined);
+                      setSearch(selected?.query ?? "");
+                      setCursor(0);
+                    }}>
+                      <option value="">None</option>{savedSearches.map((item) => <option key={item.name} value={item.name}>{item.name}</option>)}
+                    </select>
+                  </label>}
                   <div className="filters" aria-label="Filter jobs">{FILTERS.map(({ id, label }) => <button key={id} aria-pressed={filter === id} onClick={() => setFilter(id)}>{label}</button>)}</div>
                 </div>
                 {jobs.error && !unavailable && <Notice title="Could not load jobs">{jobs.error}</Notice>}
@@ -255,7 +305,7 @@ export function Dashboard() {
               </section>
               <div className="detail-pane">
                 {detail.data && run ? (
-                  <JobDetail key={jobKey} job={detail.data} run={run} busy={busyKey !== null} unavailable={unavailable} mutationError={localResult?.error} onBack={() => go("inbox")} onAnalyze={() => void mutate()} onDecision={(decision) => void mutate(decision)} />
+                  <JobDetail key={jobKey} job={detail.data} persona={persona} run={run} busy={busyKey !== null} unavailable={unavailable} mutationError={localResult?.error} onBack={() => go("inbox")} onAnalyze={() => void mutate()} onDecision={(decision) => void mutate(decision)} />
                 ) : (
                   <div className="surface detail-placeholder">
                     {selectedJob && <button className="button ghost mobile-back" onClick={() => go("inbox")}><ArrowLeft size={15} /> Inbox</button>}
@@ -279,16 +329,12 @@ export function Dashboard() {
                   <button className="button secondary" onClick={() => go("inbox")}>Open job inbox <ArrowRight size={15} aria-hidden="true" /></button>
                 </div>
               )}
-              {pipeline.data?.map((item) => (
-                <article className="proposal-row" key={item.proposal_id}>
-                  <div><strong>{friendly(item.stage)}</strong><p>{item.job_id} · {shortDate(item.submitted_at ?? item.created_at)}</p></div>
-                  <div><span>{money(item.bid_amount)}{item.bid_type === "hourly" ? "/hr" : ""}</span><p>{item.connects_spent} Connects spent</p></div>
-                  <button className="button secondary" onClick={() => go("inbox", { job: item.job_id })}>Open job <ChevronRight size={15} /></button>
-                </article>
-              ))}
+              {!!pipeline.data?.length && <PipelineBoard cards={pipeline.data} onJob={(job) => go("inbox", { job })} />}
             </section>
           )}
 
+          {view.id === "analytics" && <Analytics persona={persona} revision={refresh} />}
+          {view.id === "settings" && <WorkspaceSettingsPanel persona={persona} revision={refresh} />}
           {view.id === "messages" && threads.data?.length === 0 && !unavailable && !threads.error && <MessagesEmpty persona={persona} />}
           {view.id === "messages" && !threads.data?.length && !unavailable && (threads.error || threads.loading) && (
             <section className="surface data-panel" aria-label="Conversations">
