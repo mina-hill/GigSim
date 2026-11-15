@@ -14,6 +14,13 @@ Open [the local workspace](http://127.0.0.1:3010). The launcher uses the bundled
 keeps the simulator and approvals in `.cache/local-demo`. Its three listeners bind to loopback.
 Use `--database` with a new path for a fresh demo. Ctrl+C stops the services.
 
+For an authenticated local workspace, run `uv run python -m scripts.local_demo --auth`
+and open [port 3011](http://127.0.0.1:3011). The launcher puts accounts, approvals, settings
+and simulator data in its separate `.cache/local-auth` folder. Each user signs up with a
+username and password and claims one of the three available seeded personas. New workspace
+preferences, including Markdown or text portfolio evidence, are in **Settings**. The job
+viewer displays live steps and can export the saved timeline as a sanitized JSON trace.
+
 ### Docker Compose
 
 Copy the environment template, then set distinct local values for `MCP_PORTFOLIO_TOKEN`,
@@ -26,7 +33,8 @@ docker compose -f infra/docker-compose.yml --env-file .env up --build
 
 The web UI listens on port 3000, API on 8000, GigSim on 8081, and the MCP servers on
 8101–8103. Compose keeps GigSim, Redis and PostgreSQL data in named volumes. Set
-`GIGBID_SCOUT_ENABLED=true` for twice-hourly scouting of up to three unseen jobs per persona.
+`GIGBID_SCOUT_ENABLED=true` to enable the scout worker. It checks up to three unseen jobs per
+persona at the saved search interval. Use the inbox search picker to run a saved filter manually.
 Add `--profile models` before `up` to start Ollama on 11434. The synthetic reviewer flow works
 with the offline profile.
 
@@ -103,9 +111,10 @@ make seed       # loads it into GigSim
 
 ## Live (Upwork) mode schedule
 
-The planned Upwork adapter uses a 180-minute polling interval with jitter and rate-limit backoff
-to conserve shared limits. Upwork OAuth and live polling still require integration and a real
-account. This demo uses synthetic accounts and GigSim.
+The [Upwork MCP discovery command](UPWORK_MCP.md) supports a local OAuth callback. A real
+account must authorize it before we can verify the tool schemas and map the live adapter.
+The planned Upwork adapter uses a 180-minute polling interval with jitter and rate-limit
+backoff to conserve shared limits. This demo uses synthetic accounts and GigSim.
 
 ## Degraded mode
 

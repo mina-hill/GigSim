@@ -1,0 +1,35 @@
+{
+  "trace_id": "7f15883d46f8026f2133cf0b",
+  "job_id": "sample-deposit-scam",
+  "persona": "fullstack",
+  "captured_at": "2026-11-15T16:13:34.348941Z",
+  "status": "skipped",
+  "timeline": [
+    {
+      "step": 0,
+      "created_at": "2026-11-15T16:13:34.306408+00:00",
+      "nodes": [
+        "ingest_job"
+      ],
+      "status": "completed"
+    },
+    {
+      "step": 1,
+      "created_at": "2026-11-15T16:13:34.316988+00:00",
+      "nodes": [
+        "job_analyst",
+        "risk_assessor",
+        "fit_matcher"
+      ],
+      "status": "completed"
+    },
+    {
+      "step": 2,
+      "created_at": "2026-11-15T16:13:34.317851+00:00",
+      "nodes": [
+        "decide"
+      ],
+      "status": "completed"
+    }
+  ]
+}

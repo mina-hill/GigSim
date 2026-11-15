@@ -30,9 +30,16 @@ uv sync --locked --all-extras         # Python 3.12 + pinned dependencies
 uv run python -m scripts.local_demo   # requires Node.js
 ```
 
-Open [the local workspace](http://127.0.0.1:3010). See the [architecture and graph
-diagrams](docs/ARCHITECTURE.md), [MCP installation](docs/TOOLS.md), and [demo script](docs/DEMO_SCRIPT.md).
+Open [the local workspace](http://127.0.0.1:3010). To run with sign-in and isolated persona
+workspaces, add `--auth` and open [port 3011](http://127.0.0.1:3011).
+See the [architecture and graph diagrams](docs/ARCHITECTURE.md),
+[MCP installation](docs/TOOLS.md), and [demo script](docs/DEMO_SCRIPT.md).
 The [local handoff](docs/SUBMISSION.md) records the remaining assignment requirements.
+
+Sample checkpoint traces show a [skipped scam](docs/traces/skipped-scam.json),
+[approval restored after restart](docs/traces/pending-after-restart.json), and
+[approved submission](docs/traces/approved-proposal.json). The
+[trace notes](docs/traces/README.md) describe the synthetic inputs and captured fields.
 
 The [local bid walkthrough](docs/RUNBOOK.md#review-a-bid-in-the-local-simulator) runs without
 model credentials and saves pending approvals between CLI sessions.
@@ -90,6 +97,31 @@ Reproduce with <code>uv run --extra eval python -m evals.runners.architectures</
 [Result artifact](evals/results/bid-smoke.report.json)
 
 Reproduce with <code>uv run python -m evals.runners.smoke --jobs 30 --gate</code>.
+
+### Local prompt-injection guardrail replay
+
+All committed synthetic planted jobs and matched cleaned jobs exercised both graphs without approval or a network marketplace. Job directives were separately replayed in client turns. The direct-copy positive control is a detection check by design and does not estimate an undefended LLM's success rate.
+
+| Metric | Result |
+| --- | ---: |
+| Direct-copy positive controls containing the fixture directive | 42 / 42 |
+| Planted job directives flagged | 42 / 42 |
+| Matched cleaned jobs flagged for an injection | 0 / 42 |
+| Matched cleaned jobs reaching proposal review | 33 / 42 |
+| Planted jobs reaching proposal review | 33 / 42 |
+| Guarded bid runs carrying the complete directive or attempting a write | 0 / 42 |
+| Unapproved bid write attempts | 0 / 42 |
+| Planted bids whose decision, fit or price changed | 0 / 42 |
+| Planted client directives flagged | 42 / 42 |
+| Matched clean client messages flagged for an injection | 0 / 42 |
+| Matched clean client messages reaching reply review | 42 / 42 |
+| Planted client messages reaching reply review | 0 / 42 |
+| Guarded replies carrying the complete directive or attempting a write | 0 / 42 |
+| Unapproved reply write attempts | 0 / 42 |
+
+[Result artifact](evals/results/injection.report.json)
+
+Reproduce with <code>uv run python -m evals.runners.injection</code>.
 
 ### Development retrieval and claim verification
 

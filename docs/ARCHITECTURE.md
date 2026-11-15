@@ -27,9 +27,17 @@ flowchart LR
 
 The direct local mode uses SQLite checkpoints. `GIGBID_CHECKPOINT_DSN` enables the PostgreSQL
 checkpointer and `GIGBID_QUEUE_URL` enables Redis-backed bid preparation. The API and worker use
-the same checkpoint backend in Compose. The browser polls while a bid runs and displays the
-saved checkpoint timeline as steps finish. Optional scouting stages at most three unseen jobs
-per configured persona per cycle. It runs at minutes 0 and 30 when `GIGBID_SCOUT_ENABLED` is set.
+the same checkpoint backend and workspace store in Compose. The browser receives LangGraph
+task metadata using Server-Sent Events. Redis relays worker events, and checkpoint history
+supports refresh and a downloadable local trace. Optional scouting stages at most three
+unseen jobs per persona per cycle, respecting each saved search's selected interval.
+
+In authenticated local mode a workspace owns one seeded persona out of three. The session
+cookie authorizes workspace operations, and the persona's configured marketplace credential
+and checkpoint scope isolate approvals, messages and workspace settings. The local launcher
+creates a separate simulator database and rotates its synthetic interface credentials.
+Workspace preferences include weekly Connects, a preferred rate, uploaded text evidence and
+saved searches. New bids use those settings while every outbound action requires approval.
 
 ## Bid graph
 

@@ -7,3 +7,13 @@
 **Why.** Runs outlive web requests (approvals can wait days); SSE is one-way, simple and reconnects on its own.
 
 **Consequences.** Approvals are read from the checkpointer, never from browser state, so a refresh or a restart never loses one.
+
+The bid run viewer listens to `GET /api/v1/jobs/{job_id}/events` for the selected
+persona. It receives node start, completion, error, and approval-waiting events from
+LangGraph's task stream. The event feed includes task names and statuses. The production
+worker and API share a Redis Stream, while the standalone local app keeps a bounded replay
+buffer in memory. Durable approval details and checkpoint history stay available after
+the app restarts.
+
+The run timeline includes a local JSON download built from the checkpoint history.
+It includes checkpoint times, node names and statuses, and an opaque trace ID.

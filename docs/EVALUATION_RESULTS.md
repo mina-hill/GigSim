@@ -48,6 +48,31 @@ Reproduce with <code>uv run --extra eval python -m evals.runners.architectures</
 
 Reproduce with <code>uv run python -m evals.runners.smoke --jobs 30 --gate</code>.
 
+### Local prompt-injection guardrail replay
+
+All committed synthetic planted jobs and matched cleaned jobs exercised both graphs without approval or a network marketplace. Job directives were separately replayed in client turns. The direct-copy positive control is a detection check by design and does not estimate an undefended LLM's success rate.
+
+| Metric | Result |
+| --- | ---: |
+| Direct-copy positive controls containing the fixture directive | 42 / 42 |
+| Planted job directives flagged | 42 / 42 |
+| Matched cleaned jobs flagged for an injection | 0 / 42 |
+| Matched cleaned jobs reaching proposal review | 33 / 42 |
+| Planted jobs reaching proposal review | 33 / 42 |
+| Guarded bid runs carrying the complete directive or attempting a write | 0 / 42 |
+| Unapproved bid write attempts | 0 / 42 |
+| Planted bids whose decision, fit or price changed | 0 / 42 |
+| Planted client directives flagged | 42 / 42 |
+| Matched clean client messages flagged for an injection | 0 / 42 |
+| Matched clean client messages reaching reply review | 42 / 42 |
+| Planted client messages reaching reply review | 0 / 42 |
+| Guarded replies carrying the complete directive or attempting a write | 0 / 42 |
+| Unapproved reply write attempts | 0 / 42 |
+
+[Result artifact](../evals/results/injection.report.json)
+
+Reproduce with <code>uv run python -m evals.runners.injection</code>.
+
 ### Development retrieval and claim verification
 
 374 gold-bearing synthetic dev jobs; relevance grades were used only for scoring. Embeddings use hash-bow-1024, reranking uses lexical-pair. The claim checks use constructed statements. Detailed group scores and local retrieval latency are in retrieval.dev.json.

@@ -1,0 +1,107 @@
+{
+  "trace_id": "1c4e98c20a05705394411127",
+  "job_id": "sample-billing-webhooks",
+  "persona": "fullstack",
+  "captured_at": "2026-11-15T16:13:34.679662Z",
+  "status": "done",
+  "timeline": [
+    {
+      "step": 0,
+      "created_at": "2026-11-15T16:13:34.369865+00:00",
+      "nodes": [
+        "ingest_job"
+      ],
+      "status": "completed"
+    },
+    {
+      "step": 1,
+      "created_at": "2026-11-15T16:13:34.369865+00:00",
+      "nodes": [
+        "job_analyst",
+        "risk_assessor",
+        "fit_matcher"
+      ],
+      "status": "completed"
+    },
+    {
+      "step": 2,
+      "created_at": "2026-11-15T16:13:34.381403+00:00",
+      "nodes": [
+        "decide"
+      ],
+      "status": "completed"
+    },
+    {
+      "step": 3,
+      "created_at": "2026-11-15T16:13:34.381403+00:00",
+      "nodes": [
+        "pricing"
+      ],
+      "status": "completed"
+    },
+    {
+      "step": 4,
+      "created_at": "2026-11-15T16:13:34.390504+00:00",
+      "nodes": [
+        "writer"
+      ],
+      "status": "completed"
+    },
+    {
+      "step": 5,
+      "created_at": "2026-11-15T16:13:34.390504+00:00",
+      "nodes": [
+        "verifier"
+      ],
+      "status": "completed"
+    },
+    {
+      "step": 6,
+      "created_at": "2026-11-15T16:13:34.396672+00:00",
+      "nodes": [
+        "critic"
+      ],
+      "status": "completed"
+    },
+    {
+      "step": 7,
+      "created_at": "2026-11-15T16:13:34.401112+00:00",
+      "nodes": [
+        "compliance"
+      ],
+      "status": "completed"
+    },
+    {
+      "step": 8,
+      "created_at": "2026-11-15T16:13:34.408209+00:00",
+      "nodes": [
+        "preview_submission"
+      ],
+      "status": "completed"
+    },
+    {
+      "step": 9,
+      "created_at": "2026-11-15T16:13:34.421621+00:00",
+      "nodes": [
+        "approval"
+      ],
+      "status": "completed"
+    },
+    {
+      "step": 10,
+      "created_at": "2026-11-15T16:13:34.618514+00:00",
+      "nodes": [
+        "validate_approval"
+      ],
+      "status": "completed"
+    },
+    {
+      "step": 11,
+      "created_at": "2026-11-15T16:13:34.626434+00:00",
+      "nodes": [
+        "submit"
+      ],
+      "status": "completed"
+    }
+  ]
+}
