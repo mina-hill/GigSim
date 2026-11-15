@@ -25,6 +25,7 @@ from mcp_servers.marketplace.port import (
     Job,
     JobId,
     JobPage,
+    MarketplaceError,
     MarketplacePort,
     MarketStat,
     Message,
@@ -85,6 +86,8 @@ async def _upstream[T](request: Awaitable[T]) -> T:
         raise ToolError("Marketplace unavailable.") from None
     except ValidationError:
         raise ToolError("The marketplace returned data that does not match its contract.") from None
+    except MarketplaceError as error:
+        raise ToolError(str(error)) from None
 
 
 def create_marketplace_server(port: MarketplacePort, audit: AuditLog) -> FastMCP:

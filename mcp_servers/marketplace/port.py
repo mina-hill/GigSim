@@ -11,6 +11,10 @@ JobId = Annotated[str, Field(min_length=1, max_length=64, pattern=r"^[\w~\-][\w.
 MessageBody = Annotated[str, Field(min_length=1, max_length=10_000)]
 
 
+class MarketplaceError(RuntimeError):
+    """An adapter's refusal or upstream failure, with a message that is safe to show a person."""
+
+
 class ClientSummary(BaseModel):
     client_id: str
     country: str
