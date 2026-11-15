@@ -1,0 +1,33 @@
+name: eval
+# Smoke evaluation on every pull request: a fixed 30-job subset of the dev set.
+# Uses the real small model when GROQ_API_KEY is configured as a repository secret, with the
+# LLM response cache restored between runs; otherwise falls back to the deterministic test
+# profile so the gate still checks the plumbing. Fails when quality drops below thresholds.
+on:
+  pull_request:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    env:
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      LLM_CACHE_PATH: .cache/llm_cache.sqlite
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - uses: actions/cache@v4
+        with:
+          path: .cache/llm_cache.sqlite
+          key: llm-cache-${{ github.sha }}
+          restore-keys: llm-cache-
+      - run: uv sync --all-extras --frozen
+      - name: Choose model profile
+        run: |
+          if [ -n "$GROQ_API_KEY" ]; then echo "MODEL_PROFILE=open" >> $GITHUB_ENV; else echo "MODEL_PROFILE=test" >> $GITHUB_ENV; fi
+      - name: Smoke eval (30 jobs) with gates
+        run: uv run python -m evals.runners.smoke --jobs 30 --gate
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: smoke-eval
+          path: evals/results/smoke-*.json
