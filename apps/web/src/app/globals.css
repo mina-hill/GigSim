@@ -227,6 +227,17 @@ code { overflow-wrap: anywhere; font-family: ui-monospace, SFMono-Regular, Conso
 .bubble--own { justify-self: end; border-radius: 11px 11px 4px 11px; background: var(--accent-pale); }
 .bubble > div { display: flex; gap: 7px; align-items: center; color: var(--muted); font-size: 11px; }
 .bubble p { white-space: pre-wrap; margin-top: 4px; }
+.conversation-review { display: grid; gap: 9px; padding: 12px; border-top: 1px solid var(--line); }
+.conversation-review:empty { display: none; }
+.conversation-review > .notice { margin: 0; }
+.reply-availability { border: 1px solid var(--line); border-radius: 9px; background: #fcf7fa; }
+.reply-availability summary { display: flex; gap: 7px; align-items: center; padding: 8px 10px; cursor: pointer; list-style: none; color: var(--accent); font-size: 12px; font-weight: 620; }
+.reply-availability summary::-webkit-details-marker { display: none; }
+.reply-availability summary::after { content: "+"; margin-left: auto; }
+.reply-availability[open] summary::after { content: "−"; }
+.reply-availability-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 175px), 1fr)); gap: 8px; padding: 0 10px 10px; }
+.reply-availability-fields label { display: grid; gap: 3px; min-width: 0; color: var(--muted); }
+.reply-availability-fields input { min-width: 0; width: 100%; padding: 6px; border: 1px solid var(--accent-line); border-radius: 7px; color: var(--ink); background: var(--paper); }
 .workspace-footer { display: flex; gap: 6px; align-items: center; color: var(--subtle); font-size: 11.5px; margin-top: 17px; }
 .workspace-footer svg { color: var(--green); }
 .spin { animation: spin .9s linear infinite; }

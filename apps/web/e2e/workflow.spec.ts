@@ -76,3 +76,85 @@ test("reports an injected marketplace outage and recovers after refresh", async 
   await expect(page.getByText("Marketplace unavailable")).toHaveCount(0);
   await expect(page.getByRole("button", { name: /Add Stripe subscriptions/i })).toBeVisible();
 });
+
+test("reviews, edits and sends a reply once, then rejects a new client turn", async ({ page, request }) => {
+  const simulator = process.env.GIGBID_TEST_GIGSIM_URL ?? "http://127.0.0.1:8081";
+  const adminToken = process.env.GIGSIM_ADMIN_TOKEN;
+  if (!adminToken) throw new Error("Set GIGSIM_ADMIN_TOKEN for the isolated Playwright simulator.");
+  const accountTokens = process.env.GIGSIM_API_TOKENS ?? "dev-token-ai:persona_ai_ml";
+  const token = accountTokens.split(",").map((pair) => pair.trim().split(":"))
+    .find(([, account]) => account === "persona_ai_ml")?.[0];
+  if (!token) throw new Error("Configure the synthetic AI persona for the Playwright simulator.");
+  const advance = async (n: number) => {
+    const response = await request.post(`${simulator}/admin/tick`, {
+      headers: { "X-Admin-Token": adminToken }, data: { n },
+    });
+    expect(response.ok()).toBe(true);
+  };
+
+  // Complete one synthetic proposal setup directly to get a deterministic interviewing client.
+  await advance(2);
+  const auth = { Authorization: `Bearer ${token}` };
+  const setup = await request.post(`${simulator}/proposals`, {
+    headers: { ...auth, "Idempotency-Key": "playwright:conversation:forecast:draft" },
+    data: {
+      job_id: "job_later_ml",
+      bid_amount: 2500,
+      bid_type: "fixed",
+      screening_answers: [],
+      cover_letter: [
+        "For weekly demand forecasting across 300 SKUs, I built the Python machine learning workflow in a comparable synthetic case study.",
+        "I built the Python forecasting pipeline to align weekly demand and SKU history before training.",
+        "I shipped a machine learning case study that compared seasonal baselines against supervised models using rolling validation windows.",
+        "My Python case study documented validation for weekly demand, errors by SKU, and a reproducible forecast handover.",
+      ].join(" "),
+    },
+  });
+  expect(setup.ok()).toBe(true);
+  const proposal = await setup.json() as { proposal_id: string };
+  const submitted = await request.post(`${simulator}/proposals/${proposal.proposal_id}/submit`, {
+    headers: { ...auth, "Idempotency-Key": "playwright:conversation:forecast:submit" },
+  });
+  expect(submitted.ok()).toBe(true);
+  await advance(4);
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/?persona=ai_ml&view=messages");
+  const threads = page.getByRole("region", { name: "Conversations", exact: true });
+  const thread = page.getByRole("region", { name: "Messages in conversation", exact: true });
+  await threads.getByRole("button", { name: /Time-series demand forecasting model/i }).click();
+  await thread.getByText("Offer an interview time").click();
+  await thread.getByLabel("Start (local time)").fill("2026-11-17T12:00");
+  await thread.getByLabel("End (local time)").fill("2026-11-17T12:30");
+  await thread.getByRole("button", { name: "Draft reply" }).click();
+
+  const review = thread.getByRole("region", { name: "Review reply" });
+  await expect(review).toContainText("Interview request · Reply draft 1");
+  await expect(review).toContainText("UTC");
+  await expect(thread.locator(".bubble--own")).toHaveCount(0);
+  await review.getByRole("button", { name: "Edit reply" }).click();
+  const editor = review.getByRole("textbox", { name: "Revised reply" });
+  await editor.fill(`${await editor.inputValue()}\n\nThanks for your time.`);
+  await review.getByRole("button", { name: "Recheck reply" }).click();
+  await expect(review).toContainText("Reply draft 2");
+  await expect(thread.locator(".bubble--own")).toHaveCount(0);
+  await page.reload();
+  await expect(review).toContainText("Thanks for your time.");
+  await review.getByRole("button", { name: "Approve and send" }).click();
+  await expect(thread.getByText("Reply sent", { exact: true })).toBeVisible();
+  await expect(thread.locator(".bubble--own")).toHaveCount(1);
+  await expect(thread.locator(".bubble--own")).toContainText("Thanks for your time.");
+
+  await advance(4);
+  await page.getByRole("button", { name: "Refresh", exact: true }).click();
+  await thread.getByRole("button", { name: "Draft reply", exact: true }).click();
+  await review.getByRole("button", { name: "Reject", exact: true }).click();
+  await review.getByRole("button", { name: "Reject reply", exact: true }).click();
+  await expect(thread.getByRole("alert").getByText(/enter a reason/i)).toBeVisible();
+  await review.getByRole("textbox", { name: "Rejection reason" }).fill("The client already confirmed a time.");
+  await review.getByRole("button", { name: "Reject reply", exact: true }).click();
+  await expect(thread.getByText("Reply rejected", { exact: true })).toBeVisible();
+  await expect(thread.getByText("The client already confirmed a time.", { exact: true })).toBeVisible();
+  await expect(thread.locator(".bubble--own")).toHaveCount(1);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+});

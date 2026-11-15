@@ -13,6 +13,7 @@ import type { ApprovalDecision, JobCard, PersonaId, RunView } from "@/lib/api/cl
 import { budget, domainLabel, friendly, money, shortDate } from "@/lib/format";
 import { useDebouncedSearch, useResource } from "@/lib/use-resource";
 
+import { ConversationReview } from "./conversation-review";
 import { JobDetail } from "./job-detail";
 import { Loading, Notice, Status } from "./ui";
 
@@ -117,6 +118,12 @@ export function Dashboard() {
   const detail = useResource(jobKey, refresh, fetchJob);
   const localResult = result?.key === jobKey ? result : undefined;
   const run = localResult?.run && (detail.revision ?? -1) < localResult.revision ? localResult.run : detail.data?.run;
+
+  useEffect(() => {
+    if (run?.status !== "running" || detail.loading || busyKey !== null) return;
+    const poll = window.setTimeout(() => setRefresh((value) => value + 1), 3000);
+    return () => window.clearTimeout(poll);
+  }, [run?.status, detail.loading, detail.revision, busyKey]);
 
   const fetchPipeline = useCallback((signal: AbortSignal) => api.GET("/api/v1/pipeline", {
     signal, params: { query: { persona } },
@@ -229,7 +236,7 @@ export function Dashboard() {
             <div><h1>{view.label}</h1>{view.description && <p>{view.description}</p>}</div>
             <button className="button secondary refresh" onClick={refreshData}><RefreshCw size={16} /> Refresh</button>
           </div>
-          {unavailable && <Notice title="Marketplace unavailable"><p>GigSim is offline. New analysis and proposal actions are paused.</p></Notice>}
+          {unavailable && <Notice title="Marketplace unavailable"><p>GigSim is offline. New analysis and marketplace actions are paused.</p></Notice>}
           {personas.error && !unavailable && <Notice title="Could not load personas">{personas.error}</Notice>}
 
           {view.id === "inbox" && (
@@ -300,6 +307,7 @@ export function Dashboard() {
                 {messages.error && !unavailable && <Notice title="Could not load messages">{messages.error}</Notice>}
                 {messages.loading && !messages.data ? <Loading>Loading messages…</Loading> : messages.data?.length === 0 && <div className="empty-state"><MessageSquare size={22} aria-hidden="true" /><p>This conversation has no messages yet.</p></div>}
                 <div className="messages">{(messages.data ?? []).map((message) => <article className={message.sender === "freelancer" ? "bubble bubble--own" : "bubble"} key={message.id}><div><strong>{friendly(message.sender)}</strong><time dateTime={message.sent_at}>{shortDate(message.sent_at)}</time></div><p>{message.body}</p></article>)}</div>
+                {threadId && <ConversationReview key={`${persona}:${threadId}`} persona={persona} threadId={threadId} latest={messages.data?.at(-1)} refresh={refresh} unavailable={unavailable} onRefresh={refreshData} />}
               </section>
             </div>
           )}
