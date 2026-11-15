@@ -2,14 +2,33 @@
 
 ## Start everything locally
 
+For the browser demo, install Node.js and install the pinned Python environment once.
+Run these from the repository root on Windows, macOS, or Linux:
+
 ```bash
-cp .env.example .env            # fill in keys
+uv sync --locked --all-extras
+uv run python -m scripts.local_demo
+```
+
+Open [the local workspace](http://127.0.0.1:3010). The launcher uses the bundled mini-world and
+keeps the simulator and approvals in `.cache/local-demo`. Its three listeners bind to loopback.
+Use `--database` with a new path for a fresh demo. Ctrl+C stops the services.
+
+### Docker Compose
+
+Copy the environment template, then set distinct local values for `MCP_PORTFOLIO_TOKEN`,
+`MCP_MARKETPLACE_TOKEN` and `MCP_WORKSPACE_TOKEN` before starting the HTTP servers.
+
+```bash
+cp .env.example .env
 docker compose -f infra/docker-compose.yml --env-file .env up --build
 ```
 
-Services: web :3000, API :8000, GigSim :8081, MCP servers :8101 (portfolio), :8102 (marketplace), :8103 (workspace), Postgres :5432, Redis :6379, Ollama :11434.
-
-Without Docker: `make gigsim`, `make api` and `make worker` in separate terminals.
+The web UI listens on port 3000, API on 8000, GigSim on 8081, and the MCP servers on
+8101–8103. Compose keeps GigSim, Redis and PostgreSQL data in named volumes. Set
+`GIGBID_SCOUT_ENABLED=true` for twice-hourly scouting of up to three unseen jobs per persona.
+Add `--profile models` before `up` to start Ollama on 11434. The synthetic reviewer flow works
+with the offline profile.
 
 ## Review a bid in the local simulator
 
@@ -34,9 +53,7 @@ it explicitly. Re-run the same command to reopen a pending approval. Use `--retr
 a run interrupted during a marketplace call. Use a separate checkpoint file with
 `--checkpoint` for each fresh simulator database and one reviewer per checkpoint file.
 
-This path uses deterministic synthetic portfolio evidence, the local GigSim adapter and a
-SQLite checkpointer. Production MCP transport and Postgres checkpoints remain separate
-milestones.
+The CLI path uses deterministic synthetic portfolio evidence, the GigSim adapter and SQLite.
 
 ## Review bids in the browser
 
@@ -65,9 +82,10 @@ subscriptions to Next.js SaaS** to analyse the job and review the resulting draf
 can reload a pending approval from `GIGBID_WEB_CHECKPOINT`, which defaults to
 `.cache/gigbid-web.sqlite`. Use a fresh checkpoint when you reset the simulator world.
 
-This is a local, single-worker review workspace for synthetic personas. The UI shows read-only
-simulator conversations. Hosted login, Upwork connectivity and approved conversation replies
-require the corresponding production services before public deployment.
+In **Messages**, select a client thread and use **Draft reply** on an unanswered message. Review
+the reply and any interview options. An edit passes through the policy checks before an updated
+draft appears. An explicit approval sends the displayed text. Rejection records a reason. See
+[the timed demo](DEMO_SCRIPT.md) for a fixture-based conversation.
 
 To regenerate the web client's schema after an API change, run from the repository root:
 
@@ -85,12 +103,18 @@ make seed       # loads it into GigSim
 
 ## Live (Upwork) mode schedule
 
-Live mode reads Upwork through its official MCP server every 180 minutes with ±15 minutes of jitter. Upwork's connected agents share one rate limit, and Upwork advises pausing scheduled searches when requests are refused, so on a 429 the worker backs off and doubles the interval (up to 12 hours). New postings rarely need minute-level reaction for a single freelancer. Writes are drafts only, confirmed by the freelancer on Upwork.
+The planned Upwork adapter uses a 180-minute polling interval with jitter and rate-limit backoff
+to conserve shared limits. Upwork OAuth and live polling still require integration and a real
+account. This demo uses synthetic accounts and GigSim.
 
 ## Degraded mode
 
-When an MCP server or GigSim is unreachable, the circuit breaker opens, `/health/deps` reports it, the UI shows a banner, and the worker re-queues work with a delay. Rehearse: `docker compose stop mcp-marketplace`, watch the banner, `docker compose start mcp-marketplace`, watch the queue drain.
+The local browser checks GigSim through `/health/deps` and shows a banner when it is unreachable.
+In the Compose demo, stop `gigsim` to see the banner and start it to recover. A saved run that
+stopped mid-step can be resumed using its existing checkpoint after the dependency recovers.
 
 ## Crash demos (exactly-once submission)
 
-See the "Durability" section of `docs/ARCHITECTURE.md`; the scripted versions are `scripts/demo_crash_resume.py`.
+Start a proposal, wait for the approval preview, restart the API, then reload the preview and
+approve it. Check the Pipeline and confirm one proposal for the job. The integration and
+reviewer-container tests also cover recovery with persisted state.

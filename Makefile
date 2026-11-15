@@ -4,7 +4,7 @@
 PY ?= uv run python
 PYTEST ?= uv run pytest
 
-.PHONY: help install dev api web api-client gigsim test lint fmt eval seed world personas data-download data-prep devset demo models compose-up compose-down
+.PHONY: help install dev api web worker api-client gigsim test lint fmt eval seed world personas data-download data-prep devset demo local-demo models compose-up compose-down
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  %-15s %s\n", $$1, $$2}'
@@ -17,6 +17,9 @@ dev: ## Run GigSim and the API locally with auto-reload (two processes)
 
 api: ## Run the API on :8000
 	uv run uvicorn apps.api.main:app --reload --port 8000
+
+worker: ## Run the Redis-backed local worker
+	uv run arq worker.main.WorkerSettings
 
 web: ## Run the Next.js workspace on :3000 after npm ci
 	npm --prefix apps/web run dev
@@ -55,12 +58,18 @@ world: ## Build the GigSim world and the dev set from processed data and persona
 seed: ## Load the world into GigSim (GigSim must be running)
 	$(PY) -m gigsim.seed --world $${GIGSIM_WORLD_PATH:-data/processed/gigsim_world}
 
-eval: ## Run the offline smoke evaluation and regenerate report tables
+eval: ## Regenerate offline decision, retrieval, and simulator reply results
 	$(PY) -m evals.runners.smoke --jobs 30 --gate
+	uv run --extra rag python -m evals.runners.retrieval
+	uv run --extra rag python -m evals.runners.x2
+	uv run --extra eval python -m evals.runners.architectures
 	$(PY) -m scripts.make_tables
 
-demo: ## End-to-end demo against GigSim (Phase 2+)
-	$(PY) -m scripts.single_agent_demo
+demo: ## Review a synthetic job against the local GigSim instance (JOB_ID required)
+	$(PY) -m scripts.bid_demo $(JOB_ID) $(ARGS)
+
+local-demo: ## Start the synthetic browser review workspace on 127.0.0.1:3010
+	$(PY) -m scripts.local_demo
 
 compose-up: ## Start everything with docker compose
 	docker compose -f infra/docker-compose.yml --env-file .env up --build

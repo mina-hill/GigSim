@@ -7,7 +7,7 @@ The brief requires this file: which AI tools were used, for what, and one mistak
 | Tool | Used for |
 | --- | --- |
 | Claude (Anthropic), in claude.ai with a code workspace | Planning the build, writing most of the code and tests, writing the persona bibles, drafting docs |
-| Codex (OpenAI), in the Codex desktop app | Restoring the Git bundle, rebuilding the simulator-backed bid workflow, writing the integration tests and local demo, building the web workspace, and generating report tables from the smoke evaluation |
+| Codex (OpenAI), in the Codex desktop app | Restoring the Git bundle, building the bid and reply approval workflows, the browser workspace, the local MCP and worker stack, tests, reproducible experiments, demo recording and report drafts |
 
 Every commit written with Claude's help says so in its message (`Co-Authored-By: Claude`).
 
@@ -21,3 +21,4 @@ Claude wrote first drafts of essentially every file in this repository. Every fi
 2. **Keyword echo rewarded by the simulator.** GigSim's first client scorer counted a must-have skill as covered whenever the proposal mentioned it, so a proposal that only repeated the job's keywords scored well, and off-domain proposals got replies 35% of the time. It was caught by checking reply rates by strategy in the generated past proposals. Now a skill only counts when the same sentence carries evidence ("I built ...", a number), and off-domain replies come only from label noise.
 3. **Implied skills leaking into prose.** Several bible entries named a skill in the project description that was supposed to be implied only (for example Redis, Lighthouse). The test `test_case_study_prose_never_names_implied_skills` caught them; they were moved to explicit skills.
 4. **Approval tied to the wrong marketplace account.** The first Codex draft bound approval to the job, proposal text and quoted cost. Review found that switching simulator tokens after reopening a checkpoint could submit for another account. The preview now records the marketplace account, and a regression test checks that a mismatched account cannot write.
+5. **Misstated injection outcome.** The initial demo script expected a job containing a planted instruction to be skipped by every persona. Rehearsal with the matching data analyst showed a clean draft still reaching review. The script now describes the flag, the ignored instruction, and the approval gate.

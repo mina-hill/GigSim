@@ -106,6 +106,7 @@ def serve(args: argparse.Namespace, database: Path) -> None:
         "GIGBID_WEB_CHECKPOINT": str(database.with_name("approvals.sqlite")),
         "GIGBID_CHECKPOINT_DSN": "",
         "GIGBID_QUEUE_URL": "",
+        "NEXT_TELEMETRY_DISABLED": "1",
     }
     processes: list[subprocess.Popen] = []
     try:
