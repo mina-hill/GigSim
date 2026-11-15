@@ -1,0 +1,28 @@
+{
+  "dataset": "30 synthetic portfolio grounding claims derived from 10 evidence excerpts",
+  "reference_ratings": "user-supplied review labels",
+  "automated_backend": "verifier",
+  "automated_model": "deterministic-claim-verifier",
+  "items": 30,
+  "exact_agreements": 22,
+  "observed_agreement": 0.7333,
+  "expected_agreement": 0.3333,
+  "cohens_kappa": 0.6,
+  "confusion_matrix_human_by_automated": {
+    "supported": {
+      "supported": 10,
+      "partly_supported": 0,
+      "unsupported": 0
+    },
+    "partly_supported": {
+      "supported": 0,
+      "partly_supported": 2,
+      "unsupported": 8
+    },
+    "unsupported": {
+      "supported": 0,
+      "partly_supported": 0,
+      "unsupported": 10
+    }
+  }
+}
